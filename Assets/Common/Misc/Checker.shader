@@ -53,7 +53,7 @@ Shader "Custom/Checker"
             float fy = abs(frac(IN.worldPos.y + _Line / 2));
             float fz = abs(frac(IN.worldPos.z + _Line / 2));
             float d = max(max(min(fx, fz), min(fx, fy)), min(fy, fz));
-            fixed4 color = d < _Line ? _ColorC : (sx * sy * sz > 0 ? _ColorB : _ColorA);
+            fixed4 color = d < _Line ? _ColorC : (sx * sy * sz > 0.001 ? _ColorB : _ColorA);
 
             // Albedo comes from a texture tinted by color
             fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * color;
