@@ -46,14 +46,14 @@ Shader "Custom/Checker"
 
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
-            float sx = frac(IN.worldPos.x / 2) > 0.5 ? -1 : 1;
-            float sy = frac(IN.worldPos.y / 2) > 0.5 ? -1 : 1;
-            float sz = frac(IN.worldPos.z / 2) > 0.5 ? -1 : 1;
+            float sx = frac(IN.worldPos.x / 2) > 0.5001 ? -1 : 1;
+            float sy = frac(IN.worldPos.y / 2) > 0.5001 ? -1 : 1;
+            float sz = frac(IN.worldPos.z / 2) > 0.5001 ? -1 : 1;
             float fx = abs(frac(IN.worldPos.x + _Line / 2));
             float fy = abs(frac(IN.worldPos.y + _Line / 2));
             float fz = abs(frac(IN.worldPos.z + _Line / 2));
             float d = max(max(min(fx, fz), min(fx, fy)), min(fy, fz));
-            fixed4 color = d < _Line ? _ColorC : (sx * sy * sz > 0.001 ? _ColorB : _ColorA);
+            fixed4 color = d < _Line ? _ColorC : (sx * sy * sz > 0 ? _ColorB : _ColorA);
 
             // Albedo comes from a texture tinted by color
             fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * color;
