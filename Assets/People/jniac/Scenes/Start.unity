@@ -974,6 +974,7 @@ MonoBehaviour:
   sources:
   - {fileID: 173352213401199758, guid: e72c815a5c7ba4b4da08b441686548c1, type: 3}
   - {fileID: 173352213401199758, guid: dc85f5c36764e440b8c5c56801150ee6, type: 3}
+  - {fileID: 173352213401199758, guid: 6048c667b2806488592e51206ed659f0, type: 3}
   particuleCount: 10
   velocity: 10
   lifeDuration: 1.5
