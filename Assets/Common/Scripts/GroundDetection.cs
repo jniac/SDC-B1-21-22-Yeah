@@ -9,7 +9,7 @@ using UnityEditor;
 public class GroundDetection : MonoBehaviour
 {
 
-    public LayerMask groundMask = new LayerMask();
+    public LayerMask groundMask = ~0;
     public float maxGroundDistance = 0.5f;
     public float maxCloseGroundDistance = 1f;
 
