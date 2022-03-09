@@ -10,8 +10,6 @@ public class jniac_TriggerFireworks : MonoBehaviour
     public float velocity = 10;
     public float lifeDuration = 1.5f;
 
-    int count = 0;
-
     void Boom()
     {
         if (sources.Length == 0)
@@ -39,14 +37,6 @@ public class jniac_TriggerFireworks : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        count += 1;
-
-        if (count == 1)
-            Boom();
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        count += -1;
+        Boom();
     }
 }
