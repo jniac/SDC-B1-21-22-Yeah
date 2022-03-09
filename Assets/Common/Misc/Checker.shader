@@ -46,9 +46,9 @@ Shader "Custom/Checker"
 
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
-            float sx = frac(IN.worldPos.x / 2) > 0.5 ? -1 : 1;
-            float sy = frac(IN.worldPos.y / 2) > 0.5 ? -1 : 1;
-            float sz = frac(IN.worldPos.z / 2) > 0.5 ? -1 : 1;
+            float sx = frac(IN.worldPos.x / 2 + 0.001) > 0.5 ? -1 : 1;
+            float sy = frac(IN.worldPos.y / 2 + 0.001) > 0.5 ? -1 : 1;
+            float sz = frac(IN.worldPos.z / 2 + 0.001) > 0.5 ? -1 : 1;
             float fx = abs(frac(IN.worldPos.x + _Line / 2));
             float fy = abs(frac(IN.worldPos.y + _Line / 2));
             float fz = abs(frac(IN.worldPos.z + _Line / 2));
