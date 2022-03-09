@@ -1,31 +1,63 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class CubeMove : MonoBehaviour {
-
+public class CubeMove : MonoBehaviour
+{
     public float speed = 5f;
+    public PhysicMaterial rubber, ice;
 
-    void Update() {
-        // Récupération du composant "voisin" (sibling) : Le rigidbody
-        Rigidbody body = GetComponent<Rigidbody>();
+    Rigidbody body;
+    Collider[] colliders;
 
-        // Récupération des inputs
-        float inputH = Input.GetAxis("Horizontal"); 
+    void Start()
+    {
+        body = GetComponent<Rigidbody>();
+        colliders = GetComponentsInChildren<Collider>()
+            .Where(c => c.isTrigger == false)
+            .ToArray();
+    }
+
+    void FixedUpdate()
+    {
+        float inputH = Input.GetAxis("Horizontal");
         float inputV = Input.GetAxis("Vertical");
 
-        // Calcul d'une petite variable (float = nombre) pour "décider" du contrôle
-        // que le joueur a sur le cube (si pas d'input : 0, si un ou plusieurs input: 1)
+        // controlInfluence: 0: player is waiting. 1: player is playing.
         float controlInfluence = Mathf.Clamp01(Mathf.Abs(inputH) + Mathf.Abs(inputV));
 
-        // D'abord on récupère la vélocité actuelle du cube (par le rigidbody)
         Vector3 velocity = body.velocity;
-        // On applique l'effet des inputs
+
+        Vector3 angularVelocity = body.angularVelocity;
+        angularVelocity.z = -90 * velocity.x;
+        angularVelocity.x =  90 * velocity.z;
+        body.angularVelocity = Vector3.Lerp(body.angularVelocity, angularVelocity, controlInfluence * 0.1f);
+
         velocity.x = inputH * speed;
         velocity.z = inputV * speed;
-
-        // On applique la vélocité au cube (rigidbody) si l'influence le permet
-        // (interpolation linéaire)
         body.velocity = Vector3.Lerp(body.velocity, velocity, controlInfluence);
+
+        PhysicMaterial physicMaterial = controlInfluence < 0.99f ? rubber : ice;
+        foreach (var collider in colliders)
+            collider.material = physicMaterial;
     }
+
+#if UNITY_EDITOR
+    [Tooltip("Show debug info on screen.")]
+    public bool debug = false;
+    void OnGUI()
+    {
+        if (debug)
+        {
+            var style = new GUIStyle();
+            style.fontSize = 32;
+            style.normal.textColor = new Color(0.6f, 1.0f, 0.8f);
+            float inputH = Input.GetAxis("Horizontal");
+            float inputV = Input.GetAxis("Vertical");
+            Rigidbody body = GetComponent<Rigidbody>();
+            GUI.Label(new Rect(10, 10, 150, 100), $"inputHV: ({inputH:F2}, {inputV:F2}) {body.velocity.magnitude:F2}", style);
+        }
+    }
+#endif
 }

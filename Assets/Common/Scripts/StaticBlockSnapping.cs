@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
+[ExecuteAlways]
 public class StaticBlockSnapping : MonoBehaviour
 {
     void Snap()
@@ -23,6 +23,9 @@ public class StaticBlockSnapping : MonoBehaviour
 
     void Update()
     {
-        Snap();
+#if UNITY_EDITOR   
+        if (Application.isPlaying == false)
+            Snap();
+#endif
     }
 }

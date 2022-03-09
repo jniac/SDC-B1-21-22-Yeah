@@ -78,8 +78,6 @@ crashlytics-build.properties
 TextMesh Pro
 TextMesh Pro.meta
 
-ProceduralOutput
-ProceduralOutput.*
-ProceduralOutput/**
-
-Assets/Resources/Chunks*
+me
+me.meta
+tmp

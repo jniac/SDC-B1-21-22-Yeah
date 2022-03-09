@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
+[ExecuteAlways]
 public class StaticItemSnapping : MonoBehaviour
 {
     void Snap()
@@ -16,6 +16,9 @@ public class StaticItemSnapping : MonoBehaviour
 
     void Update()
     {
-        Snap();
+#if UNITY_EDITOR   
+        if (Application.isPlaying == false)
+            Snap();
+#endif
     }
 }

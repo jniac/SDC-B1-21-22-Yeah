@@ -90,6 +90,16 @@ public class MakeDiceColliders : MonoBehaviour
         sphere8.center = new Vector3( inner.x, -inner.y, -inner.z) / 2f;
     }
 
+    PhysicMaterial currentPhysicMaterial;
+    public void SetPhysicMaterial(PhysicMaterial physicMaterial)
+    {
+        if (currentPhysicMaterial != physicMaterial) {
+            currentPhysicMaterial = physicMaterial;
+            foreach (var collider in GetComponents<Collider>())
+                collider.material = physicMaterial;
+        }
+    }
+
     void Update()
     {
         if (Application.isPlaying == false)
