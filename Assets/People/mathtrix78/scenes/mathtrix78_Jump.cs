@@ -5,8 +5,7 @@ using UnityEngine;
 public class mathtrix78_Jump : MonoBehaviour
 {
     public float JumpVelocity = 10f;
-
-
+    
     // Update is called once per frame
     void Update()
     {
@@ -20,12 +19,7 @@ public class mathtrix78_Jump : MonoBehaviour
                 Vector3 velocity = body.velocity;
                 velocity.y = JumpVelocity;
                 body.velocity = velocity;
-
             }
-
-
         }
-
-
     }
 }
