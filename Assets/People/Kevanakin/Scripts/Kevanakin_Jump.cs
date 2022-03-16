@@ -12,8 +12,8 @@ public class Kevanakin_Jump : MonoBehaviour
         if (canJump == true)
         {
             bool wouldJump = Input.GetButtonDown("Jump");
-            if (wouldJump == true)
-             {
+            if (wouldJump)
+            {
                 Rigidbody body = GetComponent<Rigidbody>();
                 Vector3 velocity = body.velocity;
                 velocity.y = JumpVelocity;

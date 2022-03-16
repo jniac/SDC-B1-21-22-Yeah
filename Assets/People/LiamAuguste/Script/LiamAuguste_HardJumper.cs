@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UtopisteNjoly_HardBumper : MonoBehaviour
+public class LiamAuguste_HardJumper : MonoBehaviour
 {
-    public float jumpForce = 15f;
+    public float jumpForce = 20f;
 
     void OnTriggerEnter(Collider collider)
     {
