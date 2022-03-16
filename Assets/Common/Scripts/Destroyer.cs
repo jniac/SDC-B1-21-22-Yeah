@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Destroyer : MonoBehaviour
 {
-    public LayerMask mask = 0;
+    public LayerMask mask = ~0;
 
     public bool destroyOnTrigger = true;
     public bool destroyOnCollision = true;

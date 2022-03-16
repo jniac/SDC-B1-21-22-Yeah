@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StupidBotMove : MonoBehaviour
 {
-    public float velocity = 2f;
+    public float velocity = 3f;
     public Transform target;
 
     Rigidbody body;
