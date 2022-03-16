@@ -29,6 +29,6 @@ Notes:
 
 Rendus:
 - Une scène Unity nommé "MiniPuzzleLevel" présent dans le dossier "Scenes" de votre
-  dossier personnel.
+  dossier personnel (et "poussé" sur Github).
 
 
