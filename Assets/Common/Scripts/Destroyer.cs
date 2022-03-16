@@ -9,10 +9,7 @@ public class Destroyer : MonoBehaviour
     public bool destroyOnTrigger = true;
     public bool destroyOnCollision = true;
 
-    bool Match(int layer)
-    {
-        return (mask & (1 << layer)) != 0;
-    }
+    bool Match(int layer) => (mask & (1 << layer)) != 0;
 
     void OnTriggerEnter(Collider other)
     {
