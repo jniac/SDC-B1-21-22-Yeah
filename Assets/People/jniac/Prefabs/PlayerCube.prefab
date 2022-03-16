@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7634794281249932405}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -113,6 +113,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49bf20ce5dbf04176a43aafffc8cb03f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mask:
+    serializedVersion: 2
+    m_Bits: 0
+  yOver: 0
 --- !u!114 &7634794281553622055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,7 +190,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d36c6049af1774f1faa381029ce63e85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  priority: 10
 --- !u!114 &7634794281553622051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,7 +217,7 @@ GameObject:
   - component: {fileID: 7634794282608215204}
   m_Layer: 6
   m_Name: Ghost
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
