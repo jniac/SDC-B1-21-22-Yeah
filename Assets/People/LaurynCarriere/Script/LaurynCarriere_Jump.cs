@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class mathtrix78_Jump : MonoBehaviour
+public class LaurynCarriere_Jump : MonoBehaviour
 {
-    public float JumpVelocity = 10f;
-    
+    public float jumpVelocity = 10f;
+
     // Update is called once per frame
     void Update()
     {
@@ -17,7 +17,7 @@ public class mathtrix78_Jump : MonoBehaviour
             {
                 Rigidbody body = GetComponent<Rigidbody>();
                 Vector3 velocity = body.velocity;
-                velocity.y = JumpVelocity;
+                velocity.y = jumpVelocity;
                 body.velocity = velocity;
             }
         }
