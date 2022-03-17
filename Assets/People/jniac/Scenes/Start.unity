@@ -5118,6 +5118,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   yOver: 1
+  snapScaleXZ: 1
 --- !u!1001 &470133888
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5666,6 +5667,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   yOver: 0
+  snapScaleXZ: 1
 --- !u!135 &1123768225
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5779,6 +5781,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   yOver: 0
+  snapScaleXZ: 1
 --- !u!135 &1227368044
 SphereCollider:
   m_ObjectHideFlags: 0
