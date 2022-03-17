@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 8540872046677315924}
   - component: {fileID: 1112795090512361979}
   - component: {fileID: 5536785720612347325}
+  - component: {fileID: 2637687553603872317}
   m_Layer: 0
   m_Name: StupidBot
   m_TagString: Untagged
@@ -32,7 +33,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8540872046677315932}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0.6, z: 0.5}
+  m_LocalPosition: {x: 0.5, y: 9.6, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -180,3 +181,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   distanceMax: 4
   heightMax: 10
+--- !u!114 &2637687553603872317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8540872046677315932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dba5366c46f544d8490e7c529f1d8813, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onDestroyParticles:
+  - {fileID: 173352213401199758, guid: e72c815a5c7ba4b4da08b441686548c1, type: 3}
+  - {fileID: 173352213401199758, guid: dc85f5c36764e440b8c5c56801150ee6, type: 3}
+  - {fileID: 173352213401199758, guid: 6048c667b2806488592e51206ed659f0, type: 3}
