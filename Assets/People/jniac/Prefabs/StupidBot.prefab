@@ -14,8 +14,9 @@ GameObject:
   - component: {fileID: 8540872046677315928}
   - component: {fileID: 8540872046677315935}
   - component: {fileID: 8540872046677315934}
-  - component: {fileID: 8540872046677315933}
   - component: {fileID: 8540872046677315924}
+  - component: {fileID: 1112795090512361979}
+  - component: {fileID: 5536785720612347325}
   m_Layer: 0
   m_Name: StupidBot
   m_TagString: Untagged
@@ -131,20 +132,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   yOver: 0.6
---- !u!114 &8540872046677315933
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8540872046677315932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3726166a7fe9ae4cb42345c8babc397, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  velocity: 2.5
-  target: {fileID: 0}
+  snapScaleXZ: 1
 --- !u!114 &8540872046677315924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,3 +150,33 @@ MonoBehaviour:
     m_Bits: 64
   destroyOnTrigger: 1
   destroyOnCollision: 1
+--- !u!114 &1112795090512361979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8540872046677315932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25b231fd207e445538e6b2d5de8657d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mode: 0
+  targetTag: Player
+  target: {fileID: 0}
+  velocity: 3
+--- !u!114 &5536785720612347325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8540872046677315932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95bbc58c80eb04c13b9ad2888c9f29e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distanceMax: 4
+  heightMax: 10
