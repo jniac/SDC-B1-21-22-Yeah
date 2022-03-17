@@ -12,7 +12,7 @@ Réaliser un petit niveau sur la base d'un plateau de 24 x 24 cases.
 Le niveau, composé de blocks qui dessinent un parcours, doit contenir, outre le
 `PlayerCube`, les briques de gameplay suivantes : 
 - SpawnPoint (pour ne pas avoir à recommencer le parcours depuis le début)
-- Destroyer / KillZone (n'importe quel collider accompagné du script [Destroyer.cs](../Assets/Common/Scripts/Destroyer.cs])), 
+- Destroyer / KillZone (n'importe quel collider accompagné du script [Destroyer.cs](../Assets/Common/Scripts/Destroyer.cs)), 
   histoire de proposer une difficulté.
 - StupidBots, des ennemis stupides qui avancent dans la direction du joueur.
 
