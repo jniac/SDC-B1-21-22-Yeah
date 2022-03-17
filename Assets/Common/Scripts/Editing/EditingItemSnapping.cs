@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEditor;
 
 [ExecuteAlways]
-public class StaticItemSnapping : MonoBehaviour
+public class EditingItemSnapping : MonoBehaviour
 {
     public LayerMask groundMask = 1;
     public float yOver = 0f;
@@ -24,8 +24,8 @@ public class StaticItemSnapping : MonoBehaviour
             if (isPrefabInstance)
                 continue;
 
-            // Ignore static items.
-            bool isStaticItemToo = hit.collider.gameObject.GetComponent<StaticItemSnapping>() != null;
+            // Ignore "editing" items.
+            bool isStaticItemToo = hit.collider.gameObject.GetComponent<EditingItemSnapping>() != null;
             if (isStaticItemToo)
                 continue;
 
