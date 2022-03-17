@@ -28,7 +28,7 @@ L'évaluation se fera selon les 2 critères suivants :
   de sauter 2 cubes, mais pas 3 (d'autres valeurs sont possibles, pour par exemple
   pouvoir sauter 1 cube mais pas 2).
 - Un autre ajustement important est la "zone" de détection des `StupidBots` 
-  (AutoChasing.cs). Deux propriétés permettent de déterminer quand le stupidbots
+  ([AutoChasing.cs](../Assets/Common/Scripts/AutoChasing.cs)). Deux propriétés permettent de déterminer quand le stupidbots
   part à la chasse. Un bon LevelDesign nécessitera probablement d'ajuster les 
   valeurs "localement" selon la configuration spatial où se trouve le bot.
   <br>
