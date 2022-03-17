@@ -20,7 +20,7 @@ L'évaluation se fera selon les 2 critères suivants :
 - Maîtrise technique (pas de bug, relative complexité du level design)
 - Level design (le parcours présente-t-il un intérêt ?)
 
-Notes: 
+## Notes: 
 - Il se trouve un mini niveau de démonstration dans People/jniac/Scenes/MiniPuzzleLevel.
   Celui peut servir de base à votre version.
 - Parmi les ajustements nécessaires, il faut particulièrement faire attention à 
@@ -36,7 +36,7 @@ Notes:
   <br>
   <img width="300" src="Images/AutoChasingOptions-Gizmos.jpg">
 
-Rendus:
+## Rendus:
 - Une scène Unity nommé "MiniPuzzleLevel" présent dans le dossier "Scenes" de votre
   dossier personnel (et "poussé" sur Github).
 
