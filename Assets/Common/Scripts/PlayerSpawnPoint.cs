@@ -7,20 +7,19 @@ using UnityEditor;
 
 public class PlayerSpawnPoint : MonoBehaviour
 {
-    public bool activated = false;
-    public float activationTime = -1;
+    public float reachedTime = -1;
 
     void Start()
     {
-        PlayerSpawnPointManager.instance.spawnPoints.Add(this);
+        PlayerSpawnPointManager.instance.Reach(this);
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.attachedRigidbody.gameObject.tag == "Player")
         {
-            activated = true;
-            activationTime = Time.time;
+            reachedTime = Time.time;
+            PlayerSpawnPointManager.instance.Focus(this);
         }
     }
 
