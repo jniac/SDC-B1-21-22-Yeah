@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody), typeof(CubeGroundDetection))]
 public class CubeMove : MonoBehaviour
 {
     public float speed = 5f;
@@ -10,9 +11,13 @@ public class CubeMove : MonoBehaviour
 
     Rigidbody body;
     Collider[] colliders;
+    CubeGroundDetection groundDetection;
+
+    float yVelocity = 0f;
 
     void Start()
     {
+        groundDetection = GetComponent<CubeGroundDetection>();
         body = GetComponent<Rigidbody>();
         colliders = GetComponentsInChildren<Collider>()
             .Where(c => c.isTrigger == false)
@@ -29,16 +34,23 @@ public class CubeMove : MonoBehaviour
 
         Vector3 velocity = body.velocity;
 
-        Vector3 angularVelocity = body.angularVelocity;
-        angularVelocity.z = -90 * velocity.x;
-        angularVelocity.x =  90 * velocity.z;
-        body.angularVelocity = Vector3.Lerp(body.angularVelocity, angularVelocity, controlInfluence * 0.1f);
+        yVelocity = groundDetection.onGround ? body.velocity.y : yVelocity + Physics.gravity.y * Time.fixedDeltaTime;
+
+        // Angular velocity on ground only!
+        // if (groundDetection.onGround)
+        // {
+        //     Vector3 angularVelocity = body.angularVelocity;
+        //     angularVelocity.z = -90 * velocity.x;
+        //     angularVelocity.x =  90 * velocity.z;
+        //     body.angularVelocity = Vector3.Lerp(body.angularVelocity, angularVelocity, controlInfluence * 0.1f);
+        // }
 
         velocity.x = inputH * speed;
+        velocity.y = yVelocity;
         velocity.z = inputV * speed;
         body.velocity = Vector3.Lerp(body.velocity, velocity, controlInfluence);
 
-        PhysicMaterial physicMaterial = controlInfluence < 0.99f ? rubber : ice;
+        PhysicMaterial physicMaterial = groundDetection.onGround ? rubber : ice;
         foreach (var collider in colliders)
             collider.material = physicMaterial;
     }
@@ -56,7 +68,7 @@ public class CubeMove : MonoBehaviour
             float inputH = Input.GetAxis("Horizontal");
             float inputV = Input.GetAxis("Vertical");
             Rigidbody body = GetComponent<Rigidbody>();
-            GUI.Label(new Rect(10, 10, 150, 100), $"inputHV: ({inputH:F2}, {inputV:F2}) {body.velocity.magnitude:F2}", style);
+            GUI.Label(new Rect(10, 10, 150, 100), $"ground: {groundDetection.onGround} inputHV: ({inputH:F2}, {inputV:F2}) {body.velocity.magnitude:F2}", style);
         }
     }
 #endif
