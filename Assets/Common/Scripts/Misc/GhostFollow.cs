@@ -6,7 +6,7 @@ using UnityEditor;
 #endif
 
 [ExecuteAlways]
-public class Follow : MonoBehaviour
+public class GhostFollow : MonoBehaviour
 {
     public Transform target;
 
@@ -32,7 +32,7 @@ public class Follow : MonoBehaviour
         rotationOld = target.rotation;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (target == null)
             return;
@@ -40,8 +40,8 @@ public class Follow : MonoBehaviour
 #if UNITY_EDITOR
         if (Application.isPlaying == false)
         {
-            transform.position = target.position;
-            transform.rotation = target.rotation;
+            transform.position = positionOld = target.position;
+            transform.rotation = rotationOld = target.rotation;
         }
 #endif
         transform.position = Vector3.Lerp(positionOld, target.position, damping);
@@ -52,10 +52,10 @@ public class Follow : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(Follow))]
+    [CustomEditor(typeof(GhostFollow))]
     class MyEditor : Editor
     {
-        Follow Target => target as Follow;
+        GhostFollow Target => target as GhostFollow;
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
