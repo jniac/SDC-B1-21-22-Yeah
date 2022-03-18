@@ -13,6 +13,8 @@ public class GhostFollow : MonoBehaviour
     [Range(0, 1)]
     public float damping = 0.5f;
 
+    public Vector3 positionOffset = Vector3.zero;
+
     public bool useRotation = true;
 
     Vector3 positionStart;
@@ -21,15 +23,18 @@ public class GhostFollow : MonoBehaviour
     Vector3 positionOld;
     Quaternion rotationOld;
 
+    Vector3 TargetPosition => (target?.position ?? Vector3.zero) + positionOffset;
+    Quaternion TargetRotation => target?.rotation ?? Quaternion.identity;
+
+    void CopyTarget()
+    {
+        transform.position = positionStart = positionOld = TargetPosition;
+        transform.rotation = rotationStart = rotationOld = TargetRotation;
+    }
+
     void Start()
     {
-        if (target == null)
-            return;
-
-        positionStart = target.position;
-        rotationStart = target.rotation;
-        positionOld = target.position;
-        rotationOld = target.rotation;
+        CopyTarget();
     }
 
     void FixedUpdate()
@@ -39,19 +44,22 @@ public class GhostFollow : MonoBehaviour
 
 #if UNITY_EDITOR
         if (Application.isPlaying == false)
-        {
-            transform.position = positionOld = target.position;
-            transform.rotation = rotationOld = target.rotation;
-        }
+            CopyTarget();
 #endif
-        transform.position = Vector3.Lerp(positionOld, target.position, damping);
+        transform.position = Vector3.Lerp(positionOld, TargetPosition + positionOffset, damping);
         transform.rotation = useRotation ? Quaternion.Slerp(rotationOld, target.rotation, damping) : rotationStart;
-        
+
         positionOld = transform.position;
         rotationOld = transform.rotation;
     }
 
+    void OnValidate()
+    {
+        CopyTarget();
+    }
+
 #if UNITY_EDITOR
+
     [CustomEditor(typeof(GhostFollow))]
     class MyEditor : Editor
     {
