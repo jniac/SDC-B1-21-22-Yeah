@@ -4,11 +4,12 @@ using UnityEngine;
 
 public static class Boom
 {
-    static bool isQuitting;
+    public static bool IsQuitting { get; private set; }
+
     [RuntimeInitializeOnLoadMethod]
     static void StaticStart()
     {
-        Application.quitting += () => isQuitting = true;
+        Application.quitting += () => IsQuitting = true;
     }
 
     public static void FromPoint(
@@ -19,7 +20,7 @@ public static class Boom
         float velocity = 10f
     )
     {
-        if (isQuitting)
+        if (IsQuitting)
             return;
 
         int sourcesCount = sources.Count();
