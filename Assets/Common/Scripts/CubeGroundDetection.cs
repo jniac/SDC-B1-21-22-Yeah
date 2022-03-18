@@ -21,6 +21,10 @@ public class CubeGroundDetection : MonoBehaviour
     public float groundDistance = float.PositiveInfinity;
     [System.NonSerialized]
     public bool onGround = false;
+    [System.NonSerialized]
+    public float onGroundTime = float.NegativeInfinity;
+    [System.NonSerialized]
+    public float timeSinceOnGround = float.PositiveInfinity;
 
     Vector3[] points = new Vector3[8];
     RaycastHit[] pointHits = new RaycastHit[8];
@@ -89,6 +93,11 @@ public class CubeGroundDetection : MonoBehaviour
         }
 
         onGround = groundDistance < groundDistanceMax;
+
+        if (onGround)
+            onGroundTime = Time.time;
+
+        timeSinceOnGround = Time.time - onGroundTime;
     }
 
     void Update()
@@ -146,6 +155,8 @@ public class CubeGroundDetection : MonoBehaviour
             GUI.enabled = false;
             EditorGUILayout.Slider("Ground Distance", Target.groundDistance, 0f, Target.groundDistanceMax);
             EditorGUILayout.Toggle("On Ground", Target.onGround);
+            EditorGUILayout.FloatField("On Ground Time", Target.onGroundTime);
+            EditorGUILayout.FloatField("Time Since On Ground", Target.timeSinceOnGround);
         }
     }
 #endif

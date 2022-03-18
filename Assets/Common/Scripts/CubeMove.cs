@@ -24,7 +24,7 @@ public class CubeMove : MonoBehaviour
             .ToArray();
     }
 
-    void FixedUpdate()
+    void Move()
     {
         float inputH = Input.GetAxis("Horizontal");
         float inputV = Input.GetAxis("Vertical");
@@ -53,6 +53,20 @@ public class CubeMove : MonoBehaviour
         PhysicMaterial physicMaterial = groundDetection.onGround ? rubber : ice;
         foreach (var collider in colliders)
             collider.material = physicMaterial;
+    }
+
+    public void Jump(float yJumpVelocity)
+    {
+        yVelocity = yJumpVelocity;
+        
+        Vector3 velocity = body.velocity;
+        velocity.y = yJumpVelocity;
+        body.velocity = velocity;
+    }
+
+    void FixedUpdate()
+    {
+        Move();
     }
 
 #if UNITY_EDITOR
