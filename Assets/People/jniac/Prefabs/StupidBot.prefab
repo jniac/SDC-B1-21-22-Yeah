@@ -14,9 +14,10 @@ GameObject:
   - component: {fileID: 8540872046677315928}
   - component: {fileID: 8540872046677315935}
   - component: {fileID: 8540872046677315934}
-  - component: {fileID: 8540872046677315924}
+  - component: {fileID: 5639044318641104450}
   - component: {fileID: 1112795090512361979}
   - component: {fileID: 5536785720612347325}
+  - component: {fileID: 8540872046677315924}
   - component: {fileID: 2637687553603872317}
   m_Layer: 0
   m_Name: StupidBot
@@ -134,7 +135,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   yOver: 0.6
   snapScaleXZ: 1
---- !u!114 &8540872046677315924
+--- !u!114 &5639044318641104450
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,14 +144,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 8540872046677315932}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2eefd0aac21e34179b1994e4291c0e16, type: 3}
+  m_Script: {fileID: 11500000, guid: b7efe406eed9a4ff48bdda93cf838d7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mask:
+  corner: 0.41
+  groundDistanceMax: 0.33
+  detectionDistanceMax: 1
+  groundMask:
     serializedVersion: 2
-    m_Bits: 64
-  destroyOnTrigger: 1
-  destroyOnCollision: 1
+    m_Bits: 1
 --- !u!114 &1112795090512361979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,6 +183,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   distanceMax: 4
   heightMax: 10
+--- !u!114 &8540872046677315924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8540872046677315932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2eefd0aac21e34179b1994e4291c0e16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mask:
+    serializedVersion: 2
+    m_Bits: 64
+  destroyOnTrigger: 1
+  destroyOnCollision: 1
 --- !u!114 &2637687553603872317
 MonoBehaviour:
   m_ObjectHideFlags: 0
