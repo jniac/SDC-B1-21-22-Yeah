@@ -227,7 +227,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpSpeed: 9
-  airTimeTolerance: 5
+  airTimeTolerance: 0.3
 --- !u!114 &7634794281553622050
 MonoBehaviour:
   m_ObjectHideFlags: 0

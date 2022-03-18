@@ -24,7 +24,11 @@ public class CubeGroundDetection : MonoBehaviour
     [System.NonSerialized]
     public float onGroundTime = float.NegativeInfinity;
     [System.NonSerialized]
+    public Vector3 onGroundPosition = Vector3.zero;
+    [System.NonSerialized]
     public float timeSinceOnGround = float.PositiveInfinity;
+    [System.NonSerialized]
+    public Vector3 deltaSinceOnGround = Vector3.zero;
 
     Vector3[] points = new Vector3[8];
     RaycastHit[] pointHits = new RaycastHit[8];
@@ -95,9 +99,13 @@ public class CubeGroundDetection : MonoBehaviour
         onGround = groundDistance < groundDistanceMax;
 
         if (onGround)
+        {
             onGroundTime = Time.time;
+            onGroundPosition = transform.position;
+        }
 
         timeSinceOnGround = Time.time - onGroundTime;
+        deltaSinceOnGround = transform.position - onGroundPosition;
     }
 
     void Update()
