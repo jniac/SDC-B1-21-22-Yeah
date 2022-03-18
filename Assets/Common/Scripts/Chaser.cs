@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CubeGroundDetection))]
 public class Chaser : MonoBehaviour
 {
     public enum ChaseMode
@@ -16,22 +17,27 @@ public class Chaser : MonoBehaviour
     public float velocity = 3f;
 
     Rigidbody body;
+    CubeGroundDetection groundDetection;
 
     void Start()
     {
         body = GetComponent<Rigidbody>();
+        groundDetection = Utils.RequireComponent<CubeGroundDetection>(gameObject);
     }
 
     void Chase()
     {
-        Vector3 v = target.position - transform.position;
+        if (groundDetection.onGround)
+        {
+            Vector3 v = target.position - transform.position;
 
-        v = v.normalized * velocity;
+            v = v.normalized * velocity;
 
-        // Conservation de la vitesse verticale (gravité).
-        v.y = body.velocity.y;
+            // Conservation de la vitesse verticale (gravité).
+            v.y = body.velocity.y;
 
-        body.velocity = Vector3.Lerp(body.velocity, v, 0.5f);
+            body.velocity = Vector3.Lerp(body.velocity, v, 0.5f);
+        }
     }
 
     void Update()
