@@ -54,6 +54,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7634794281249932404}
   - component: {fileID: 7634794281249932405}
+  - component: {fileID: 8305360961197223426}
   m_Layer: 6
   m_Name: Cube
   m_TagString: Player
@@ -89,6 +90,19 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 9171696202414935248, guid: 362c7f2956ec441199de8a2e201c47b5, type: 3}
+--- !u!65 &8305360961197223426
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7634794281249932403}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7634794281553622079
 GameObject:
   m_ObjectHideFlags: 0
@@ -122,7 +136,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7634794281553622079}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.5, y: 10, z: -1.5}
+  m_LocalPosition: {x: -5.5, y: 11, z: -1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7634794282608215207}
@@ -146,7 +160,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &7634794281553622052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,7 +209,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  groundIdleDrag: 0.15
+  groundIdleDrag: 0.02
   airControl: 0.2
   rubber: {fileID: 13400000, guid: db3ec1b7fb0b849fb9fb5fd27cadd794, type: 2}
   ice: {fileID: 13400000, guid: d29162e4c4694423cac8ac4f41bf5fb9, type: 2}
@@ -230,7 +244,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpSpeed: 9
   airTimeTolerance: 0.3
-  airDistanceTolerance: 0.5
+  airDistanceTolerance: 0.65
 --- !u!114 &7634794281553622050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -360,7 +374,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7634794282608215203}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d1d4023af344474682d1482fd3e11a4, type: 3}
   m_Name: 

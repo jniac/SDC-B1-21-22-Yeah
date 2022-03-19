@@ -56,15 +56,7 @@ public class CubeMove : MonoBehaviour
             body.angularVelocity = Vector3.Lerp(body.angularVelocity, angularVelocity, controlInfluence * 0.1f);
         }
 
-        // Gravity hack:
-        // On ground use current "y" velocity
-        // Otherwise use an "independant" velocity (which is not affected by walls)
-        yVelocity = groundDetection.onGround 
-            ? body.velocity.y 
-            : yVelocity + Physics.gravity.y * Time.fixedDeltaTime;
-
         inputVelocity.x = inputH * speed;
-        inputVelocity.y = yVelocity;
         inputVelocity.z = inputV * speed;
 
         // Ground drag, here is the fine tuning that prevent the cube from moving 
@@ -78,9 +70,21 @@ public class CubeMove : MonoBehaviour
             ? controlInfluence
             : controlInfluence * airControl;
 
-        body.velocity = Vector3.Lerp(lowVelocity, inputVelocity, control);
+        Vector3 newVelocity = Vector3.Lerp(lowVelocity, inputVelocity, control);
 
-        PhysicMaterial physicMaterial = groundDetection.onGround ? rubber : ice;
+        // Gravity hack:
+        // On ground use current "y" velocity
+        // Otherwise use an "independant" velocity (which is not affected by walls)
+        yVelocity = groundDetection.onGround 
+            ? body.velocity.y 
+            : yVelocity + Physics.gravity.y * Time.fixedDeltaTime;
+
+        newVelocity.y = yVelocity;
+        body.velocity = newVelocity;
+        
+        // "Ascending" is key key concept here: when ascending -> no rubber.
+        bool ascending = yVelocity > 0.5f;
+        PhysicMaterial physicMaterial = (groundDetection.onGround && ascending == false) ? rubber : ice;
         foreach (var collider in colliders)
             collider.material = physicMaterial;
     }
