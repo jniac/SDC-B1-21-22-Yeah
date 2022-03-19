@@ -14,14 +14,21 @@ public class CubeJump : MonoBehaviour
     bool CanJump()
     {
         var groundDetection = GetComponent<CubeGroundDetection>();
+
         bool timeOk = groundDetection.timeSinceOnGround < airTimeTolerance;
+
         bool distanceOk = groundDetection.deltaSinceOnGround.magnitude < airDistanceTolerance;
-        return timeOk && distanceOk;
+
+        bool noDestoyerAboveGround = groundDetection.aboveGroundTriggers
+            .Find(collider => collider.gameObject.GetComponent<Destroyer>() != null) == false;
+
+        return (timeOk
+            && distanceOk
+            && noDestoyerAboveGround);
     }
 
     void Update()
     {
-
         bool jump = Input.GetButtonDown("Jump") && CanJump();
 
         if (jump)
