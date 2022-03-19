@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 #if UNITY_EDITOR
@@ -8,10 +8,10 @@ using UnityEditor;
 [ExecuteAlways]
 public class CubeGroundDetection : MonoBehaviour
 {
-    public float corner = 0.41f;
+    public float corner = 0.35f;
 
     [Tooltip("Distance max pour être considéré comme \"grounded\"")]
-    public float groundDistanceMax = 0.33f;
+    public float groundDistanceMax = 0.4f;
     [Tooltip("Distance max de détection (info)")]
     public float detectionDistanceMax = 1f;
 
@@ -29,12 +29,16 @@ public class CubeGroundDetection : MonoBehaviour
     public float timeSinceOnGround = float.PositiveInfinity;
     [System.NonSerialized]
     public Vector3 deltaSinceOnGround = Vector3.zero;
+    [System.NonSerialized]
+    public List<Collider> aboveGroundTriggers = new List<Collider>();
 
     Vector3[] points = new Vector3[8];
     RaycastHit[] pointHits = new RaycastHit[8];
     RaycastHit groundHit = new RaycastHit();
-    HashSet<RaycastHit> groundHits = new HashSet<RaycastHit>();
-    HashSet<RaycastHit> triggerHits = new HashSet<RaycastHit>();
+    List<RaycastHit> groundHits = new List<RaycastHit>();
+    List<RaycastHit> triggerHits = new List<RaycastHit>();
+
+    bool MatchGroundMask(int layer) => (groundMask & (1 << layer)) != 0;
 
     void UpdatePoints()
     {
@@ -65,7 +69,7 @@ public class CubeGroundDetection : MonoBehaviour
             if (point.y > yThreshold)
                 continue;
 
-            var hits = Physics.RaycastAll(point, Vector3.down, detectionDistanceMax, groundMask, QueryTriggerInteraction.Collide);
+            var hits = Physics.RaycastAll(point, Vector3.down, detectionDistanceMax, ~0, QueryTriggerInteraction.Collide);
             float minDistance = float.PositiveInfinity;
             pointHits[index] = new RaycastHit { distance = float.PositiveInfinity };
             foreach (var hit in hits)
@@ -73,6 +77,10 @@ public class CubeGroundDetection : MonoBehaviour
                 // "Normal / Hard / Plain" colliders: 
                 if (hit.collider.isTrigger == false)
                 {
+                    // Plain collider should match the ground mask.
+                    if (MatchGroundMask(hit.collider.gameObject.layer) == false)
+                        continue;
+
                     if (hit.distance < minDistance)
                     {
                         minDistance = hit.distance;
@@ -96,10 +104,22 @@ public class CubeGroundDetection : MonoBehaviour
             }
         }
 
+        // Sorting is for further usage. 
+        triggerHits.Sort((A, B) => A.distance - B.distance < 0f ? -1 : 1);
+
         onGround = groundDistance < groundDistanceMax;
+        aboveGroundTriggers.Clear();
 
         if (onGround)
         {
+
+            foreach (var hit in triggerHits)
+            {
+                if (hit.distance < groundDistance)
+                    if (aboveGroundTriggers.Contains(hit.collider) == false)
+                        aboveGroundTriggers.Add(hit.collider);
+            }
+
             onGroundTime = Time.time;
             onGroundPosition = transform.position;
         }
@@ -118,7 +138,8 @@ public class CubeGroundDetection : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
 
-        System.Action<float, System.Action> WithAlpha = (alpha, action) => {
+        System.Action<float, System.Action> WithAlpha = (alpha, action) =>
+        {
             Gizmos.color = new Color(Gizmos.color.r, Gizmos.color.g, Gizmos.color.b, alpha);
             action();
             Gizmos.color = new Color(Gizmos.color.r, Gizmos.color.g, Gizmos.color.b, 1f);
@@ -157,6 +178,7 @@ public class CubeGroundDetection : MonoBehaviour
     class MyEditor : Editor
     {
         CubeGroundDetection Target => target as CubeGroundDetection;
+        bool aboveGroundTriggersOpen = false;
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
@@ -165,6 +187,16 @@ public class CubeGroundDetection : MonoBehaviour
             EditorGUILayout.Toggle("On Ground", Target.onGround);
             EditorGUILayout.FloatField("On Ground Time", Target.onGroundTime);
             EditorGUILayout.FloatField("Time Since On Ground", Target.timeSinceOnGround);
+
+            GUI.enabled = true;
+            aboveGroundTriggersOpen = EditorGUILayout.BeginFoldoutHeaderGroup(aboveGroundTriggersOpen, "Above Ground Triggers");
+            GUI.enabled = false;
+            if (aboveGroundTriggersOpen)
+            {
+                foreach(var collider in Target.aboveGroundTriggers)
+                    EditorGUILayout.ObjectField(collider, typeof(Collider), true);
+            }
+            EditorGUILayout.EndFoldoutHeaderGroup();
         }
     }
 #endif
