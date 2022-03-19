@@ -11,29 +11,40 @@ public class CubeJump : MonoBehaviour
     [Tooltip("À quelle distance après avoir quitté le sol peut-on encore sauter ?")]
     public float airDistanceTolerance = 0.5f;
 
-    bool CanJump()
+    enum JumpRequestStatus
+    {
+        TooLate,
+        TooFar,
+        DestroyerAbove,
+        Ok,
+    }
+
+    JumpRequestStatus CanJump()
     {
         var groundDetection = GetComponent<CubeGroundDetection>();
 
-        bool timeOk = groundDetection.timeSinceOnGround < airTimeTolerance;
+        if (groundDetection.timeSinceOnGround > airTimeTolerance)
+            return JumpRequestStatus.TooLate;
 
-        bool distanceOk = groundDetection.deltaSinceOnGround.magnitude < airDistanceTolerance;
+        if (groundDetection.deltaSinceOnGround.magnitude > airDistanceTolerance)
+            return JumpRequestStatus.TooFar;
 
-        bool noDestoyerAboveGround = groundDetection.aboveGroundTriggers
-            .Find(collider => collider.gameObject.GetComponent<Destroyer>() != null) == false;
+        bool destoyerAboveGround = groundDetection.aboveGroundTriggers
+            .Find(collider => collider.gameObject.GetComponent<Destroyer>() != null);
+        if (destoyerAboveGround)
+            return JumpRequestStatus.DestroyerAbove;
 
-        return (timeOk
-            && distanceOk
-            && noDestoyerAboveGround);
+        return JumpRequestStatus.Ok;
     }
 
     void Update()
     {
-        bool jump = Input.GetButtonDown("Jump") && CanJump();
-
-        if (jump)
+        if (Input.GetButtonDown("Jump"))
         {
-            GetComponent<CubeMove>().Jump(jumpSpeed);
+            var status = CanJump();
+   
+            if (status == JumpRequestStatus.Ok) 
+                GetComponent<CubeMove>().Jump(jumpSpeed);
         }
     }
 
