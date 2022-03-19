@@ -9,18 +9,26 @@ public class PlayerSpawnPoint : MonoBehaviour
 {
     public float reachedTime = -1;
 
+    public bool focusOnStart = false;
+
+    void Focus()
+    {
+        reachedTime = Time.time;
+        PlayerSpawnPointManager.instance.Focus(this);
+    }
+
     void Start()
     {
         PlayerSpawnPointManager.instance.Reach(this);
+
+        if (focusOnStart)
+            Focus();
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.attachedRigidbody.gameObject.tag == "Player")
-        {
-            reachedTime = Time.time;
-            PlayerSpawnPointManager.instance.Focus(this);
-        }
+            Focus();
     }
 
 #if UNITY_EDITOR

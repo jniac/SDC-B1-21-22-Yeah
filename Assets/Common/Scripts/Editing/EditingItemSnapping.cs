@@ -70,7 +70,11 @@ public class EditingItemSnapping : MonoBehaviour
 
         position.y = GetY(position.y);
 
-        transform.position = position;
+        if (transform.position != position)
+        {
+            EditorUtility.SetDirty(gameObject);
+            transform.position = position;
+        }
     }
 
     void Update()

@@ -6,7 +6,7 @@ public class SpawnPointActivateParticleSystem : MonoBehaviour
 {
     ParticleSystem ps;
 
-    void Start()
+    void OnEnable()
     {
         ps = GetComponent<ParticleSystem>();
         ps.Pause();
