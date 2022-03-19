@@ -10,7 +10,7 @@ public class CubeGroundDetection : MonoBehaviour
 {
     public float corner = 0.35f;
 
-    [Tooltip("Distance max pour être considéré comme \"grounded\"")]
+    [Tooltip("Distance max pour être considéré comme étant \"On Ground\"")]
     public float groundDistanceMax = 0.4f;
     [Tooltip("Distance max de détection (info)")]
     public float detectionDistanceMax = 1f;
@@ -22,13 +22,13 @@ public class CubeGroundDetection : MonoBehaviour
     [System.NonSerialized]
     public bool onGround = false;
     [System.NonSerialized]
-    public float onGroundTime = float.NegativeInfinity;
+    public float groundTime = float.NegativeInfinity;
     [System.NonSerialized]
-    public Vector3 onGroundPosition = Vector3.zero;
+    public Vector3 groundPosition = Vector3.zero;
     [System.NonSerialized]
-    public float timeSinceOnGround = float.PositiveInfinity;
+    public float airTime = float.PositiveInfinity;
     [System.NonSerialized]
-    public Vector3 deltaSinceOnGround = Vector3.zero;
+    public Vector3 airDelta = Vector3.zero;
     [System.NonSerialized]
     public List<Collider> aboveGroundTriggers = new List<Collider>();
 
@@ -112,7 +112,6 @@ public class CubeGroundDetection : MonoBehaviour
 
         if (onGround)
         {
-
             foreach (var hit in triggerHits)
             {
                 if (hit.distance < groundDistance)
@@ -120,12 +119,12 @@ public class CubeGroundDetection : MonoBehaviour
                         aboveGroundTriggers.Add(hit.collider);
             }
 
-            onGroundTime = Time.time;
-            onGroundPosition = transform.position;
+            groundTime = Time.time;
+            groundPosition = transform.position;
         }
 
-        timeSinceOnGround = Time.time - onGroundTime;
-        deltaSinceOnGround = transform.position - onGroundPosition;
+        airTime = Time.time - groundTime;
+        airDelta = transform.position - groundPosition;
     }
 
     void Update()
@@ -185,8 +184,8 @@ public class CubeGroundDetection : MonoBehaviour
             GUI.enabled = false;
             EditorGUILayout.Slider("Ground Distance", Target.groundDistance, 0f, Target.groundDistanceMax);
             EditorGUILayout.Toggle("On Ground", Target.onGround);
-            EditorGUILayout.FloatField("On Ground Time", Target.onGroundTime);
-            EditorGUILayout.FloatField("Time Since On Ground", Target.timeSinceOnGround);
+            EditorGUILayout.FloatField("On Ground Time", Target.groundTime);
+            EditorGUILayout.FloatField("Time Since On Ground", Target.airTime);
 
             GUI.enabled = true;
             aboveGroundTriggersOpen = EditorGUILayout.BeginFoldoutHeaderGroup(aboveGroundTriggersOpen, "Above Ground Triggers");

@@ -23,10 +23,10 @@ public class CubeJump : MonoBehaviour
     {
         var groundDetection = GetComponent<CubeGroundDetection>();
 
-        if (groundDetection.timeSinceOnGround > airTimeTolerance)
+        if (groundDetection.airTime > airTimeTolerance)
             return JumpRequestStatus.TooLate;
 
-        if (groundDetection.deltaSinceOnGround.magnitude > airDistanceTolerance)
+        if (groundDetection.airDelta.magnitude > airDistanceTolerance)
             return JumpRequestStatus.TooFar;
 
         bool destoyerAboveGround = groundDetection.aboveGroundTriggers
