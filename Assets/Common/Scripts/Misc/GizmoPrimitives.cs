@@ -97,4 +97,18 @@ public static class GizmoPrimitives
         foreach (var p in Arc(radius, ringSubdivisions, center, orientation))
             Gizmos.DrawLine(p - delta * 0.5f, p + delta * 0.5f);
     }
+
+    public static void DrawArrow(
+        Vector3 origin,
+        Vector3 direction,
+        float endSize = 0.25f
+    )
+    {
+        var destination = origin + direction;
+        Gizmos.DrawLine(origin, destination);
+        var dn = direction.normalized;
+        var v = Quaternion.Euler(0f, 90f, 0f) * dn;
+        Gizmos.DrawLine(destination, destination + (-dn + v) * endSize);
+        Gizmos.DrawLine(destination, destination + (-dn - v) * endSize);
+    }
 }

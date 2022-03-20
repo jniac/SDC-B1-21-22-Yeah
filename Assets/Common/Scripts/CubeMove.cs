@@ -22,6 +22,9 @@ public class CubeMove : MonoBehaviour
 
     float yVelocity = 0f;
 
+    Vector3 inputVelocity = new Vector3();
+    public Vector3 InputVelocity => inputVelocity;
+
     void Start()
     {
         groundDetection = GetComponent<CubeGroundDetection>();
@@ -45,7 +48,7 @@ public class CubeMove : MonoBehaviour
         // `controlInfluence`: 0: player is waiting. 1: player is playing.
         float controlInfluence = Mathf.Clamp01(Mathf.Abs(inputH) + Mathf.Abs(inputV));
 
-        Vector3 inputVelocity = body.velocity;
+        // inputVelocity = body.velocity;
 
         // Angular velocity on ground only!
         if (groundDetection.onGround)
@@ -104,6 +107,13 @@ public class CubeMove : MonoBehaviour
     }
 
 #if UNITY_EDITOR
+
+    void OnDrawGizmos() 
+    {
+        Gizmos.color = Color.yellow;
+        GizmoPrimitives.DrawArrow(transform.position, inputVelocity);
+    }
+
     [Tooltip("Show debug info on screen.")]
     public bool debug = false;
     void OnGUI()
