@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class jniac_TriggerFireworks : MonoBehaviour
+public class jnc_TriggerFireworks : MonoBehaviour
 {
     public GameObject[] sources = new GameObject[0];
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class jniac_TriggerClone : MonoBehaviour
+public class jnc_TriggerClone : MonoBehaviour
 {
     public LayerMask mask = ~0;
     public float cooldownDuration = 0.1f;
