@@ -33,11 +33,21 @@ public class PlayerSpawnPoint : MonoBehaviour
 
 #if UNITY_EDITOR
     [CustomEditor(typeof(PlayerSpawnPoint))]
-    class MyEditor : Editor {
+    class MyEditor : Editor
+    {
         PlayerSpawnPoint Target => target as PlayerSpawnPoint;
         public override void OnInspectorGUI()
         {
+            GUI.enabled = false;
             base.OnInspectorGUI();
+            GUI.enabled = true;
+
+            if (GUILayout.Button("Take \"Focus On Start\""))
+            {
+                foreach (var spawnPoint in FindObjectsOfType<PlayerSpawnPoint>())
+                    spawnPoint.focusOnStart = false;
+                Target.focusOnStart = true;
+            }
 
             if (GUILayout.Button("TP Player"))
             {
@@ -45,6 +55,7 @@ public class PlayerSpawnPoint : MonoBehaviour
                 if (player != null)
                     player.transform.position = Target.transform.position;
             }
+
         }
     }
 #endif
