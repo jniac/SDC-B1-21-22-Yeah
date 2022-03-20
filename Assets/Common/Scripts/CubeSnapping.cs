@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CubeGroundDetection), typeof(Rigidbody))]
+[RequireComponent(typeof(CubeGroundDetection), typeof(Rigidbody), typeof(CubeMove))]
 public class CubeSnapping : MonoBehaviour
 {
     public enum SnappingStatus
     {
         MovingTooFast,
         TooFarFromGround,
+        UserInput,
         Snapping,
     }
 
@@ -20,6 +21,7 @@ public class CubeSnapping : MonoBehaviour
     SnappingStatus status;
     Rigidbody body;
     CubeGroundDetection groundDetection;
+    CubeMove move;
 
     SnappingStatus GetStatus()
     {
@@ -29,6 +31,9 @@ public class CubeSnapping : MonoBehaviour
         if (body.velocity.sqrMagnitude > velocityThreshold * velocityThreshold)
             return SnappingStatus.MovingTooFast;
 
+        if (move.InputVelocity.sqrMagnitude > 0.1f)
+            return SnappingStatus.UserInput;
+
         return SnappingStatus.Snapping;
     }
 
@@ -36,6 +41,7 @@ public class CubeSnapping : MonoBehaviour
     {
         body = GetComponent<Rigidbody>();
         groundDetection = GetComponent<CubeGroundDetection>();
+        move = GetComponent<CubeMove>();
     }
 
     void Update()

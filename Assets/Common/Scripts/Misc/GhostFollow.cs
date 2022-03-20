@@ -20,6 +20,9 @@ public class GhostFollow : MonoBehaviour
     Vector3 positionStart;
     Quaternion rotationStart;
 
+    Vector3 position;
+    Quaternion rotation;
+
     Vector3 positionOld;
     Quaternion rotationOld;
 
@@ -28,8 +31,8 @@ public class GhostFollow : MonoBehaviour
 
     void CopyTarget()
     {
-        transform.position = positionStart = positionOld = TargetPosition;
-        transform.rotation = rotationStart = rotationOld = TargetRotation;
+        transform.position = position = positionStart = positionOld = TargetPosition;
+        transform.rotation = rotation = rotationStart = rotationOld = TargetRotation;
     }
 
     void Start()
@@ -46,11 +49,17 @@ public class GhostFollow : MonoBehaviour
         if (Application.isPlaying == false)
             CopyTarget();
 #endif
-        transform.position = Vector3.Lerp(positionOld, TargetPosition + positionOffset, damping);
-        transform.rotation = useRotation ? Quaternion.Slerp(rotationOld, target.rotation, damping) : rotationStart;
+        position = Vector3.Lerp(positionOld, TargetPosition + positionOffset, damping);
+        rotation = useRotation ? Quaternion.Slerp(rotationOld, target.rotation, damping) : rotationStart;
 
-        positionOld = transform.position;
-        rotationOld = transform.rotation;
+        positionOld = position;
+        rotationOld = rotation;
+    }
+
+    void Update()
+    {
+        transform.position = position;
+        transform.rotation = rotation;
     }
 
     void OnValidate()

@@ -16,12 +16,19 @@ public class CubeMove : MonoBehaviour
     public float airControl = 0.2f;
     public PhysicMaterial rubber, ice;
 
+    [Range(-1, 1)]
+    public float overrideInputX = 0;
+    [Range(-1, 1)]
+    public float overrideInputY = 0;
+
     Rigidbody body;
     Collider[] colliders;
     CubeGroundDetection groundDetection;
 
     float yVelocity = 0f;
-
+    
+    float inputX = 0;
+    float inputY = 0;
     Vector3 inputVelocity = new Vector3();
     public Vector3 InputVelocity => inputVelocity;
 
@@ -42,11 +49,11 @@ public class CubeMove : MonoBehaviour
 
     void Move()
     {
-        float inputH = Input.GetAxis("Horizontal");
-        float inputV = Input.GetAxis("Vertical");
+        inputX = overrideInputX != 0 ? overrideInputX : Input.GetAxis("Horizontal");
+        inputY = overrideInputY != 0 ? overrideInputY : Input.GetAxis("Vertical");
 
         // `controlInfluence`: 0: player is waiting. 1: player is playing.
-        float controlInfluence = Mathf.Clamp01(Mathf.Abs(inputH) + Mathf.Abs(inputV));
+        float controlInfluence = Mathf.Clamp01(Mathf.Abs(inputX) + Mathf.Abs(inputY));
 
         // inputVelocity = body.velocity;
 
@@ -59,8 +66,8 @@ public class CubeMove : MonoBehaviour
             body.angularVelocity = Vector3.Lerp(body.angularVelocity, angularVelocity, controlInfluence * 0.1f);
         }
 
-        inputVelocity.x = inputH * speed;
-        inputVelocity.z = inputV * speed;
+        inputVelocity.x = inputX * speed;
+        inputVelocity.z = inputY * speed;
 
         // Ground drag, here is the fine tuning that prevent the cube from moving 
         // too fast when the player released any movement inputs.
@@ -123,11 +130,12 @@ public class CubeMove : MonoBehaviour
             var style = new GUIStyle();
             style.fontSize = 32;
             style.normal.textColor = new Color(0.6f, 1.0f, 0.8f);
-            float inputH = Input.GetAxis("Horizontal");
-            float inputV = Input.GetAxis("Vertical");
+            float inputX = Input.GetAxis("Horizontal");
+            float inputY = Input.GetAxis("Vertical");
             Rigidbody body = GetComponent<Rigidbody>();
-            GUI.Label(new Rect(10, 10, 150, 100), $"ground: {groundDetection.onGround} inputHV: ({inputH:F2}, {inputV:F2}) {body.velocity.magnitude:F2}", style);
+            GUI.Label(new Rect(10, 10, 150, 100), $"ground: {groundDetection.onGround} inputHV: ({inputX:F2}, {inputY:F2}) {body.velocity.magnitude:F2}", style);
         }
     }
+
 #endif
 }
