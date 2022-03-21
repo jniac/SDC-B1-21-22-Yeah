@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Chaser))]
 public class AutoChasing : MonoBehaviour
 {
-    public float distanceMax = 4f;
+    public float distanceMax = 7f;
     public float heightMax = 3f;
 
     Chaser chaser;

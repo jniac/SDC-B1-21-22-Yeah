@@ -369,6 +369,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758aa297365754027b07f5a771e85148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prefabToRespawn: {fileID: 7634794281553622079}
 --- !u!114 &2210822097416480239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -418,6 +419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c226dbbf3ba7841c1b393915521d804e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blockTag: PlayerBlock
 --- !u!1 &7634794282608215203
 GameObject:
   m_ObjectHideFlags: 0

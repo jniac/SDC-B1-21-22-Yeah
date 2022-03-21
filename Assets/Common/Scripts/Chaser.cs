@@ -42,6 +42,12 @@ public class Chaser : MonoBehaviour
 
     void Update()
     {
+        if (target != null && target.tag != targetTag)
+        {
+            // Si le tag a changé, la cible n'est plus valide.
+            target = null;
+        }
+
         if (target == null)
         {
             // Si la cible est nulle, tentative de récupérer une cible dynamiquement.
