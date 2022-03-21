@@ -47,6 +47,7 @@ public class PlayerSpawnPoint : MonoBehaviour
                 foreach (var spawnPoint in FindObjectsOfType<PlayerSpawnPoint>())
                     spawnPoint.focusOnStart = false;
                 Target.focusOnStart = true;
+                EditorUtility.SetDirty(target);
             }
 
             if (GUILayout.Button("TP Player"))
