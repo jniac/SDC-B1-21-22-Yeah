@@ -15,9 +15,11 @@ public class Chaser : MonoBehaviour
     public string targetTag = "Player";
     public Transform target;
     public float velocity = 3f;
+    public float updateTargetCooldown = 0.3f;
 
     Rigidbody body;
     CubeGroundDetection groundDetection;
+    float updateTargetTime = -1;
 
     void Start()
     {
@@ -40,12 +42,45 @@ public class Chaser : MonoBehaviour
         }
     }
 
+    void UpdateTarget()
+    {
+        updateTargetTime = Time.time;
+
+        var candidates = GameObject.FindGameObjectsWithTag(targetTag);
+
+        if (candidates.Length == 0)
+        {
+            target = null;
+            return;
+        }
+
+        var p = transform.position;
+        var candidate = candidates[0];
+        var sqDistance = (candidate.transform.position - p).sqrMagnitude;
+        for (int index = 1; index < candidates.Length; index++)
+        {
+            var current = candidates[index];
+            var currentSqDistance = (current.transform.position - p).sqrMagnitude;
+            if (currentSqDistance < sqDistance)
+            {
+                target = current.transform;
+                sqDistance = currentSqDistance;
+            }
+        }
+    }
+
     void Update()
     {
+        if (Time.time - updateTargetTime > updateTargetCooldown)
+        {
+            // Mettre à jour la cible à intervalles régulières. 
+            UpdateTarget();
+        }
+
         if (target != null && target.tag != targetTag)
         {
             // Si le tag a changé, la cible n'est plus valide.
-            target = null;
+            UpdateTarget();
         }
 
         if (target == null)
