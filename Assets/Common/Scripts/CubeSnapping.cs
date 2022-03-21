@@ -37,6 +37,23 @@ public class CubeSnapping : MonoBehaviour
         return SnappingStatus.Snapping;
     }
 
+    public (Vector3 snapPosition, Quaternion snapRotation) GetSnapPositionRotation()
+    {
+        var position = transform.position;
+        var snapPosition = new Vector3(
+            Mathf.Round(position.x + 0.5f) - 0.5f,
+            position.y,
+            Mathf.Round(position.z + 0.5f) - 0.5f);
+
+        var rotation = transform.rotation.eulerAngles;
+        var snapRotation = Quaternion.Euler(
+            Mathf.Round(rotation.x / 90f) * 90f,
+            Mathf.Round(rotation.y / 90f) * 90f,
+            Mathf.Round(rotation.z / 90f) * 90f);
+
+        return (snapPosition, snapRotation);   
+    }
+
     void Start()
     {
         body = GetComponent<Rigidbody>();
@@ -56,18 +73,7 @@ public class CubeSnapping : MonoBehaviour
         {
             t = Mathf.Clamp01(t + Time.deltaTime / transitionDuration);
 
-            var position = transform.position;
-            var snapPosition = new Vector3(
-                Mathf.Round(position.x + 0.5f) - 0.5f,
-                position.y,
-                Mathf.Round(position.z + 0.5f) - 0.5f);
-
-            var rotation = transform.rotation.eulerAngles;
-            var snapRotation = Quaternion.Euler(
-                Mathf.Round(rotation.x / 90f) * 90f,
-                Mathf.Round(rotation.y / 90f) * 90f,
-                Mathf.Round(rotation.z / 90f) * 90f);
-
+            var (snapPosition, snapRotation) = GetSnapPositionRotation();
             transform.position = Vector3.Lerp(transform.position, snapPosition, t);
             transform.rotation = Quaternion.Slerp(transform.rotation, snapRotation, t);
         }
