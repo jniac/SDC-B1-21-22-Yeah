@@ -54,6 +54,12 @@ public class CubeMove : MonoBehaviour
         inputX = overrideInputX != 0 ? overrideInputX : Input.GetAxis("Horizontal");
         inputY = overrideInputY != 0 ? overrideInputY : Input.GetAxis("Vertical");
 
+        Vector3 input = new Vector3 (inputX,0f,inputY);
+        float cameraRotationY = Camera.current.transform.rotation.eulerAngles.y;
+        input = Quaternion.Euler(0f,cameraRotationY,0f)*input;
+        inputX = input.x;
+        inputY = input.z;
+        
         // `controlInfluence`: 0: player is waiting. 1: player is playing.
         float inputInfluence = Mathf.Clamp01(Mathf.Abs(inputX) + Mathf.Abs(inputY))
             * (Time.time < noControlsUntil ? 0f : 1f);
