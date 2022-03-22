@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class jnc_HardJumper : MonoBehaviour
+public class HardJumper : MonoBehaviour
 {
     public Vector3 jump = new Vector3(0f, 5f, 0f);
 
