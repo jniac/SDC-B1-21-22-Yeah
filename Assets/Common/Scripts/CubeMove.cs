@@ -27,8 +27,7 @@ public class CubeMove : MonoBehaviour
 
     float yVelocity = 0f;
 
-    float inputX = 0;
-    float inputY = 0;
+    Vector2 input = new Vector2();
     Vector3 inputVelocity = new Vector3();
     public Vector3 InputVelocity => inputVelocity;
 
@@ -49,19 +48,24 @@ public class CubeMove : MonoBehaviour
         return new Vector3(scale, 1f, scale);
     }
 
+    void ComputeInput()
+    {
+        float x = overrideInputX != 0 ? overrideInputX : Input.GetAxis("Horizontal");
+        float y = overrideInputY != 0 ? overrideInputY : Input.GetAxis("Vertical");
+
+        float ry = Camera.main.transform.rotation.eulerAngles.y;
+        Vector3 v = Quaternion.Euler(0f, ry, 0f) * new Vector3(x, 0f, y);
+
+        input.x = v.x;
+        input.y = v.z;
+    }
+
     void Move()
     {
-        inputX = overrideInputX != 0 ? overrideInputX : Input.GetAxis("Horizontal");
-        inputY = overrideInputY != 0 ? overrideInputY : Input.GetAxis("Vertical");
+        ComputeInput();
 
-        Vector3 input = new Vector3 (inputX,0f,inputY);
-        float cameraRotationY = Camera.current.transform.rotation.eulerAngles.y;
-        input = Quaternion.Euler(0f,cameraRotationY,0f)*input;
-        inputX = input.x;
-        inputY = input.z;
-        
         // `controlInfluence`: 0: player is waiting. 1: player is playing.
-        float inputInfluence = Mathf.Clamp01(Mathf.Abs(inputX) + Mathf.Abs(inputY))
+        float inputInfluence = Mathf.Clamp01(Mathf.Abs(input.x) + Mathf.Abs(input.y))
             * (Time.time < noControlsUntil ? 0f : 1f);
 
         // inputVelocity = body.velocity;
@@ -75,8 +79,8 @@ public class CubeMove : MonoBehaviour
             body.angularVelocity = Vector3.Lerp(body.angularVelocity, angularVelocity, inputInfluence * 0.1f);
         }
 
-        inputVelocity.x = inputX * speed;
-        inputVelocity.z = inputY * speed;
+        inputVelocity.x = input.x * speed;
+        inputVelocity.z = input.y * speed;
 
         // Ground drag, here is the fine tuning that prevent the cube from moving 
         // too fast when the player released any movement inputs. It allows to move
@@ -147,10 +151,8 @@ public class CubeMove : MonoBehaviour
             var style = new GUIStyle();
             style.fontSize = 32;
             style.normal.textColor = new Color(0.6f, 1.0f, 0.8f);
-            float inputX = Input.GetAxis("Horizontal");
-            float inputY = Input.GetAxis("Vertical");
             Rigidbody body = GetComponent<Rigidbody>();
-            GUI.Label(new Rect(10, 10, 150, 100), $"ground: {groundDetection.onGround} inputHV: ({inputX:F2}, {inputY:F2}) {body.velocity.magnitude:F2}", style);
+            GUI.Label(new Rect(10, 10, 150, 100), $"ground: {groundDetection.onGround} inputHV: ({input.x:F2}, {input.y:F2}) {body.velocity.magnitude:F2}", style);
         }
     }
 
