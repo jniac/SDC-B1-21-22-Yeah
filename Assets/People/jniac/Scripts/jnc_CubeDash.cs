@@ -97,9 +97,9 @@ public class jnc_CubeDash : MonoBehaviour
         airDashCount = 0;
     }
 
-    void FixedUpdate()
+    void Update()
     {
-        if (Input.GetButton("Dash") || triggerDash)
+        if (Input.GetButtonDown("Dash") || triggerDash)
         {
             var result = CanDash();
             requestStatus = result.status;
