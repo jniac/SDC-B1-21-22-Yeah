@@ -6,14 +6,19 @@ public class Destroyer : MonoBehaviour
 {
     public LayerMask mask = ~0;
 
-    public bool destroyOnTrigger = true;
-    public bool destroyOnCollision = true;
+    public enum DestroyCondition {
+        Trigger,
+        Collision,
+        Both,
+    }
+
+    public DestroyCondition destroyCondition = DestroyCondition.Trigger;
 
     bool Match(int layer) => (mask & (1 << layer)) != 0;
 
     void OnTriggerEnter(Collider other)
     {
-        if (destroyOnTrigger)
+        if (destroyCondition == DestroyCondition.Trigger || destroyCondition == DestroyCondition.Both)
         {
             Rigidbody body = other.attachedRigidbody;
             
@@ -29,7 +34,7 @@ public class Destroyer : MonoBehaviour
 
     void OnCollisionEnter(Collision other)
     {
-        if (destroyOnCollision)
+        if (destroyCondition == DestroyCondition.Collision || destroyCondition == DestroyCondition.Both)
         {
             Rigidbody body = other.collider.attachedRigidbody;
             
