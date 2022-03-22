@@ -32,9 +32,9 @@ public class PlayerSpawnPointManager : MonoBehaviour
 
     public void Focus(PlayerSpawnPoint spawnPoint)
     {
-        focusedPoint?.BroadcastMessage("SpawnPointFocusExit");
+        focusedPoint?.BroadcastMessage("SpawnPointFocusExit", SendMessageOptions.DontRequireReceiver);
         focusedPoint = spawnPoint;
-        focusedPoint.BroadcastMessage("SpawnPointFocusEnter");
+        focusedPoint.BroadcastMessage("SpawnPointFocusEnter", SendMessageOptions.DontRequireReceiver);
     }
 
     public void Respawn()
