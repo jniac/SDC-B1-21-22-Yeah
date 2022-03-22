@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody), typeof(CubeMove))]
+[RequireComponent(typeof(Rigidbody), typeof(CubeMove), typeof(CubeGroundDetection))]
 public class jnc_CubeDash : MonoBehaviour
 {
     public float minVelocityToDash = 0.1f;
     public float cooldownDuration = 0.3f;
     public float dashLength = 2f;
     public float colliderRadius = 0.5f;
+    public int airDashMax = 1;
 
     public bool triggerDash = false;
 
@@ -20,9 +21,11 @@ public class jnc_CubeDash : MonoBehaviour
     DashStatus status;
     Vector3 direction;
     float dashTime = -1;
+    int airDashCount = 0;
 
     public enum DashRequestStatus
     {
+        AirDashNotAvailable,
         NoDirection,
         TooSoon,
         Ok,
@@ -37,6 +40,9 @@ public class jnc_CubeDash : MonoBehaviour
 
     (DashRequestStatus status, Vector3 direction) CanDash()
     {
+        if (GetComponent<CubeGroundDetection>().onGround == false && airDashCount == airDashMax)
+            return (DashRequestStatus.AirDashNotAvailable, Vector3.zero);
+
         if (Time.time - dashTime < cooldownDuration)
             return (DashRequestStatus.TooSoon, Vector3.zero);
 
@@ -77,6 +83,11 @@ public class jnc_CubeDash : MonoBehaviour
             // No walls at all. Go straight.
             status = DashStatus.NoObstacles;
         }
+
+        if (GetComponent<CubeGroundDetection>().onGround)
+            airDashCount = 0;
+        else
+            airDashCount += 1;
 
         body.position = destination;
     }
