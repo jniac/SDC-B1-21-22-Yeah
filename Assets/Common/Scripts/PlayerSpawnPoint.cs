@@ -53,8 +53,11 @@ public class PlayerSpawnPoint : MonoBehaviour
             if (GUILayout.Button("TP Player"))
             {
                 var player = GameObject.FindGameObjectWithTag("Player");
-                if (player != null)
+                if (player != null) 
+                {
                     player.transform.position = Target.transform.position;
+                    EditorUtility.SetDirty(player);
+                }
             }
 
         }

@@ -35,20 +35,11 @@ public class GhostFollow : MonoBehaviour
         transform.rotation = rotation = rotationStart = rotationOld = TargetRotation;
     }
 
-    void Start()
-    {
-        CopyTarget();
-    }
-
-    void FixedUpdate()
+    void Compute()
     {
         if (target == null)
             return;
 
-#if UNITY_EDITOR
-        if (Application.isPlaying == false)
-            CopyTarget();
-#endif
         position = Vector3.Lerp(positionOld, TargetPosition + positionOffset, damping);
         rotation = useRotation ? Quaternion.Slerp(rotationOld, target.rotation, damping) : rotationStart;
 
@@ -56,8 +47,23 @@ public class GhostFollow : MonoBehaviour
         rotationOld = rotation;
     }
 
+    void Start()
+    {
+        CopyTarget();
+    }
+
+    void FixedUpdate()
+    {
+        Compute();
+    }
+
     void Update()
     {
+#if UNITY_EDITOR
+        if (Application.isPlaying == false)
+            CopyTarget();
+#endif
+
         transform.position = position;
         transform.rotation = rotation;
     }
@@ -77,8 +83,11 @@ public class GhostFollow : MonoBehaviour
         {
             base.OnInspectorGUI();
 
-            if (GUILayout.Button("Follow Parent"))
+            if (GUILayout.Button("Follow Parent")) 
+            {
                 Target.target = Target.transform.parent;
+                EditorUtility.SetDirty(target);
+            }
         }
     }
 #endif
