@@ -21,6 +21,7 @@ public class CubeGroundDetection : MonoBehaviour
     public float groundDistance = float.PositiveInfinity;
     [System.NonSerialized]
     public bool onGround = false;
+    bool onGroundOld = false;
     [System.NonSerialized]
     public float groundTime = float.NegativeInfinity;
     [System.NonSerialized]
@@ -107,6 +108,7 @@ public class CubeGroundDetection : MonoBehaviour
         // Sorting is for further usage. 
         triggerHits.Sort((A, B) => A.distance - B.distance < 0f ? -1 : 1);
 
+        onGroundOld = onGround;
         onGround = groundDistance < groundDistanceMax;
         aboveGroundTriggers.Clear();
 
@@ -127,10 +129,21 @@ public class CubeGroundDetection : MonoBehaviour
         airDelta = transform.position - groundPosition;
     }
 
+    void UpdateMessage()
+    {
+        if (onGround)
+            BroadcastMessage("OnGround", SendMessageOptions.DontRequireReceiver);
+        if (onGround && onGroundOld == false)
+            BroadcastMessage("OnGroundEnter", SendMessageOptions.DontRequireReceiver);
+        if (onGround == false && onGroundOld)
+            BroadcastMessage("OnGroundExit", SendMessageOptions.DontRequireReceiver);
+    }
+
     void Update()
     {
         UpdatePoints();
         UpdateGroundColliders();
+        UpdateMessage();
     }
 
     void OnDrawGizmosSelected()
@@ -192,7 +205,7 @@ public class CubeGroundDetection : MonoBehaviour
             GUI.enabled = false;
             if (aboveGroundTriggersOpen)
             {
-                foreach(var collider in Target.aboveGroundTriggers)
+                foreach (var collider in Target.aboveGroundTriggers)
                     EditorGUILayout.ObjectField(collider, typeof(Collider), true);
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
