@@ -7,13 +7,17 @@ using UnityEngine;
 public class CubeMove : MonoBehaviour
 {
     public float speed = 5f;
+
     [Range(0, 1), Tooltip("Command le ralentissement du cube lorsque le joueur ne demande pas de mouvement.\n"
         + "\n0.15 signifie : Au bout d'une seconde, il ne reste plus que 15% de la vitesse initiale.")]
     public float groundIdleDrag = 0.15f;
+    Vector3 groundIdleScale3;
+    
     [Range(0, 1), Tooltip("Commande la quantité de \"contrôle\" dans les airs.\n"
         + "\n0 : Aucun contrôle, le joueur ne peut rien faire dans les airs."
         + "\n1 : Contrôle total, le joueur se déplace dans les airs avec la même efficacité qu'au sol.")]
     public float airControl = 0.2f;
+    
     public PhysicMaterial rubber, ice;
 
     [Range(-1, 1)]
@@ -40,12 +44,9 @@ public class CubeMove : MonoBehaviour
         colliders = GetComponentsInChildren<Collider>()
             .Where(c => c.isTrigger == false)
             .ToArray();
-    }
-
-    Vector3 GetGroundIdleScale()
-    {
+        
         float scale = Mathf.Pow(groundIdleDrag, Time.fixedDeltaTime);
-        return new Vector3(scale, 1f, scale);
+        groundIdleScale3 = new Vector3(scale, 1f, scale);
     }
 
     void ComputeInput()
@@ -53,6 +54,7 @@ public class CubeMove : MonoBehaviour
         float x = overrideInputX != 0 ? overrideInputX : Input.GetAxis("Horizontal");
         float y = overrideInputY != 0 ? overrideInputY : Input.GetAxis("Vertical");
 
+        // Use rotation Y (only) from main camera to transform the inputs.
         float ry = Camera.main.transform.rotation.eulerAngles.y;
         Vector3 v = Quaternion.Euler(0f, ry, 0f) * new Vector3(x, 0f, y);
 
@@ -66,7 +68,7 @@ public class CubeMove : MonoBehaviour
 
         // `controlInfluence`: 0: player is waiting. 1: player is playing.
         float inputInfluence = Mathf.Clamp01(Mathf.Abs(input.x) + Mathf.Abs(input.y))
-            * (Time.time < noControlsUntil ? 0f : 1f);
+            * Mathf.Lerp(0f, 1f, (Time.time - noControlsUntil) / 0.3f);
 
         // inputVelocity = body.velocity;
 
@@ -87,7 +89,7 @@ public class CubeMove : MonoBehaviour
         // from on cell to its neighbors without going any further.
         // Occurs only on ground.
         Vector3 lowVelocity = groundDetection.onGround
-            ? Vector3.Scale(body.velocity, GetGroundIdleScale())
+            ? Vector3.Scale(body.velocity, groundIdleScale3)
             : body.velocity;
 
         float control = (groundDetection.onGround
