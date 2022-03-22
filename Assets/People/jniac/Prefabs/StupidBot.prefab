@@ -169,6 +169,7 @@ MonoBehaviour:
   targetTag: Player
   target: {fileID: 0}
   velocity: 3
+  updateTargetCooldown: 0.3
 --- !u!114 &5536785720612347325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,8 +199,7 @@ MonoBehaviour:
   mask:
     serializedVersion: 2
     m_Bits: 64
-  destroyOnTrigger: 1
-  destroyOnCollision: 1
+  destroyCondition: 1
 --- !u!114 &2637687553603872317
 MonoBehaviour:
   m_ObjectHideFlags: 0

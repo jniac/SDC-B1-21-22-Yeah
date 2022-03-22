@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(CubeGroundDetection), typeof(CubeMove))]
 public class CubeJump : MonoBehaviour
 {
-    public float jumpSpeed = 9f;
+    public float jumpHeight = 2f;
     [Tooltip("Combien de temps (en secondes) après avoir quitté le sol peut-on encore sauter ?")]
     public float airTimeTolerance = 0.3f;
     [Tooltip("À quelle distance après avoir quitté le sol peut-on encore sauter ?")]
@@ -44,7 +44,7 @@ public class CubeJump : MonoBehaviour
             var status = CanJump();
    
             if (status == JumpRequestStatus.Ok) 
-                GetComponent<CubeMove>().Jump(jumpSpeed);
+                GetComponent<CubeMove>().Jump(jumpHeight);
         }
     }
 

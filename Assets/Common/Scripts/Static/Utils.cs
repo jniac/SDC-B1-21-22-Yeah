@@ -48,15 +48,15 @@ public static class Utils
     /// <summary>
     /// Assumes that Physics.gravity is (0, g, 0) where g <= 0.
     /// </summary>
-    public static Vector3 GetJumpVelocity(Vector3 jump)
+    public static (Vector3 velocity, float apogee) GetJumpVelocityAndApogee(Vector3 jump)
     {
         if (jump.y < 0)
-            return Vector3.zero;
+            return (Vector3.zero, 0f);
         
         var (y, t) = GetJumpInfo(jump.y);
         float x = jump.x / t;
         float z = jump.z / t;
         
-        return new Vector3(x, y, z);
+        return (new Vector3(x, y, z), t);
     }
 }

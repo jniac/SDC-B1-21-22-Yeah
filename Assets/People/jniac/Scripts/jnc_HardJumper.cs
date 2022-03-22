@@ -18,7 +18,10 @@ public class jnc_HardJumper : MonoBehaviour
             if (useAnchor)
                 body.position = transform.TransformPoint(anchor);
 
-            body.velocity = Utils.GetJumpVelocity(jump);
+            var (v, t) = Utils.GetJumpVelocityAndApogee(jump);
+            body.velocity = v;
+
+            body.BroadcastMessage("RemoveControls", t, SendMessageOptions.DontRequireReceiver);
         }
     }
 
@@ -27,10 +30,9 @@ public class jnc_HardJumper : MonoBehaviour
         Gizmos.color = Color.yellow;
 
         float dt = 1f / 40f;
-        var info = Utils.GetJumpInfo(jump.y);
-        int count = Mathf.CeilToInt(info.apogee / dt);
+        var (v, t) = Utils.GetJumpVelocityAndApogee(jump);
+        int count = Mathf.CeilToInt(t / dt);
         var p = transform.TransformPoint(anchor);
-        var v = Utils.GetJumpVelocity(jump);
         for (int i = 1; i <= count; i++)
         {
             p += v * dt;
