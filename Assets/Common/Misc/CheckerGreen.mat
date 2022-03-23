@@ -25,11 +25,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Glossiness: 0.861
-    - _Line: 0.216
+    - _Line: 0.074
     - _Metallic: 0.26
     m_Colors:
     - _Color: {r: 1, g: 0.2216981, b: 0.2216981, a: 1}
     - _ColorA: {r: 0.25938943, g: 0.8207547, b: 0.559963, a: 1}
     - _ColorB: {r: 0.24870951, g: 0.764151, b: 0.5239029, a: 1}
-    - _ColorC: {r: 0.25882354, g: 0.81960785, b: 0.56078434, a: 1}
+    - _ColorC: {r: 0.24705884, g: 0.7843138, b: 0.5372549, a: 1}
   m_BuildTextureStacks: []
