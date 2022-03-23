@@ -9,9 +9,9 @@ EditorBuildSettings:
     path: Assets/People/jniac/Scenes/RD/MiniPuzzleLevel-2.unity
     guid: 7dc61d52110d24650b4f6a83ae09046e
   - enabled: 1
-    path: Assets/People/jniac/Scenes/MiniPuzzleLevel-1.unity
+    path: Assets/People/jniac/Scenes/jnc_MiniPuzzleLevel-1.unity
     guid: e028729a472b64cdc8c1fe0bcde306c2
   - enabled: 1
-    path: Assets/People/jniac/Scenes/Start.unity
+    path: Assets/People/jniac/Scenes/jnc_Start.unity
     guid: dde23cf6cb568496db6d02ad9ec891ac
   m_configObjects: {}
