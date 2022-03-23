@@ -4927,9 +4927,10 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 1
-  snapY: 0
+  snapY: 1
   yOver: 0
   snapScaleXZ: 1
+  yRangeWidth: 100
 --- !u!114 &3235681581746737605
 MonoBehaviour:
   m_ObjectHideFlags: 0

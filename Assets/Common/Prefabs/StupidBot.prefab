@@ -136,6 +136,7 @@ MonoBehaviour:
   snapY: 1
   yOver: 0.6
   snapScaleXZ: 1
+  yRangeWidth: 100
 --- !u!114 &5639044318641104450
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,7 +170,7 @@ MonoBehaviour:
   mode: 0
   targetTag: Player
   target: {fileID: 0}
-  velocity: 3
+  velocity: 5
   updateTargetCooldown: 0.3
 --- !u!114 &5536785720612347325
 MonoBehaviour:
