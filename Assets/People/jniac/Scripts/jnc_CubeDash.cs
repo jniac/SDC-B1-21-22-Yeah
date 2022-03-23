@@ -46,8 +46,7 @@ public class jnc_CubeDash : MonoBehaviour
         if (Time.time - dashTime < cooldownDuration)
             return (DashRequestStatus.TooSoon, Vector3.zero);
 
-        var direction = GetComponent<CubeMove>().InputVelocity;
-
+        var direction = GetComponent<CubeMove>().InputVector3;
         if (direction.magnitude < minVelocityToDash)
             return (DashRequestStatus.NoDirection, Vector3.zero);
 

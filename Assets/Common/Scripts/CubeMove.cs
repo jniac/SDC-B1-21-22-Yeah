@@ -32,6 +32,7 @@ public class CubeMove : MonoBehaviour
     float yVelocity = 0f;
 
     Vector2 input = new Vector2();
+    public Vector3 InputVector3 => new Vector3(input.x, 0f, input.y);
     Vector3 inputVelocity = new Vector3();
     public Vector3 InputVelocity => inputVelocity;
 

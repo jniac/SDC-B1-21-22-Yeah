@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class HardJumper : MonoBehaviour
 {
-    public Vector3 jump = new Vector3(0f, 5f, 0f);
+    public Vector3 jump = new Vector3(0f, 6f, 0f);
     public LayerMask mask = ~0;
 
-    public bool useAnchor = true;
+    public bool useAnchor = false;
     public Vector3 anchor = new Vector3(0f, 0.5f, 0f);
 
     bool Match(int layer) => (mask & (1 << layer)) != 0;
