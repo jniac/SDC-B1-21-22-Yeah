@@ -4939,6 +4939,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 1
+  snapY: 1
   yOver: 0
   snapScaleXZ: 1
 --- !u!114 &313158576182966829
@@ -4953,5 +4954,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ae76384cefc64e1f93fdb152e345c3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activated: 1
-  activationTime: -1
+  reachedTime: -1
+  focusOnStart: 0
