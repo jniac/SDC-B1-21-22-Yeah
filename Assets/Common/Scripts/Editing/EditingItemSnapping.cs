@@ -12,12 +12,20 @@ public class EditingItemSnapping : MonoBehaviour
     public bool snapY = false;
     public float yOver = 0f;
     public bool snapScaleXZ = true;
+    public float yRangeWidth = 100f;
+
+    IEnumerable<RaycastHit> GetHits()
+    {
+        // Return hits 
+        return Physics.RaycastAll(transform.position + Vector3.up * (yRangeWidth + yOver), Vector3.down, yRangeWidth * 2f, groundMask);
+    }
 
     float GetY(float defaultY)
     {
-        var hits = Physics.RaycastAll(transform.position + Vector3.up * 10f, Vector3.down, 100f, groundMask);
+        var hits = GetHits();
 
-        float y = float.NegativeInfinity;
+        float d = float.PositiveInfinity;
+        float y = defaultY;
         foreach (var hit in hits)
         {
             // Ignore prefabs.
@@ -38,14 +46,13 @@ public class EditingItemSnapping : MonoBehaviour
             if (hit.collider.gameObject == gameObject)
                 continue;
 
-            float currentY = hit.point.y + yOver;
-            if (currentY > y)
-                y = currentY;
+            float currentD = Mathf.Abs(hit.point.y - transform.position.y);
+            if (currentD < d)
+            {
+                d = currentD;
+                y = hit.point.y + yOver;
+            }
         }
-
-        // Ignore invalid y value.
-        if (y == float.NegativeInfinity)
-            return defaultY;
 
         return y;
     }
