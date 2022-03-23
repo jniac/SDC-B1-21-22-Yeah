@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LiamAuguste_HardJumper : MonoBehaviour
+public class lma_HardJumper : MonoBehaviour
 {
     public float jumpForce = 20f;
 
