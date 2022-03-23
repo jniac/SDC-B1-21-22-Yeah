@@ -10,7 +10,8 @@ public class PlayerSpawnPointManager : MonoBehaviour
     public GameObject playerPrefabToSpawn;
     public float respawnWaitTime = 1f;
 
-    public List<PlayerSpawnPoint> spawnPoints = new List<PlayerSpawnPoint>();
+    public List<PlayerSpawnPoint> reachedPoints = new List<PlayerSpawnPoint>();
+    public PlayerSpawnPoint focusedPoint = null;
 
     bool isQuitting = false;
 
@@ -24,24 +25,16 @@ public class PlayerSpawnPointManager : MonoBehaviour
         isQuitting = true;
     }
 
-    public PlayerSpawnPoint GetLastActivatedSpawnPoint()
+    public void Reach(PlayerSpawnPoint spawnPoint)
     {
-        PlayerSpawnPoint result = null;
-        foreach (var current in spawnPoints)
-        {
-            if (current.activated)
-            {
-                if (result == null)
-                {
-                    result = current;
-                }
-                else if (result.activationTime < current.activationTime)
-                {
-                    result = current;
-                }
-            }
-        }
-        return result;
+        reachedPoints.Add(spawnPoint);
+    }
+
+    public void Focus(PlayerSpawnPoint spawnPoint)
+    {
+        focusedPoint?.BroadcastMessage("SpawnPointFocusExit", SendMessageOptions.DontRequireReceiver);
+        focusedPoint = spawnPoint;
+        focusedPoint.BroadcastMessage("SpawnPointFocusEnter", SendMessageOptions.DontRequireReceiver);
     }
 
     public void Respawn()
@@ -52,16 +45,14 @@ public class PlayerSpawnPointManager : MonoBehaviour
 
     IEnumerator ThenRespawnCoroutine()
     {
-        PlayerSpawnPoint spawnPoint = GetLastActivatedSpawnPoint();
-
-        if (spawnPoint == null)
+        if (focusedPoint == null)
         {
             Debug.LogWarning("No activated spawn point. Cannot respawn target.");
             yield break;
         }
 
         yield return new WaitForSeconds(respawnWaitTime);
-        Instantiate(playerPrefabToSpawn, spawnPoint.transform.position + Vector3.up, spawnPoint.transform.rotation);
+        Instantiate(playerPrefabToSpawn, focusedPoint.transform.position + Vector3.up, focusedPoint.transform.rotation);
     }
 
 }
