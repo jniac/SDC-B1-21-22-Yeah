@@ -175,10 +175,10 @@ GameObject:
   - component: {fileID: 2969682485146091213}
   - component: {fileID: 2969682485146091212}
   - component: {fileID: 6803875213184134912}
-  - component: {fileID: 6258554505736871318}
   - component: {fileID: 6771963455878130544}
+  - component: {fileID: -3447624518734892287}
   m_Layer: 6
-  m_Name: StrangeCube
+  m_Name: unj_StrangeCube
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -233,6 +233,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 1
+  snapY: 0
   yOver: 1
   snapScaleXZ: 1
 --- !u!114 &2969682485146091208
@@ -301,7 +302,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f268afceccf4a4facae988f44a597313, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpSpeed: 9
+  jumpHeight: 2
   airTimeTolerance: 0.3
   airDistanceTolerance: 0.65
 --- !u!114 &2969682485146091213
@@ -345,27 +346,6 @@ MonoBehaviour:
   - {fileID: 173352213401199758, guid: e72c815a5c7ba4b4da08b441686548c1, type: 3}
   - {fileID: 173352213401199758, guid: dc85f5c36764e440b8c5c56801150ee6, type: 3}
   - {fileID: 173352213401199758, guid: 6048c667b2806488592e51206ed659f0, type: 3}
---- !u!114 &6258554505736871318
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2969682485146091216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 884b529ade2d743c9bb69955d3d50060, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minVelocityToDash: 0.1
-  cooldownDuration: 0.3
-  dashLength: 3
-  colliderRadius: 0.5
-  triggerDash: 0
-  dashObstacleMask:
-    serializedVersion: 2
-    m_Bits: 1
-  onDestroyParticles: []
 --- !u!114 &6771963455878130544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -379,6 +359,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockTagAndLayer: PlayerBlock
+--- !u!114 &-3447624518734892287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2969682485146091216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aca07c3ecc4b1a47bb4cad343f143ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minVelocityToDash: 0.1
+  cooldownDuration: 0.3
+  dashLength: 3
+  colliderRadius: 0.5
+  airDashMax: 1
+  triggerDash: 0
+  dashObstacleMask:
+    serializedVersion: 2
+    m_Bits: 1
+  onDestroyParticles: []
 --- !u!1 &8079587160932156360
 GameObject:
   m_ObjectHideFlags: 0
