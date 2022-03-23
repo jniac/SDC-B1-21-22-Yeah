@@ -11,20 +11,33 @@ public class CinemachineAutoTarget : MonoBehaviour
     {
         instances.Add(this);
 
-        var vc = FindObjectOfType<Cinemachine.CinemachineVirtualCamera>();
-        if (vc != null)
-            if (vc.Follow == null)
-                vc.Follow = transform;
+        foreach (var vcam in FindObjectsOfType<Cinemachine.CinemachineVirtualCamera>())
+        {
+            if (vcam.Follow == null)
+                vcam.Follow = transform;
+        }
     }
 
     void OnDestroy()
     {
         instances.Remove(this);
 
-        var vc = FindObjectOfType<Cinemachine.CinemachineVirtualCamera>();
-        if (vc != null)
-            if (vc.Follow == transform)
+        foreach (var vcam in FindObjectsOfType<Cinemachine.CinemachineVirtualCamera>())
+        {
+            if (vcam.Follow == transform)
+            {
                 if (instances.Count > 0)
-                    vc.Follow = instances[0].transform;
+                {
+                    vcam.Follow = instances
+                        .OrderBy(target => (target.transform.position - transform.position).sqrMagnitude)
+                        .First()
+                        .transform;
+                }
+                else
+                {
+                    vcam.Follow = null;
+                }
+            }
+        }
     }
 }
