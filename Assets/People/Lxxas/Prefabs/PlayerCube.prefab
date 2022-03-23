@@ -162,8 +162,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  groundIdleDrag: 0.15
+  airControl: 0.2
   rubber: {fileID: 0}
   ice: {fileID: 0}
+  overrideInputX: 0
+  overrideInputY: 0
   debug: 0
 --- !u!114 &2921807920324333962
 MonoBehaviour:
@@ -177,11 +181,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7efe406eed9a4ff48bdda93cf838d7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  corner: 0.35
+  groundDistanceMax: 0.4
+  detectionDistanceMax: 1
   groundMask:
     serializedVersion: 2
     m_Bits: 0
-  maxGroundDistance: 0.5
-  maxCloseGroundDistance: 1
 --- !u!114 &2921807920324333963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,6 +199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86fd4cc860acd4b7aa34cc455925ebdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundDistanceThreshold: 0.75
   velocityThreshold: 1
   transitionDuration: 0.5
   debug: 0
@@ -222,7 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758aa297365754027b07f5a771e85148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waitTime: 1
+  prefabToRespawn: {fileID: 7634794281553622079, guid: 4886f5aed73fa4fb1aa1a096dc07328d, type: 3}
 --- !u!114 &8701708907551261077
 MonoBehaviour:
   m_ObjectHideFlags: 0
