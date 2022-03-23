@@ -4939,6 +4939,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 1
+  snapY: 1
   yOver: 0
   snapScaleXZ: 1
 --- !u!114 &7790682919962467147
@@ -4956,5 +4957,4 @@ MonoBehaviour:
   mask:
     serializedVersion: 2
     m_Bits: 4294967295
-  destroyOnTrigger: 1
-  destroyOnCollision: 1
+  destroyCondition: 0

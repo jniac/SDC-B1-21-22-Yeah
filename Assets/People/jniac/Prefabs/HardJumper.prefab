@@ -112,6 +112,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  snapY: 1
   yOver: 0
   snapScaleXZ: 1
 --- !u!114 &1744692805307148557
@@ -126,4 +127,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de195d4a34ce846a291cbf6d81e80c45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 18
+  jump: {x: 0, y: 5, z: 0}
+  useAnchor: 1
+  anchor: {x: 0, y: 0.5, z: 0}
