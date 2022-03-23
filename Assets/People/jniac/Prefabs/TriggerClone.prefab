@@ -112,6 +112,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  snapY: 1
   yOver: 0
   snapScaleXZ: 1
 --- !u!114 &8545142498389601680

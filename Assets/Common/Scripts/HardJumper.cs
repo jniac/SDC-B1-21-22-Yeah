@@ -21,7 +21,7 @@ public class HardJumper : MonoBehaviour
             var (v, t) = Utils.GetJumpVelocityAndApogee(jump);
             body.velocity = v;
 
-            body.BroadcastMessage("RemoveControls", t, SendMessageOptions.DontRequireReceiver);
+            body.BroadcastMessage("RemoveControls", t * 0.5f, SendMessageOptions.DontRequireReceiver);
         }
     }
 

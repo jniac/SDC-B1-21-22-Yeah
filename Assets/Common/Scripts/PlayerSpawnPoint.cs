@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 #if UNITY_EDITOR
@@ -60,6 +60,17 @@ public class PlayerSpawnPoint : MonoBehaviour
                 }
             }
 
+            if (GUILayout.Button("TP Player Back"))
+            {
+                var player = GameObject.FindGameObjectWithTag("Player");
+                if (player != null) 
+                {
+                    player.transform.position = FindObjectsOfType<PlayerSpawnPoint>()
+                        .OrderBy(spawnPoint => spawnPoint.focusOnStart ? -1 : 1)
+                        .First().transform.position;
+                    EditorUtility.SetDirty(player);
+                }
+            }
         }
     }
 #endif
