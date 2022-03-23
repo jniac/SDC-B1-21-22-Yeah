@@ -219,7 +219,7 @@ GameObject:
   - component: {fileID: 1592172719689357177}
   - component: {fileID: 2105585026290803103}
   m_Layer: 6
-  m_Name: StrangeCube
+  m_Name: jnc_StrangeCube
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
