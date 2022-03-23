@@ -39,7 +39,7 @@
         "**/*.asset":false,
         "**/*.cubemap":true,
         "**/*.flare":true,
-        "**/*.mat":true,
+        "**/*.mat":false,
         "**/*.meta":true,
         "**/*.prefab":true,
         "**/*.unity":false,
