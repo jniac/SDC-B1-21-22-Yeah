@@ -9,6 +9,7 @@ using UnityEditor;
 public class EditingItemSnapping : MonoBehaviour
 {
     public LayerMask groundMask = 1;
+    public bool snapY = false;
     public float yOver = 0f;
     public bool snapScaleXZ = true;
 
@@ -68,7 +69,8 @@ public class EditingItemSnapping : MonoBehaviour
         position.z = Mathf.Round(position.z);
         position += transform.localScale / 2f;
 
-        position.y = GetY(position.y);
+        if (snapY) 
+            position.y = GetY(position.y);
 
         if (transform.position != position)
         {
