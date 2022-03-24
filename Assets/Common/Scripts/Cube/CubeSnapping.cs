@@ -14,7 +14,7 @@ public class CubeSnapping : MonoBehaviour
     }
 
     public float groundDistanceThreshold = 0.75f;
-    public float velocityThreshold = 1f;
+    public float velocityThreshold = 4f;
     public float transitionDuration = 0.5f;
 
     float t = 0;

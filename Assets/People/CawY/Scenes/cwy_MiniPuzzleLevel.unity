@@ -799,7 +799,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefabToSpawn: {fileID: 7634794281553622079, guid: 4886f5aed73fa4fb1aa1a096dc07328d, type: 3}
   respawnWaitTime: 0.5
-  reachedPoints: []
+  spawnPoints: []
+  reachedSpawnPoints: []
   focusedPoint: {fileID: 0}
 --- !u!4 &537904305
 Transform:
@@ -952,7 +953,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefabToSpawn: {fileID: 7634794281553622079, guid: 4886f5aed73fa4fb1aa1a096dc07328d, type: 3}
   respawnWaitTime: 0.5
-  reachedPoints: []
+  spawnPoints: []
+  reachedSpawnPoints: []
   focusedPoint: {fileID: 0}
 --- !u!4 &706862229
 Transform:
