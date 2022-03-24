@@ -26,6 +26,10 @@ public class Destroyer : MonoBehaviour
             {
                 if (Match(body.gameObject.layer))
                 {
+                    // Si invicible, alors invicible (return).
+                    if (body.gameObject.tag == "Player" && PlayModeManager.Test(PlayMode.NeverDie))
+                        return;
+
                     Destroy(body.gameObject);
                 }
             }

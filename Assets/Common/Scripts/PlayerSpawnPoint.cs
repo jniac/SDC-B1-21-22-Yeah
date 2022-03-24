@@ -14,12 +14,12 @@ public class PlayerSpawnPoint : MonoBehaviour
     void Focus()
     {
         reachedTime = Time.time;
-        PlayerSpawnPointManager.instance.Focus(this);
+        PlayerSpawnPointManager.instance.Reach(this);
     }
 
     void Start()
     {
-        PlayerSpawnPointManager.instance.Reach(this);
+        PlayerSpawnPointManager.instance.Register(this);
 
         if (focusOnStart)
             Focus();

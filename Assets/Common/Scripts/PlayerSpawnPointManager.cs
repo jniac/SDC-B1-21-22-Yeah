@@ -10,7 +10,8 @@ public class PlayerSpawnPointManager : MonoBehaviour
     public GameObject playerPrefabToSpawn;
     public float respawnWaitTime = 1f;
 
-    public List<PlayerSpawnPoint> reachedPoints = new List<PlayerSpawnPoint>();
+    public List<PlayerSpawnPoint> spawnPoints = new List<PlayerSpawnPoint>();
+    public List<PlayerSpawnPoint> reachedSpawnPoints = new List<PlayerSpawnPoint>();
     public PlayerSpawnPoint focusedPoint = null;
 
     bool isQuitting = false;
@@ -25,13 +26,15 @@ public class PlayerSpawnPointManager : MonoBehaviour
         isQuitting = true;
     }
 
-    public void Reach(PlayerSpawnPoint spawnPoint)
+    public void Register(PlayerSpawnPoint spawnPoint)
     {
-        reachedPoints.Add(spawnPoint);
+        spawnPoints.Add(spawnPoint);
     }
 
-    public void Focus(PlayerSpawnPoint spawnPoint)
+    public void Reach(PlayerSpawnPoint spawnPoint)
     {
+        reachedSpawnPoints.Add(spawnPoint);
+        
         focusedPoint?.BroadcastMessage("SpawnPointFocusExit", SendMessageOptions.DontRequireReceiver);
         focusedPoint = spawnPoint;
         focusedPoint.BroadcastMessage("SpawnPointFocusEnter", SendMessageOptions.DontRequireReceiver);

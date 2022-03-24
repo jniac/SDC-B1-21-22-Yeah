@@ -21,6 +21,9 @@ public class CubeJump : MonoBehaviour
 
     JumpRequestStatus CanJump()
     {
+        if (PlayModeManager.Test(PlayMode.AlwaysJump))
+            return JumpRequestStatus.Ok;
+
         var groundDetection = GetComponent<CubeGroundDetection>();
 
         if (groundDetection.airTime > airTimeTolerance)
