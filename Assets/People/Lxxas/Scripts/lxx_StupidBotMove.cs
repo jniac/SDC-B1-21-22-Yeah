@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lxxas_StupidBotMove : MonoBehaviour
+public class lxx_StupidBotMove : MonoBehaviour
 {
     public float velocity = 2f;
     public Transform target;

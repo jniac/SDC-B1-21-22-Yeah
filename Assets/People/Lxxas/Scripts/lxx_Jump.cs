@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lxxas_Jump : MonoBehaviour
+public class lxx_Jump : MonoBehaviour
 {
     public float JumpVelocity = 10f;
 
