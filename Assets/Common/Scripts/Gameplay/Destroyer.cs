@@ -14,7 +14,23 @@ public class Destroyer : MonoBehaviour
 
     public DestroyCondition destroyCondition = DestroyCondition.Trigger;
 
+    public bool autoDestroy = false;
+
     bool Match(int layer) => (mask & (1 << layer)) != 0;
+
+    void DestroyIt(GameObject other) 
+    {
+        // Si invicible, alors invicible (return).
+        if (other.tag == "Player" && PlayModeManager.Test(PlayMode.NeverDie))
+            return;
+
+        Destroy(other);
+
+        if (autoDestroy)
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -26,11 +42,7 @@ public class Destroyer : MonoBehaviour
             {
                 if (Match(body.gameObject.layer))
                 {
-                    // Si invicible, alors invicible (return).
-                    if (body.gameObject.tag == "Player" && PlayModeManager.Test(PlayMode.NeverDie))
-                        return;
-
-                    Destroy(body.gameObject);
+                    DestroyIt(body.gameObject);
                 }
             }
         }
@@ -46,7 +58,7 @@ public class Destroyer : MonoBehaviour
             {
                 if (Match(body.gameObject.layer))
                 {
-                    Destroy(body.gameObject);
+                    DestroyIt(body.gameObject);
                 }
             }
         }
