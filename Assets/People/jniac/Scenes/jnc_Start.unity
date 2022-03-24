@@ -155,6 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23041122bbbd74426b5c7b62d5510902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode: 0
 --- !u!65 &211906928
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5117,8 +5118,10 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  snapY: 0
   yOver: 1
   snapScaleXZ: 1
+  yRangeWidth: 100
 --- !u!1001 &470133888
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5666,8 +5669,10 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  snapY: 0
   yOver: 0
   snapScaleXZ: 1
+  yRangeWidth: 100
 --- !u!135 &1123768225
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5780,8 +5785,10 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  snapY: 0
   yOver: 0
   snapScaleXZ: 1
+  yRangeWidth: 100
 --- !u!135 &1227368044
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -6249,7 +6256,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefabToSpawn: {fileID: 7634794281553622079, guid: 4886f5aed73fa4fb1aa1a096dc07328d, type: 3}
   respawnWaitTime: 0.5
-  spawnPoints: []
+  reachedPoints: []
+  focusedPoint: {fileID: 0}
 --- !u!4 &1723758469
 Transform:
   m_ObjectHideFlags: 0
@@ -6296,6 +6304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23041122bbbd74426b5c7b62d5510902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode: 0
 --- !u!65 &1809927808
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6466,6 +6475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23041122bbbd74426b5c7b62d5510902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode: 0
 --- !u!65 &2087600274
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6832,7 +6842,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7634794282608215207, guid: 4886f5aed73fa4fb1aa1a096dc07328d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000023841858
+      value: 0.01999998
       objectReference: {fileID: 0}
     - target: {fileID: 7634794282608215207, guid: 4886f5aed73fa4fb1aa1a096dc07328d, type: 3}
       propertyPath: m_LocalPosition.z
