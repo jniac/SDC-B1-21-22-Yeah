@@ -35,7 +35,7 @@ public class jnc_SphereBat : MonoBehaviour
                 ?.transform;
         }
 
-        if (target)
+        if (target && target.gameObject.tag == "Player")
         {
             body.velocity = (target.position - transform.position).normalized * velocity;
         }

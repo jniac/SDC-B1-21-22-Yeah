@@ -24,7 +24,7 @@ public class Chaser : MonoBehaviour
     void Start()
     {
         body = GetComponent<Rigidbody>();
-        groundDetection = Utils.RequireComponent<CubeGroundDetection>(gameObject);
+        groundDetection = GetComponent<CubeGroundDetection>();
     }
 
     void Chase()
@@ -57,6 +57,7 @@ public class Chaser : MonoBehaviour
         var p = transform.position;
         var candidate = candidates[0];
         var sqDistance = (candidate.transform.position - p).sqrMagnitude;
+        target = candidate.transform;
         for (int index = 1; index < candidates.Length; index++)
         {
             var current = candidates[index];
@@ -83,13 +84,7 @@ public class Chaser : MonoBehaviour
             UpdateTarget();
         }
 
-        if (target == null)
-        {
-            // Si la cible est nulle, tentative de récupérer une cible dynamiquement.
-            target = GameObject.FindGameObjectWithTag(targetTag)?.transform;
-        }
-
-        if (target != null)
+        if (target != null && target.tag == targetTag)
         {
             if (mode == ChaseMode.Chasing)
             {
