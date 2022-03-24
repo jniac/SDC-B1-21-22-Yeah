@@ -36,14 +36,16 @@ public class EditingBlockSnapping : MonoBehaviour
         size.x = Mathf.Abs(Mathf.Round(size.x / s) * s);
         size.y = Mathf.Abs(Mathf.Round(size.y / s) * s);
         size.z = Mathf.Abs(Mathf.Round(size.z / s) * s);
-        transform.localScale = size;
 
         Vector3 position = transform.position;
-        position += -size / 2f;
+        position += -transform.localScale / 2f;
         position.x = Mathf.Round(position.x / s) * s;
         position.y = Mathf.Round(position.y / s) * s;
         position.z = Mathf.Round(position.z / s) * s;
+
         transform.position = position + size / 2f;
+        transform.localScale = size;
+        transform.rotation = Quaternion.identity;
     }
 
     public SnapXYZMode mode = SnapXYZMode.Unit;

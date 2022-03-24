@@ -35,13 +35,15 @@ public class jnc_CameraSwitcher : MonoBehaviour
 
     void Start()
     {
-        initialPriority = vcam.Priority;
+        initialPriority = vcam?.Priority ?? 0;
     }
 
     void Update()
     {
-        bool update = Time.frameCount % 10 == 0
-            && vcam.Follow != null;
+        bool update = (
+            vcam != null
+            && vcam.Follow != null
+            && Time.frameCount % 10 == 0);
 
         if (update)
         {
@@ -51,5 +53,18 @@ public class jnc_CameraSwitcher : MonoBehaviour
             bool containsCameraTarget = overlapping.Any(t => vcam.Follow == t);
             SetPriority(containsCameraTarget);
         }
+    }
+
+    void OnValidate()
+    {
+        var str = vcam != null ? vcam.name.Substring(vcam.name.Length - 5) : "...";
+        gameObject.name = $"CameraSwitcher({str})";
+    }
+
+    void OnDrawGizmos() 
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.matrix = transform.localToWorldMatrix;
+        Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
     }
 }

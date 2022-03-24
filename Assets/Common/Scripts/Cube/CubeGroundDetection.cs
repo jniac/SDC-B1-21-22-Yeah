@@ -131,6 +131,10 @@ public class CubeGroundDetection : MonoBehaviour
 
     void UpdateMessage()
     {
+#if UNITY_EDITOR
+        if (Application.isPlaying == false)
+            return;
+#endif
         if (onGround)
             BroadcastMessage("OnGround", SendMessageOptions.DontRequireReceiver);
         if (onGround && onGroundOld == false)

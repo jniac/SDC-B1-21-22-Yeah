@@ -18,7 +18,7 @@ public class EditingItemSnapping : MonoBehaviour
 
     // GROUND MODE
     public LayerMask groundMask = 1;
-    public bool snapY = false;
+    public bool snapY = true;
     public float yOver = 0f;
     public bool snapScaleXZ = true;
     public float yRangeWidth = 8f;
