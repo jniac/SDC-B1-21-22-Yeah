@@ -23,7 +23,7 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1
+  m_AmbientIntensity: 0.67
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.4374889, g: 0.48531127, b: 0.56558615, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -352,6 +352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23041122bbbd74426b5c7b62d5510902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode: 0
 --- !u!65 &260389376
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -614,6 +615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23041122bbbd74426b5c7b62d5510902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode: 0
 --- !u!65 &499435997
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1081,7 +1083,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 0.8396226, g: 0.82990813, b: 0.74061054, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -1192,6 +1194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23041122bbbd74426b5c7b62d5510902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode: 0
 --- !u!65 &891538347
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1447,6 +1450,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23041122bbbd74426b5c7b62d5510902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode: 0
 --- !u!65 &987289581
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1620,6 +1624,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23041122bbbd74426b5c7b62d5510902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode: 0
 --- !u!65 &1001635601
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1948,6 +1953,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23041122bbbd74426b5c7b62d5510902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode: 0
 --- !u!65 &1172724920
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2205,6 +2211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23041122bbbd74426b5c7b62d5510902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode: 0
 --- !u!65 &1240390768
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2393,6 +2400,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23041122bbbd74426b5c7b62d5510902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode: 0
 --- !u!65 &1307243315
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2501,6 +2509,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23041122bbbd74426b5c7b62d5510902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode: 0
 --- !u!65 &1348622765
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3017,6 +3026,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23041122bbbd74426b5c7b62d5510902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode: 0
 --- !u!65 &1489508013
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3373,6 +3383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23041122bbbd74426b5c7b62d5510902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode: 0
 --- !u!65 &1793626147
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3627,6 +3638,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23041122bbbd74426b5c7b62d5510902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode: 0
 --- !u!65 &1930237990
 BoxCollider:
   m_ObjectHideFlags: 0
