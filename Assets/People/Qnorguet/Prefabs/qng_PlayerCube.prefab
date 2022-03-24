@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7008061623250097880}
   - component: {fileID: 7008061623250097883}
   - component: {fileID: 7008061623250097882}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,9 +111,9 @@ GameObject:
   - component: {fileID: 7008061624331330744}
   - component: {fileID: 7008061624331330745}
   - component: {fileID: -7847570305216866750}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: qng_PlayerCube
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
