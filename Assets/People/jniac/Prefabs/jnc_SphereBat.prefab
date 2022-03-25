@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 5998145946987288402}
   - component: {fileID: 5998145946987288403}
   m_Layer: 0
-  m_Name: SphereBat
+  m_Name: jnc_SphereBat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
