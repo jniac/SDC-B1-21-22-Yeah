@@ -10,6 +10,40 @@ using UnityEditor;
 [ExecuteInEditMode, RequireComponent(typeof(EditingBlockSnapping))]
 public class VirtualCameraSwitcher : MonoBehaviour
 {
+    class OverlapObservable
+    {
+        bool overlap = false;
+        float enterTime = -1;
+        float exitTime = -1;
+
+        public bool Overlap
+        {
+            get => overlap;
+            set => SetOverlap(value);
+        }
+
+        public bool GetOverlap() => overlap;
+
+        public bool GetOverlapWithDelay(float delay) => overlap || (Time.time - exitTime < delay);
+  
+        public bool SetOverlap(bool value)
+        {
+            if (value != overlap)
+            {
+                overlap = value;
+
+                if (overlap)
+                    enterTime = Time.time;
+                else
+                    exitTime = Time.time;
+
+                return true;
+            }
+
+            return false;
+        }
+    }
+
     static List<VirtualCameraSwitcher> instances = new List<VirtualCameraSwitcher>();
 
     static CinemachineVirtualCamera[] vcams;
@@ -56,8 +90,9 @@ public class VirtualCameraSwitcher : MonoBehaviour
         var vcamPriority = new Dictionary<CinemachineVirtualCamera, int>();
         foreach (var instance in instances)
         {
-            bool overlaps = instance.Overlaps(follow.position);
-            int priority = overlaps ?
+            instance.UpdateOverlap(follow.position);
+
+            int priority = instance.Overlaps() ?
                 instance.onEnterPriority :
                 defaultVcam ? defaultVcam.Priority - 1 : 10;
 
@@ -92,11 +127,26 @@ public class VirtualCameraSwitcher : MonoBehaviour
 
     public CinemachineVirtualCamera vcam;
     public int onEnterPriority = 20;
+    public float exitDelay = 0f;
     public Vector3 safeMargin = Vector3.one * 0.5f;
 
     public Bounds Bounds => new Bounds(transform.position, transform.localScale + safeMargin);
 
-    public bool Overlaps(Vector3 point) => Bounds.Contains(point);
+    OverlapObservable overlap = new OverlapObservable();
+
+    void UpdateOverlap(Vector3 point)
+    {
+        overlap.SetOverlap(Bounds.Contains(point));
+    }
+
+    public bool Overlaps()
+    {
+#if UNITY_EDITOR
+        if (Application.isPlaying == false)
+            return overlap.GetOverlap();
+#endif
+        return overlap.GetOverlapWithDelay(exitDelay);
+    }
 
     void OnEnable()
     {
@@ -108,9 +158,17 @@ public class VirtualCameraSwitcher : MonoBehaviour
         instances.Remove(this);
     }
 
-    void Update()
+    void FixedUpdate()
     {
         UpdatePriority();
+    }
+
+    void Update()
+    {
+#if UNITY_EDITOR
+        if (Application.isPlaying == false)
+            UpdatePriority();
+#endif
     }
 
     void OnValidate()
@@ -153,6 +211,7 @@ public class VirtualCameraSwitcher : MonoBehaviour
 
             Draw("vcam");
             Draw("onEnterPriority");
+            Draw("exitDelay");
             Draw("safeMargin");
             Draw("gizmoColor");
             serializedObject.ApplyModifiedProperties();
@@ -160,7 +219,7 @@ public class VirtualCameraSwitcher : MonoBehaviour
             if (GUILayout.Button("Reset Priority"))
             {
                 FindVcams(true);
-                foreach(var vcam in vcams)
+                foreach (var vcam in vcams)
                     vcam.Priority = vcam == defaultVcam ? 10 : 0;
             }
 
