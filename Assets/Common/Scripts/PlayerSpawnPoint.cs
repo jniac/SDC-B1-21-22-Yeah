@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 #if UNITY_EDITOR
@@ -30,12 +31,14 @@ public class PlayerSpawnPoint : MonoBehaviour
         PlayerSpawnPointManager.instance.Reach(this);
     }
 
-    void Start()
+    IEnumerator Start()
     {
         PlayerSpawnPointManager.instance.Register(this);
 
         if (hasFocus)
             Focus();
+
+        yield return new WaitForSeconds(0.1f);
 
         if (type == Type.Debug)
             DebugStart();
@@ -63,6 +66,12 @@ public class PlayerSpawnPoint : MonoBehaviour
             if (other.attachedRigidbody.gameObject.tag == "Player")
                 Focus();
         }
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = new Color(0f, .4f, 1f);
+        Gizmos.DrawSphere(transform.position + Vector3.up * 0.5f, 0.25f);
     }
 
 #if UNITY_EDITOR
