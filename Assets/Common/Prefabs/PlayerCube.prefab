@@ -337,7 +337,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minVelocityToDash: 0.1
   cooldownDuration: 0.3
-  dashLength: 3
+  dashLength: 3.6
   colliderRadius: 0.5
   airDashMax: 1
   dashKill: 1

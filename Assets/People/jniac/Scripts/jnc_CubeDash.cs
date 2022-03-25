@@ -7,7 +7,7 @@ public class jnc_CubeDash : MonoBehaviour
 {
     public float minVelocityToDash = 0.1f;
     public float cooldownDuration = 0.3f;
-    public float dashLength = 3f;
+    public float dashLength = 3.6f;
     public float colliderRadius = 0.5f;
     public int airDashMax = 1;
 
