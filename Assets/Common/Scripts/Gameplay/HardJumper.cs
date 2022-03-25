@@ -10,6 +10,8 @@ public class HardJumper : MonoBehaviour
     public bool useAnchor = false;
     public Vector3 anchor = new Vector3(0f, 0.5f, 0f);
 
+    public bool lockGizmos = false;
+
     bool Match(int layer) => (mask & (1 << layer)) != 0;
 
     void OnTriggerEnter(Collider collider)
@@ -29,6 +31,12 @@ public class HardJumper : MonoBehaviour
 
             body.BroadcastMessage("RemoveControls", t * 0.5f, SendMessageOptions.DontRequireReceiver);
         }
+    }
+
+    void OnDrawGizmos()
+    {
+        if (lockGizmos)
+            OnDrawGizmosSelected();
     }
 
     void OnDrawGizmosSelected()

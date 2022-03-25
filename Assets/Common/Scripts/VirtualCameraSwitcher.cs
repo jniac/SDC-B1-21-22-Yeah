@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Cinemachine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
-[ExecuteInEditMode]
+[ExecuteInEditMode, RequireComponent(typeof(EditingBlockSnapping))]
 public class VirtualCameraSwitcher : MonoBehaviour
 {
     static List<VirtualCameraSwitcher> instances = new List<VirtualCameraSwitcher>();
@@ -24,8 +27,6 @@ public class VirtualCameraSwitcher : MonoBehaviour
         defaultVcam = vcams
             .Where(vcam => instances.All(switcher => switcher.vcam != vcam))
             .FirstOrDefault();
-
-        Debug.Log(defaultVcam);
     }
 
     static int updatePriorityFrame = -1;
@@ -55,8 +56,8 @@ public class VirtualCameraSwitcher : MonoBehaviour
         foreach (var instance in instances)
         {
             bool overlaps = instance.Overlaps(follow.position);
-            int priority = overlaps ? 
-                instance.onEnterPriority : 
+            int priority = overlaps ?
+                instance.onEnterPriority :
                 defaultVcam ? defaultVcam.Priority - 1 : 10;
 
             if (vcamPriority.ContainsKey(instance.vcam))
@@ -72,7 +73,12 @@ public class VirtualCameraSwitcher : MonoBehaviour
 
         // Update each vcam with its previously computed priority.
         foreach (var entry in vcamPriority)
-            entry.Key.Priority = entry.Value;
+        {
+            var vcam = entry.Key;
+            int priority = entry.Value;
+            if (vcam.Priority != priority)
+                entry.Key.Priority = entry.Value;
+        }
 
         var newVcam = vcams.OrderBy(vcam => vcam.Priority).LastOrDefault();
         if (newVcam != currentVcam)
@@ -123,4 +129,29 @@ public class VirtualCameraSwitcher : MonoBehaviour
         GizmoPrimitives.WithAlpha(0.2f, () => Gizmos.DrawCube(Vector3.zero, Vector3.one));
     }
 
+#if UNITY_EDITOR
+    [CustomEditor(typeof(VirtualCameraSwitcher))]
+    class MyEditor : Editor
+    {
+        VirtualCameraSwitcher Target => target as VirtualCameraSwitcher;
+
+        void Draw(string prop) => EditorGUILayout.PropertyField(serializedObject.FindProperty(prop));
+
+        public override void OnInspectorGUI()
+        {
+            GUI.enabled = false;
+            EditorGUILayout.ObjectField("Current Vcam", currentVcam, typeof(CinemachineVirtualCamera), true);
+            EditorGUILayout.ObjectField("Default Vcam", defaultVcam, typeof(CinemachineVirtualCamera), true);
+            GUI.enabled = true;
+
+            Draw("vcam");
+            Draw("onEnterPriority");
+            Draw("gizmoColor");
+            serializedObject.ApplyModifiedProperties();
+
+            if (GUILayout.Button("UpdatePriority"))
+                UpdatePriority();
+        }
+    }
+#endif
 }
