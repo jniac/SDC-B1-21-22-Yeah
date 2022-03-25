@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteAlways, RequireComponent(typeof(SphereCollider))]
+[ExecuteInEditMode, RequireComponent(typeof(SphereCollider))]
 public class AdjustSphereCollider : MonoBehaviour
 {
     public enum AdjustMode

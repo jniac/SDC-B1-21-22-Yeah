@@ -7,13 +7,26 @@ using UnityEditor;
 
 public class PlayerSpawnPoint : MonoBehaviour
 {
-    public float reachedTime = -1;
+    public const float debugDistanceMax = 3f;
+    public static string debugInfo = "Les SpawnPoint de type \"Debug\" ne peuvent pas être activés en cours de jeu."
+        + $"\n\nIls sont activés au démarrage de la session si le player (instance avec tag \"Player\") se trouve à moins de {debugDistanceMax} unité.";
 
-    public bool focusOnStart = false;
+    public enum Type
+    {
+        Normal,
+        Debug,
+    }
+
+    public Type type = Type.Normal;
+
+    public float ReachedTime { get; private set; } = -1;
+
+    [SerializeField, HideInInspector]
+    bool hasFocus = false;
 
     void Focus()
     {
-        reachedTime = Time.time;
+        ReachedTime = Time.time;
         PlayerSpawnPointManager.instance.Reach(this);
     }
 
@@ -21,39 +34,73 @@ public class PlayerSpawnPoint : MonoBehaviour
     {
         PlayerSpawnPointManager.instance.Register(this);
 
-        if (focusOnStart)
+        if (hasFocus)
+            Focus();
+
+        if (type == Type.Debug)
+            DebugStart();
+    }
+
+    void DebugStart()
+    {
+        if (TryGetComponent<MeshRenderer>(out var mr1))
+            mr1.enabled = false;
+
+        foreach (var mr2 in GetComponentsInChildren<MeshRenderer>())
+            mr2.enabled = false;
+
+        hasFocus = GameObject.FindGameObjectsWithTag("Player")
+            .Any(go => (go.transform.position - transform.position).sqrMagnitude < debugDistanceMax * debugDistanceMax);
+
+        if (hasFocus)
             Focus();
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.attachedRigidbody.gameObject.tag == "Player")
-            Focus();
+        if (type == Type.Normal)
+        {
+            if (other.attachedRigidbody.gameObject.tag == "Player")
+                Focus();
+        }
     }
 
 #if UNITY_EDITOR
+
     [CustomEditor(typeof(PlayerSpawnPoint))]
     class MyEditor : Editor
     {
         PlayerSpawnPoint Target => target as PlayerSpawnPoint;
         public override void OnInspectorGUI()
         {
-            GUI.enabled = false;
             base.OnInspectorGUI();
-            GUI.enabled = true;
 
-            if (GUILayout.Button("Take \"Focus On Start\""))
+            bool isDebug = Target.type == Type.Debug;
+
+            if (isDebug == false)
             {
-                foreach (var spawnPoint in FindObjectsOfType<PlayerSpawnPoint>())
-                    spawnPoint.focusOnStart = false;
-                Target.focusOnStart = true;
-                EditorUtility.SetDirty(target);
+                GUI.enabled = false;
+                EditorGUILayout.FloatField("Reached Time", Target.ReachedTime);
+                EditorGUILayout.Toggle("Has Focus", Target.hasFocus);
+                GUI.enabled = true;
+
+                if (GUILayout.Button("Take \"Focus On Start\""))
+                {
+                    foreach (var spawnPoint in FindObjectsOfType<PlayerSpawnPoint>())
+                        spawnPoint.hasFocus = false;
+                    Target.hasFocus = true;
+                    EditorUtility.SetDirty(target);
+                }
+            }
+            else
+            {
+                EditorGUILayout.HelpBox(debugInfo, MessageType.Info);
             }
 
             if (GUILayout.Button("TP Player"))
             {
                 var player = GameObject.FindGameObjectWithTag("Player");
-                if (player != null) 
+                if (player != null)
                 {
                     player.transform.position = Target.transform.position;
                     EditorUtility.SetDirty(player);
@@ -63,10 +110,10 @@ public class PlayerSpawnPoint : MonoBehaviour
             if (GUILayout.Button("TP Player Back"))
             {
                 var player = GameObject.FindGameObjectWithTag("Player");
-                if (player != null) 
+                if (player != null)
                 {
                     player.transform.position = FindObjectsOfType<PlayerSpawnPoint>()
-                        .OrderBy(spawnPoint => spawnPoint.focusOnStart ? -1 : 1)
+                        .OrderBy(spawnPoint => spawnPoint.hasFocus ? -1 : 1)
                         .First().transform.position;
                     EditorUtility.SetDirty(player);
                 }

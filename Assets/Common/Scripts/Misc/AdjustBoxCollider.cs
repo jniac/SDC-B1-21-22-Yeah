@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteAlways, RequireComponent(typeof(BoxCollider))]
+[ExecuteInEditMode, RequireComponent(typeof(BoxCollider))]
 public class AdjustBoxCollider : MonoBehaviour
 {
     public Vector3 margin = Vector3.zero;
