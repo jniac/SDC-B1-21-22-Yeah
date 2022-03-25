@@ -9,14 +9,12 @@ public class jnc_CameraSwitcher : MonoBehaviour
     static List<jnc_CameraSwitcher> instances = new List<jnc_CameraSwitcher>();
 
     static CinemachineVirtualCamera[] vcams;
+    static CinemachineVirtualCamera currentVcam;
     static Dictionary<CinemachineVirtualCamera, int> initialPriorities = new Dictionary<CinemachineVirtualCamera, int>();
-    static bool startPriorityDone = false;
-    static void StartPriority(bool force = false)
+    static void FindVcams(bool force = false)
     {
-        if (startPriorityDone && force == false)
+        if (vcams != null && force == false)
             return;
-
-        startPriorityDone = true;
 
         vcams = GameObject.FindObjectsOfType<CinemachineVirtualCamera>();
         foreach (var vcam in vcams)
@@ -35,6 +33,8 @@ public class jnc_CameraSwitcher : MonoBehaviour
             return;
 
         updatePriorityFrame = Time.frameCount;
+
+        FindVcams();
 
         var follow = instances
             .Select(item => item.vcam?.Follow)
@@ -68,6 +68,11 @@ public class jnc_CameraSwitcher : MonoBehaviour
         // Update each vcam with its previously computed priority.
         foreach (var entry in vcamPriority)
             entry.Key.Priority = entry.Value;
+
+        var newVcam = vcams.OrderBy(vcam => vcam.Priority).LastOrDefault();
+        if (newVcam != currentVcam)
+            Player.BroadcastAll("OnSwitchCamera", newVcam);
+        currentVcam = newVcam;
     }
 
     public CinemachineVirtualCamera vcam;
@@ -93,11 +98,6 @@ public class jnc_CameraSwitcher : MonoBehaviour
     void OnTriggerExit(Collider other)
     {
         overlapping.Remove(other.attachedRigidbody.transform);
-    }
-
-    void Start()
-    {
-        StartPriority();
     }
 
     void Update()

@@ -129,7 +129,12 @@ public class CubeMove : MonoBehaviour
 
     void RemoveControls(float duration)
     {
-        noControlsUntil = Time.time + duration;
+        noControlsUntil = Mathf.Max(noControlsUntil, Time.time + duration);
+    }
+
+    void OnSwitchCamera()
+    {
+        RemoveControls(.25f);
     }
 
     void FixedUpdate()
