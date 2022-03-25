@@ -24,7 +24,7 @@ public class EditingItemSnapping : MonoBehaviour
     public float yRangeWidth = 8f;
 
     // XYZ Mode
-    public EditingBlockSnapping.SnapXYZMode xyzMode = EditingBlockSnapping.SnapXYZMode.Unit;
+    public EditingBlockSnapping.SnapStep xyzMode = EditingBlockSnapping.SnapStep.Unit;
 
     IEnumerable<RaycastHit> GetHits()
     {
