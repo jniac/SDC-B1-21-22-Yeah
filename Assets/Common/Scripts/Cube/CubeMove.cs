@@ -36,6 +36,9 @@ public class CubeMove : MonoBehaviour
     Vector3 inputVelocity = new Vector3();
     public Vector3 InputVelocity => inputVelocity;
 
+    public Vector3 Direction { get; private set; } = new Vector3();
+    public Vector3 DirectionRight { get; private set; } = new Vector3();
+
     float noControlsUntil = 0f;
 
     void Start()
@@ -84,6 +87,8 @@ public class CubeMove : MonoBehaviour
 
         inputVelocity.x = input.x * speed;
         inputVelocity.z = input.y * speed;
+        Direction = inputVelocity.normalized;
+        DirectionRight = Vector3.Cross(Vector3.up, Direction);
 
         // Ground drag, here is the fine tuning that prevent the cube from moving 
         // too fast when the player released any movement inputs. It allows to move
