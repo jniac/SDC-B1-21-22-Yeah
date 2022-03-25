@@ -15,6 +15,7 @@ public class VirtualCameraSwitcher : MonoBehaviour
     static CinemachineVirtualCamera[] vcams;
     static CinemachineVirtualCamera currentVcam;
     static CinemachineVirtualCamera defaultVcam;
+    static Transform follow;
     static void FindVcams(bool force = false)
     {
         if (vcams != null && force == false)
@@ -41,9 +42,9 @@ public class VirtualCameraSwitcher : MonoBehaviour
 
         updatePriorityFrame = Time.frameCount;
 
-        FindVcams();
+        FindVcams(force);
 
-        var follow = instances
+        follow = instances
             .Select(item => item.vcam?.Follow)
             .Where(item => item != null)
             .FirstOrDefault();
@@ -76,8 +77,11 @@ public class VirtualCameraSwitcher : MonoBehaviour
         {
             var vcam = entry.Key;
             int priority = entry.Value;
-            if (vcam.Priority != priority)
-                entry.Key.Priority = entry.Value;
+            vcam.Priority = priority;
+
+#if UNITY_EDITOR
+            EditorUtility.SetDirty(vcam);
+#endif
         }
 
         var newVcam = vcams.OrderBy(vcam => vcam.Priority).LastOrDefault();
@@ -139,7 +143,10 @@ public class VirtualCameraSwitcher : MonoBehaviour
 
         public override void OnInspectorGUI()
         {
+            EditorGUILayout.LabelField($"{vcams?.Length.ToString() ?? "(?)"} vcams, {instances.Count} switchers.");
+
             GUI.enabled = false;
+            EditorGUILayout.ObjectField("Follow (info)", follow, typeof(Transform), true);
             EditorGUILayout.ObjectField("Current Vcam (info)", currentVcam, typeof(CinemachineVirtualCamera), true);
             EditorGUILayout.ObjectField("Default Vcam (info)", defaultVcam, typeof(CinemachineVirtualCamera), true);
             GUI.enabled = true;
@@ -150,8 +157,17 @@ public class VirtualCameraSwitcher : MonoBehaviour
             Draw("gizmoColor");
             serializedObject.ApplyModifiedProperties();
 
-            if (GUILayout.Button("UpdatePriority"))
-                UpdatePriority();
+            if (GUILayout.Button("Reset Priority"))
+            {
+                FindVcams(true);
+                foreach(var vcam in vcams)
+                    vcam.Priority = vcam == defaultVcam ? 10 : 0;
+            }
+
+            if (GUILayout.Button("Update Priority"))
+            {
+                UpdatePriority(true);
+            }
         }
     }
 #endif
