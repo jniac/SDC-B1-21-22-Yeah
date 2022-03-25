@@ -113,9 +113,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7634794281553622053}
   - component: {fileID: 7634794281553622054}
-  - component: {fileID: 7634794281553622052}
   - component: {fileID: 1080948259017138871}
   - component: {fileID: 3260609524224350630}
+  - component: {fileID: 7634794281553622052}
   - component: {fileID: 7634794281553622055}
   - component: {fileID: 7634794281553622049}
   - component: {fileID: 7634794281553622056}
@@ -164,27 +164,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!114 &7634794281553622052
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7634794281553622079}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49bf20ce5dbf04176a43aafffc8cb03f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mode: 0
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 1
-  snapY: 1
-  yOver: 1
-  snapScaleXZ: 1
-  yRangeWidth: 8
-  xyzMode: 0
 --- !u!114 &1080948259017138871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,6 +189,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
+  invicible: 0
+  invicibleUntil: -1
+--- !u!114 &7634794281553622052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7634794281553622079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49bf20ce5dbf04176a43aafffc8cb03f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mode: 0
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 1
+  snapY: 1
+  yOver: 1
+  snapScaleXZ: 1
+  yRangeWidth: 8
+  xyzMode: 0
 --- !u!114 &7634794281553622055
 MonoBehaviour:
   m_ObjectHideFlags: 0
