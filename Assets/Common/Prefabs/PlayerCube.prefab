@@ -115,6 +115,7 @@ GameObject:
   - component: {fileID: 7634794281553622054}
   - component: {fileID: 7634794281553622052}
   - component: {fileID: 1080948259017138871}
+  - component: {fileID: 3260609524224350630}
   - component: {fileID: 7634794281553622055}
   - component: {fileID: 7634794281553622049}
   - component: {fileID: 7634794281553622056}
@@ -196,6 +197,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b8fd5bd355ab4ac297e2c43aadef13a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3260609524224350630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7634794281553622079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2eb790acdd7e437a955cd72a8fe0052, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
 --- !u!114 &7634794281553622055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,6 +338,11 @@ MonoBehaviour:
   dashLength: 3
   colliderRadius: 0.5
   airDashMax: 1
+  dashKill: 1
+  dashKillMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  dashKillRadius: 1.8
   triggerDash: 0
   dashObstacleMask:
     serializedVersion: 2

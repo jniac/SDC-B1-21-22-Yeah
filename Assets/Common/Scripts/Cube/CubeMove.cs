@@ -127,7 +127,7 @@ public class CubeMove : MonoBehaviour
         body.velocity = velocity;
     }
 
-    void RemoveControls(float duration)
+    public void RemoveControls(float duration)
     {
         noControlsUntil = Mathf.Max(noControlsUntil, Time.time + duration);
     }

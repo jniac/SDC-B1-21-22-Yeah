@@ -11,6 +11,10 @@ public class jnc_CubeDash : MonoBehaviour
     public float colliderRadius = 0.5f;
     public int airDashMax = 1;
 
+    public bool dashKill = true;
+    public LayerMask dashKillMask = 1 << 10;
+    public float dashKillRadius = 1.8f;
+
     public bool triggerDash = false;
 
     public LayerMask dashObstacleMask = 1; // 1 == Default
@@ -53,6 +57,20 @@ public class jnc_CubeDash : MonoBehaviour
         return (DashRequestStatus.Ok, direction.normalized);
     }
 
+    void DashKillEnemy()
+    {
+        var body = GetComponent<Rigidbody>();
+
+        var hits = Physics.SphereCastAll(body.position, dashKillRadius, direction, dashLength, dashKillMask);
+        foreach (var hit in hits)
+        {
+            var go = hit.collider.attachedRigidbody.gameObject;
+            Destroy(go);
+        }
+
+        BroadcastMessage("InvicibleUntil", 0.2f, SendMessageOptions.DontRequireReceiver);
+    }
+
     void Dash()
     {
         dashTime = Time.time;
@@ -87,6 +105,9 @@ public class jnc_CubeDash : MonoBehaviour
             airDashCount = 0;
         else
             airDashCount += 1;
+
+        if (dashKill)
+            DashKillEnemy();
 
         body.position = destination;
     }
