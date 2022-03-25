@@ -17,4 +17,10 @@ Sup de Création — 2021 / 2022 — Développement Unity
 Unity:
 - Installer impérativement la version `2020.3`.
 
-<img src="Docs/Images/PS4-Controller-Mapping.jpeg">
+## Controller Mapping
+
+- PS4
+<br><img src="Docs/Images/PS4-Controller-Mapping.jpeg">
+
+- XBox
+<br><img src="Docs/Images/XBox-Controller-Mapping.jpeg">
