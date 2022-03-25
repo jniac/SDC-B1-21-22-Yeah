@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class jnc_Coin : MonoBehaviour
 {
+    public enum CoinType
+    {
+        Normal,
+        Purple,
+    }
+
+    public CoinType type = CoinType.Normal;
+
     public GameObject[] particles;
 
     public int particleCount = 10;
