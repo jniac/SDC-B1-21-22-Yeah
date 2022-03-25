@@ -88,8 +88,9 @@ public class VirtualCameraSwitcher : MonoBehaviour
 
     public CinemachineVirtualCamera vcam;
     public int onEnterPriority = 20;
+    public Vector3 safeMargin = Vector3.one * 0.5f;
 
-    public Bounds Bounds => new Bounds(transform.position, transform.localScale);
+    public Bounds Bounds => new Bounds(transform.position, transform.localScale + safeMargin);
 
     public bool Overlaps(Vector3 point) => Bounds.Contains(point);
 
@@ -111,22 +112,21 @@ public class VirtualCameraSwitcher : MonoBehaviour
     void OnValidate()
     {
         var str = vcam != null ? vcam.name.Substring(vcam.name.Length - 5) : "...";
-        gameObject.name = $"SwitchTo (({str}:{onEnterPriority})";
+        gameObject.name = $"SwitchTo ({str}:{onEnterPriority})";
     }
 
     public Color gizmoColor = Color.yellow;
     void OnDrawGizmos()
     {
         Gizmos.color = gizmoColor;
-        Gizmos.matrix = transform.localToWorldMatrix;
-        Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
+        var bounds = Bounds;
+        Gizmos.DrawWireCube(bounds.center, bounds.size);
     }
     void OnDrawGizmosSelected()
     {
-        var size = transform.localScale;
         Gizmos.color = gizmoColor;
-        Gizmos.matrix = transform.localToWorldMatrix;
-        GizmoPrimitives.WithAlpha(0.2f, () => Gizmos.DrawCube(Vector3.zero, Vector3.one));
+        var bounds = Bounds;
+        GizmoPrimitives.WithAlpha(0.2f, () => Gizmos.DrawCube(bounds.center, bounds.size));
     }
 
 #if UNITY_EDITOR
@@ -140,12 +140,13 @@ public class VirtualCameraSwitcher : MonoBehaviour
         public override void OnInspectorGUI()
         {
             GUI.enabled = false;
-            EditorGUILayout.ObjectField("Current Vcam", currentVcam, typeof(CinemachineVirtualCamera), true);
-            EditorGUILayout.ObjectField("Default Vcam", defaultVcam, typeof(CinemachineVirtualCamera), true);
+            EditorGUILayout.ObjectField("Current Vcam (info)", currentVcam, typeof(CinemachineVirtualCamera), true);
+            EditorGUILayout.ObjectField("Default Vcam (info)", defaultVcam, typeof(CinemachineVirtualCamera), true);
             GUI.enabled = true;
 
             Draw("vcam");
             Draw("onEnterPriority");
+            Draw("safeMargin");
             Draw("gizmoColor");
             serializedObject.ApplyModifiedProperties();
 
