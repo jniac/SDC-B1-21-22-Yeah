@@ -101,6 +101,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8976820876227890241, guid: c297aa3eb9d5f4be9ab9bb2b5478d55a, type: 3}
+      propertyPath: type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8976820876227890241, guid: c297aa3eb9d5f4be9ab9bb2b5478d55a, type: 3}
       propertyPath: particleCount
       value: 100
       objectReference: {fileID: 0}

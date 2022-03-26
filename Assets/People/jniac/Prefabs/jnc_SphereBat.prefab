@@ -16,9 +16,10 @@ GameObject:
   - component: {fileID: 5998145946987288415}
   - component: {fileID: 5998145946987288402}
   - component: {fileID: 5998145946987288403}
-  m_Layer: 0
+  - component: {fileID: -8709668533166371362}
+  m_Layer: 10
   m_Name: jnc_SphereBat
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -167,3 +168,23 @@ MonoBehaviour:
     m_Bits: 64
   destroyCondition: 1
   autoDestroy: 1
+--- !u!114 &-8709668533166371362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5998145946987288409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dba5366c46f544d8490e7c529f1d8813, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onDestroyParticles:
+  - {fileID: 173352213401199758, guid: dbc2f799430354f30b44a92f50b95f5f, type: 3}
+  - {fileID: 173352213401199758, guid: 6e600060b027347b3bbc72f05805c773, type: 3}
+  - {fileID: 173352213401199758, guid: 45d2949da6a1c48dcb50209a5a6c1e2d, type: 3}
+  - {fileID: 173352213401199758, guid: bf39521b620a24a14a2982fd9dae57d5, type: 3}
+  - {fileID: 173352213401199758, guid: dec3f55c698bd4b3fb31459bea344d4b, type: 3}
+  - {fileID: 173352213401199758, guid: e1b4aca53f1cb434ea93e554b842429e, type: 3}
+  particleCount: 30

@@ -5,30 +5,30 @@ using UnityEngine;
 [ExecuteAlways]
 public class EditingBlockSnapping : MonoBehaviour
 {
-    public enum SnapXYZMode
+    public enum SnapStep
     {
         Unit,
         Half,
         Quarter,
     }
 
-    public static float SnapModeToScalar(SnapXYZMode mode)
+    public static float SnapModeToScalar(SnapStep mode)
     {
         switch (mode)
         {
             default:
-            case SnapXYZMode.Unit:
+            case SnapStep.Unit:
                 return 1f;
 
-            case SnapXYZMode.Half:
+            case SnapStep.Half:
                 return 1f / 2f;
 
-            case SnapXYZMode.Quarter:
+            case SnapStep.Quarter:
                 return 1f / 4f;
         }
     }
 
-    public static void ApplySnapXYZ(Transform transform, SnapXYZMode mode)
+    public static void ApplySnapXYZ(Transform transform, SnapStep mode)
     {
         var s = SnapModeToScalar(mode);
 
@@ -48,13 +48,13 @@ public class EditingBlockSnapping : MonoBehaviour
         transform.rotation = Quaternion.identity;
     }
 
-    public SnapXYZMode mode = SnapXYZMode.Unit;
+    public SnapStep snapStep = SnapStep.Unit;
 
     void Update()
     {
 #if UNITY_EDITOR   
         if (Application.isPlaying == false)
-            ApplySnapXYZ(transform, mode);
+            ApplySnapXYZ(transform, snapStep);
 #endif
     }
 }

@@ -7,9 +7,13 @@ public class jnc_CubeDash : MonoBehaviour
 {
     public float minVelocityToDash = 0.1f;
     public float cooldownDuration = 0.3f;
-    public float dashLength = 2f;
+    public float dashLength = 3.6f;
     public float colliderRadius = 0.5f;
     public int airDashMax = 1;
+
+    public bool dashKill = true;
+    public LayerMask dashKillMask = 1 << 10;
+    public float dashKillRadius = 0.8f;
 
     public bool triggerDash = false;
 
@@ -17,6 +21,7 @@ public class jnc_CubeDash : MonoBehaviour
 
     public GameObject[] onDestroyParticles;
 
+    Rigidbody body;
     DashRequestStatus requestStatus;
     DashStatus status;
     Vector3 direction;
@@ -53,16 +58,68 @@ public class jnc_CubeDash : MonoBehaviour
         return (DashRequestStatus.Ok, direction.normalized);
     }
 
+    void DashKillEnemy()
+    {
+        var hits = Physics.SphereCastAll(body.position, dashKillRadius, direction, dashLength, dashKillMask);
+        foreach (var hit in hits)
+        {
+            var go = hit.collider.attachedRigidbody.gameObject;
+            Destroy(go);
+        }
+
+        BroadcastMessage("InvicibleUntil", 0.2f, SendMessageOptions.DontRequireReceiver);
+    }
+
+    (Vector3 vR, Vector3 vL, Vector3 vT, Vector3 vB) GetSpreadVectors(Vector3 v, float dispersionAngle = 12f)
+    {
+        var right = Vector3.Cross(Vector3.up, v);
+        var vR = Quaternion.AngleAxis(+dispersionAngle, Vector3.up) * v;
+        var vL = Quaternion.AngleAxis(-dispersionAngle, Vector3.up) * v;
+        var vT = Quaternion.AngleAxis(+dispersionAngle, right) * v;
+        var vB = Quaternion.AngleAxis(-dispersionAngle, right) * v;
+        return (vR, vL, vT, vB);
+    }
+
+    Vector3[] GetSpreadVectorsArray(Vector3 v)
+    {
+        var (vR, vL, vT, vB) = GetSpreadVectors(v);
+        return new Vector3[] { vR, vL, vT, vB };
+    }
+
+    (Vector3 destination, Vector3 direction, bool collides) DestinationCast()
+    {
+        var position = body.position;
+        Vector3 destination = position + direction * dashLength;
+
+        Collider[] test; 
+        float tolerance = 0.9f;
+
+        test = Physics.OverlapSphere(destination, colliderRadius * tolerance, dashObstacleMask);
+
+        if (test.Length == 0)
+            return (destination, direction, false);
+
+        // Try with "spread" vectors.
+        foreach(var vector in GetSpreadVectorsArray(direction))
+        {
+            destination = position + vector * dashLength;
+            test = Physics.OverlapSphere(destination, colliderRadius * tolerance, dashObstacleMask);
+
+            if (test.Length == 0)
+                return (destination, vector, false);
+        }
+
+        return (destination, direction, true);
+    }
+
     void Dash()
     {
         dashTime = Time.time;
 
-        var body = GetComponent<Rigidbody>();
+        var (destination, newDirection, collides) = DestinationCast();
+        direction = newDirection;
 
-        Vector3 destination = body.position + direction * dashLength;
-
-        float tolerance = 0.9f;
-        if (Physics.OverlapSphere(destination, colliderRadius * tolerance, dashObstacleMask).Length > 0)
+        if (collides)
         {
             if (Physics.Raycast(body.position, direction, out var hit, dashLength + colliderRadius, dashObstacleMask))
             {
@@ -88,12 +145,20 @@ public class jnc_CubeDash : MonoBehaviour
         else
             airDashCount += 1;
 
+        if (dashKill)
+            DashKillEnemy();
+
         body.position = destination;
     }
 
     void OnGroundEnter()
     {
         airDashCount = 0;
+    }
+
+    void Start()
+    {
+        body = GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -109,9 +174,12 @@ public class jnc_CubeDash : MonoBehaviour
         }
     }
 
-    void OnDrawGizmos()
+    void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(transform.position + direction * dashLength, 0.25f);
+        var d = GetComponent<CubeMove>().Direction;
+        Gizmos.DrawSphere(transform.position + d * dashLength, 0.25f);
+        foreach(var vector in GetSpreadVectorsArray(d))
+            Gizmos.DrawSphere(transform.position + vector * dashLength, 0.25f);
     }
 }

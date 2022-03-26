@@ -113,6 +113,7 @@ public class PlayerSpawnPoint : MonoBehaviour
                 {
                     player.transform.position = Target.transform.position;
                     EditorUtility.SetDirty(player);
+                    VirtualCameraSwitcher.UpdatePriority(force: true);
                 }
             }
 
@@ -125,6 +126,7 @@ public class PlayerSpawnPoint : MonoBehaviour
                         .OrderBy(spawnPoint => spawnPoint.hasFocus ? -1 : 1)
                         .First().transform.position;
                     EditorUtility.SetDirty(player);
+                    VirtualCameraSwitcher.UpdatePriority(force: true);
                 }
             }
         }
