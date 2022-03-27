@@ -23,7 +23,7 @@ public class jnc_CoinScoreManager : MonoBehaviour
         int normal = normals.Where(item => item == null).Count();
         int purple = purples.Where(item => item == null).Count();
 
-        if (normal == 1)
+        if (normal + purple == normals.Length + purples.Length)
         {
             Time.timeScale = 0;
             Win.Invoke();
