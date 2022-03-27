@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using TMPro;
+using UnityEngine.Events;
 
-public class jnc_CoinScore : MonoBehaviour
+public class jnc_CoinScoreManager : MonoBehaviour
 {
     jnc_Coin[] normals;
     jnc_Coin[] purples;
-    TextMeshProUGUI text;
+
+    public UnityEvent Win = new UnityEvent();
 
     void Start()
     {
-        text = GetComponent<TextMeshProUGUI>();
         var all = FindObjectsOfType<jnc_Coin>();
         normals = all.Where(item => item.type == jnc_Coin.CoinType.Normal).ToArray();
         purples = all.Where(item => item.type == jnc_Coin.CoinType.Purple).ToArray();
@@ -23,7 +23,11 @@ public class jnc_CoinScore : MonoBehaviour
         int normal = normals.Where(item => item == null).Count();
         int purple = purples.Where(item => item == null).Count();
 
-        text.text = $"normal: {normal} / {normals.Length}"
-            + $"\npurple: {purple} / {purples.Length}";
+        if (normal == 1)
+        {
+            Time.timeScale = 0;
+            Win.Invoke();
+        }
     }
+
 }
