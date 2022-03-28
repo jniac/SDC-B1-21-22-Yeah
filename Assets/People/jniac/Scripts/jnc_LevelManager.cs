@@ -12,10 +12,10 @@ public class jnc_LevelManager : MonoBehaviour
     public float winTime = -1;
     public UnityEvent Win = new UnityEvent();
 
-    jnc_Coin[] normals;
-    jnc_Coin[] purples;
+    public jnc_Coin[] normals;
+    public jnc_Coin[] purples;
 
-    void Start()
+    void OnEnable()
     {
         Instance = this;
 
