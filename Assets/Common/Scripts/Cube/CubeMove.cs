@@ -17,12 +17,12 @@ public class CubeMove : MonoBehaviour
         + "\n0.15 signifie : Au bout d'une seconde, il ne reste plus que 15% de la vitesse initiale.")]
     public float groundIdleDrag = 0.15f;
     Vector3 groundIdleScale3;
-    
+
     [Range(0, 1), Tooltip("Commande la quantité de \"contrôle\" dans les airs.\n"
         + "\n0 : Aucun contrôle, le joueur ne peut rien faire dans les airs."
         + "\n1 : Contrôle total, le joueur se déplace dans les airs avec la même efficacité qu'au sol.")]
     public float airControl = 0.2f;
-    
+
     public PhysicMaterial rubber, ice;
 
     [Range(-1, 1)]
@@ -44,7 +44,8 @@ public class CubeMove : MonoBehaviour
     public Vector3 Direction { get; private set; } = new Vector3();
     public Vector3 DirectionRight { get; private set; } = new Vector3();
 
-    float noControlsUntil = 0f;
+    public float NoControlsUntil { get; private set; } = 0f;
+    public float ControlsCoeff { get; private set; } = 1f;
 
     void Start()
     {
@@ -53,12 +54,12 @@ public class CubeMove : MonoBehaviour
         colliders = GetComponentsInChildren<Collider>()
             .Where(c => c.isTrigger == false)
             .ToArray();
-        
+
         float scale = Mathf.Pow(groundIdleDrag, Time.fixedDeltaTime);
         groundIdleScale3 = new Vector3(scale, 1f, scale);
     }
 
-    public bool GetOnGround() 
+    public bool GetOnGround()
     {
         return
             groundDetection.airDelta.magnitude < airDistanceTolerance
@@ -82,9 +83,9 @@ public class CubeMove : MonoBehaviour
     {
         ComputeInput();
 
-        // `controlInfluence`: 0: player is waiting. 1: player is playing.
+        ControlsCoeff = Mathf.Lerp(0f, 1f, (Time.time - NoControlsUntil) / 0.3f);
         float inputInfluence = Mathf.Clamp01(Mathf.Abs(input.x) + Mathf.Abs(input.y))
-            * Mathf.Lerp(0f, 1f, (Time.time - noControlsUntil) / 0.3f);
+            * ControlsCoeff;
 
         // inputVelocity = body.velocity;
 
@@ -148,7 +149,7 @@ public class CubeMove : MonoBehaviour
 
     public void RemoveControls(float duration)
     {
-        noControlsUntil = Mathf.Max(noControlsUntil, Time.time + duration);
+        NoControlsUntil = Mathf.Max(NoControlsUntil, Time.time + duration);
     }
 
     void OnSwitchCamera()

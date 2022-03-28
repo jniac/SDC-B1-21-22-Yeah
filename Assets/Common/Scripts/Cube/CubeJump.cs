@@ -13,6 +13,7 @@ public class CubeJump : MonoBehaviour
 
     enum JumpRequestStatus
     {
+        NoControls,
         TooLate,
         TooFar,
         DestroyerAbove,
@@ -23,6 +24,9 @@ public class CubeJump : MonoBehaviour
     {
         if (PlayModeManager.Test(PlayMode.AlwaysJump))
             return JumpRequestStatus.Ok;
+
+        if (GetComponent<CubeMove>().ControlsCoeff < 0.5f)
+            return JumpRequestStatus.NoControls;
 
         var groundDetection = GetComponent<CubeGroundDetection>();
 

@@ -30,6 +30,7 @@ public class jnc_CubeDash : MonoBehaviour
 
     public enum DashRequestStatus
     {
+        NoControls,
         AirDashNotAvailable,
         NoDirection,
         TooSoon,
@@ -45,13 +46,18 @@ public class jnc_CubeDash : MonoBehaviour
 
     (DashRequestStatus status, Vector3 direction) CanDash()
     {
+        var move = GetComponent<CubeMove>();
+
+        if (move.ControlsCoeff < 0.5f)
+            return (DashRequestStatus.NoControls, Vector3.zero);
+
         if (GetComponent<CubeGroundDetection>().onGround == false && airDashCount == airDashMax)
             return (DashRequestStatus.AirDashNotAvailable, Vector3.zero);
 
         if (Time.time - dashTime < cooldownDuration)
             return (DashRequestStatus.TooSoon, Vector3.zero);
 
-        var direction = GetComponent<CubeMove>().InputVector3;
+        var direction = move.InputVector3;
         if (direction.magnitude < minVelocityToDash)
             return (DashRequestStatus.NoDirection, Vector3.zero);
 
