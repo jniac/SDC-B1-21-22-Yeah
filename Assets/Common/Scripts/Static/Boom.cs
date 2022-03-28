@@ -4,31 +4,14 @@ using UnityEngine;
 
 public static class Boom
 {
-    public static bool IsQuitting { get; private set; }
-
-    static bool initialized = false;
-    [RuntimeInitializeOnLoadMethod]
-    static void StaticStart()
-    {
-        if (initialized == false)
-        {
-            // https://docs.unity3d.com/Manual/DomainReloading.html
-            initialized = true;
-            Application.quitting += () => IsQuitting = true;
-        }
-    }
-
     public static void FromPoint(
         Vector3 point,
         IList<GameObject> sources,
         int particleCount,
         float lifeDuration = 1.5f,
-        float velocity = 10f
-    )
+        float velocity = 10f)
     {
-        StaticStart();
-
-        if (IsQuitting)
+        if (BaseLevelManager.IsPlaying == false)
             return;
 
         int sourcesCount = sources.Count();
@@ -61,12 +44,9 @@ public static class Boom
         float lifeDuration = 0.4f,
         float trailVelocity = 30f,
         float normalVelocity = 2f,
-        float radius = 0.5f
-    )
+        float radius = 0.5f)
     {
-        StaticStart();
-
-        if (IsQuitting)
+        if (BaseLevelManager.IsPlaying == false)
             return;
 
         int sourcesCount = sources.Count();

@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class jnc_CoinScoreManager : MonoBehaviour
+public class jnc_LevelManager : MonoBehaviour
 {
     jnc_Coin[] normals;
     jnc_Coin[] purples;
@@ -18,16 +18,19 @@ public class jnc_CoinScoreManager : MonoBehaviour
         purples = all.Where(item => item.type == jnc_Coin.CoinType.Purple).ToArray();
     }
 
+    bool debug = true;
     void Update()
     {
-        int normal = normals.Where(item => item == null).Count();
-        int purple = purples.Where(item => item == null).Count();
+        int normalFound = normals.Where(item => item == null).Count();
+        int purpleFound = purples.Where(item => item == null).Count();
+        int totalFound = normalFound + purpleFound;
 
-        if (normal + purple == normals.Length + purples.Length)
+        int total = normals.Length + purples.Length;
+
+        // if (debug && totalFound > 0)
+        if (totalFound == total)
         {
-            Time.timeScale = 0;
             Win.Invoke();
         }
     }
-
 }
