@@ -40,7 +40,7 @@ public class Destroyer : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerStay(Collider other)
     {
         if (destroyCondition == DestroyCondition.Trigger || destroyCondition == DestroyCondition.Both)
         {
