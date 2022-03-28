@@ -26,7 +26,7 @@ public class BaseLevelManager : MonoBehaviour
         return instance;
     }
 
-    public static BaseLevelManager Instance { get => instance ?? InitInstance(); }
+    public static BaseLevelManager Instance { get => instance; }
 
     // Hm... this is a way to enforce the existence of an LevelManager instance.
     // BUT those kind of hack has a lot of drawbacks (eg: does not work well with hot reload).

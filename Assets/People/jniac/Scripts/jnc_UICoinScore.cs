@@ -26,8 +26,9 @@ public class jnc_UICoinScore : MonoBehaviour
 
     void Update()
     {
-        var ss = Mathf.Floor(Time.time % 60).ToString().PadLeft(2, '0');
-        var mm = Mathf.Floor(Time.time / 60).ToString().PadLeft(2, '0');
+        float sessionTime = jnc_LevelManager.Instance.GetSessionTime();
+        var ss = Mathf.Floor(sessionTime % 60).ToString().PadLeft(2, '0');
+        var mm = Mathf.Floor(sessionTime / 60).ToString().PadLeft(2, '0');
         timerText.text = $"{mm}:{ss}";
 
         int normal = normals.Where(item => item == null).Count();
