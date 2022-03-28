@@ -9,7 +9,7 @@ public class CubeJump : MonoBehaviour
     [Tooltip("Combien de temps (en secondes) après avoir quitté le sol peut-on encore sauter ?")]
     public float airTimeTolerance = 0.3f;
     [Tooltip("À quelle distance après avoir quitté le sol peut-on encore sauter ?")]
-    public float airDistanceTolerance = 0.5f;
+    public float airDistanceTolerance = 0.85f;
 
     enum JumpRequestStatus
     {

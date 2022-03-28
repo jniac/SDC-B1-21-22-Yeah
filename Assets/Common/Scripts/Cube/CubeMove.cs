@@ -8,6 +8,11 @@ public class CubeMove : MonoBehaviour
 {
     public float speed = 5f;
 
+    [Tooltip("Combien de temps (en secondes) après avoir quitté le sol peut-on encore se déplacer comme si on était au sol ?")]
+    public float airTimeTolerance = 0.3f;
+    [Tooltip("À quelle distance après avoir quitté le sol peut-on encore se déplacer comme si on était au sol ?")]
+    public float airDistanceTolerance = 0.85f;
+
     [Range(0, 1), Tooltip("Command le ralentissement du cube lorsque le joueur ne demande pas de mouvement.\n"
         + "\n0.15 signifie : Au bout d'une seconde, il ne reste plus que 15% de la vitesse initiale.")]
     public float groundIdleDrag = 0.15f;
@@ -53,6 +58,13 @@ public class CubeMove : MonoBehaviour
         groundIdleScale3 = new Vector3(scale, 1f, scale);
     }
 
+    public bool GetOnGround() 
+    {
+        return
+            groundDetection.airDelta.magnitude < airDistanceTolerance
+            && groundDetection.airTime < airTimeTolerance;
+    }
+
     void ComputeInput()
     {
         float x = overrideInputX != 0 ? overrideInputX : Input.GetAxis("Horizontal");
@@ -76,8 +88,10 @@ public class CubeMove : MonoBehaviour
 
         // inputVelocity = body.velocity;
 
+        bool onGround = GetOnGround();
+
         // Angular velocity on ground only!
-        if (groundDetection.onGround)
+        if (onGround)
         {
             Vector3 angularVelocity = body.angularVelocity;
             angularVelocity.z = -90 * inputVelocity.x;
@@ -94,11 +108,11 @@ public class CubeMove : MonoBehaviour
         // too fast when the player released any movement inputs. It allows to move
         // from on cell to its neighbors without going any further.
         // Occurs only on ground.
-        Vector3 lowVelocity = groundDetection.onGround
+        Vector3 lowVelocity = onGround
             ? Vector3.Scale(body.velocity, groundIdleScale3)
             : body.velocity;
 
-        float control = (groundDetection.onGround
+        float control = (onGround
             ? inputInfluence
             : inputInfluence * airControl);
 
@@ -107,7 +121,7 @@ public class CubeMove : MonoBehaviour
         // Gravity hack:
         // On ground use current "y" velocity
         // Otherwise use an "independant" velocity (which is not affected by walls)
-        yVelocity = groundDetection.onGround
+        yVelocity = onGround
             ? body.velocity.y
             : yVelocity + Physics.gravity.y * Time.fixedDeltaTime;
 
@@ -116,7 +130,7 @@ public class CubeMove : MonoBehaviour
 
         // "Ascending" is key key concept here: when ascending -> no rubber.
         bool ascending = yVelocity > 0.5f;
-        PhysicMaterial physicMaterial = (groundDetection.onGround && ascending == false) ? rubber : ice;
+        PhysicMaterial physicMaterial = (onGround && ascending == false) ? rubber : ice;
         foreach (var collider in colliders)
             collider.material = physicMaterial;
     }
@@ -165,7 +179,7 @@ public class CubeMove : MonoBehaviour
             style.fontSize = 32;
             style.normal.textColor = new Color(0.6f, 1.0f, 0.8f);
             Rigidbody body = GetComponent<Rigidbody>();
-            GUI.Label(new Rect(10, 10, 150, 100), $"ground: {groundDetection.onGround} inputHV: ({input.x:F2}, {input.y:F2}) {body.velocity.magnitude:F2}", style);
+            GUI.Label(new Rect(10, 10, 150, 100), $"ground: {GetOnGround()} inputHV: ({input.x:F2}, {input.y:F2}) {body.velocity.magnitude:F2}", style);
         }
     }
 

@@ -3402,8 +3402,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 242945978}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 20, y: 47.625, z: -2.375}
-  m_LocalScale: {x: 10.5, y: 17.75, z: 20.25}
+  m_LocalPosition: {x: 20, y: 48.875, z: -2.375}
+  m_LocalScale: {x: 10.5, y: 15.25, z: 20.25}
   m_Children: []
   m_Father: {fileID: 1592974333}
   m_RootOrder: 17
@@ -3842,8 +3842,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 250944414}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 22.875, y: 37.25, z: -2.375}
-  m_LocalScale: {x: 4.75, y: 38.5, z: 20.25}
+  m_LocalPosition: {x: 25, y: 45.25, z: -2.375}
+  m_LocalScale: {x: 6.5, y: 22.5, z: 20.25}
   m_Children: []
   m_Father: {fileID: 1592974333}
   m_RootOrder: 16
@@ -15326,7 +15326,7 @@ MonoBehaviour:
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
-    m_Time: 2
+    m_Time: 0.8
     m_CustomCurve:
       serializedVersion: 2
       m_Curve:
@@ -25583,6 +25583,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1118059115}
     m_Modifications:
+    - target: {fileID: 3584544516516952994, guid: 881c479281cc04b8d914aa15fd2aea37, type: 3}
+      propertyPath: m_Radius
+      value: 0.55
+      objectReference: {fileID: 0}
     - target: {fileID: 7247878808577573593, guid: 881c479281cc04b8d914aa15fd2aea37, type: 3}
       propertyPath: m_RootOrder
       value: 39
