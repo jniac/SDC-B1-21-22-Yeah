@@ -22,8 +22,6 @@ public class jnc_LevelManager : MonoBehaviour
         var all = FindObjectsOfType<jnc_Coin>();
         normals = all.Where(item => item.type == jnc_Coin.CoinType.Normal).ToArray();
         purples = all.Where(item => item.type == jnc_Coin.CoinType.Purple).ToArray();
-
-        BaseLevelManager.Instance.Pause();
     }
 
     void SessionUpdate()
@@ -34,8 +32,8 @@ public class jnc_LevelManager : MonoBehaviour
 
         int total = normals.Length + purples.Length;
 
-        if (totalFound > 0)
-        // if (totalFound == total)
+        // if (totalFound > 0) // debug
+        if (totalFound == total)
         {
             hasWon = true;
             winTime = Time.time;
@@ -46,7 +44,9 @@ public class jnc_LevelManager : MonoBehaviour
     void Update()
     {
         if (hasWon == false)
+        {
             SessionUpdate();
+        }
     }
 
     public float GetSessionTime()

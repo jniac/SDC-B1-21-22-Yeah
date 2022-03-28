@@ -11,7 +11,7 @@ public static class Boom
         float lifeDuration = 1.5f,
         float velocity = 10f)
     {
-        if (BaseLevelManager.IsPlaying == false)
+        if (BaseLevelManager.IsRunning == false)
             return;
 
         int sourcesCount = sources.Count();
@@ -46,7 +46,7 @@ public static class Boom
         float normalVelocity = 2f,
         float radius = 0.5f)
     {
-        if (BaseLevelManager.IsPlaying == false)
+        if (BaseLevelManager.IsRunning == false)
             return;
 
         int sourcesCount = sources.Count();

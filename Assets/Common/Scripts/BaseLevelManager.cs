@@ -5,43 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class BaseLevelManager : MonoBehaviour
 {
-    static BaseLevelManager instance;
-
-    static GameObject CreateGO()
-    {
-        Debug.Log("Creating LevelManager GameObject instance from script.");
-        return new GameObject("LevelManager");
-    }
-
-    static BaseLevelManager CreateLevelManager(GameObject go)
-    {
-        Debug.Log("Creating LevelManager Component instance from script.");
-        return go.AddComponent<BaseLevelManager>();
-    }
-
-    static BaseLevelManager InitInstance()
-    {
-        var go = GameObject.Find("LevelManager") ?? CreateGO();
-        instance = go.GetComponent<BaseLevelManager>() ?? CreateLevelManager(go);
-        return instance;
-    }
-
-    public static BaseLevelManager Instance { get => instance; }
-
-    // Hm... this is a way to enforce the existence of an LevelManager instance.
-    // BUT those kind of hack has a lot of drawbacks (eg: does not work well with hot reload).
-    // Not sure of that solution.
-    [RuntimeInitializeOnLoadMethod]
-    static void Init()
-    {
-        InitInstance();
-    }
+    public static BaseLevelManager Instance { get; private set; }
 
 
 
     // Some public static status.
-    static bool isPlaying = false;
-    public static bool IsPlaying { get => isPlaying && Application.isPlaying; }
+    static bool isRunning = false;
+    public static bool IsRunning { get => isRunning && Application.isPlaying; }
 
 
 
@@ -59,7 +29,7 @@ public class BaseLevelManager : MonoBehaviour
 
     public void ReloadCurrentScene()
     {
-        isPlaying = false;
+        isRunning = false;
         Scene scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name, LoadSceneMode.Single);
     }
@@ -68,19 +38,24 @@ public class BaseLevelManager : MonoBehaviour
 
     // Lifecycle:
 
+    void OnEnable()
+    {
+        Instance = this;
+    }
+
     void Start()
     {
-        Resume();
-        isPlaying = true;
+        isRunning = true;
     }
 
     void OnApplicationQuit() 
     {
-        isPlaying = false;
+        isRunning = false;
     }
 
     void OnDestroy()
     {
-        isPlaying = false;
+        isRunning = false;
+        Instance = null;
     }
 }
