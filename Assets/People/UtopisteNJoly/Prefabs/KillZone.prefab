@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2711836097645248527}
   - component: {fileID: 2711836097645248512}
   - component: {fileID: 2711836097645248513}
+  - component: {fileID: 7665247250632234597}
   m_Layer: 0
   m_Name: KillZone
   m_TagString: Untagged
@@ -108,3 +109,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 838b6155e16ee42269974142e0778fb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7665247250632234597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2711836097645248514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49bf20ce5dbf04176a43aafffc8cb03f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mode: 0
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 1
+  snapY: 1
+  yOver: 0
+  snapScaleXZ: 1
+  yRangeWidth: 8
+  xyzMode: 0
