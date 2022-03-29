@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Cinemachine;
+using System.Text.RegularExpressions;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -45,7 +46,6 @@ public class VirtualCameraSwitcher : MonoBehaviour
     }
 
     static List<VirtualCameraSwitcher> instances = new List<VirtualCameraSwitcher>();
-
     static CinemachineVirtualCamera[] vcams;
     static CinemachineVirtualCamera currentVcam;
     static CinemachineVirtualCamera defaultVcam;
@@ -55,7 +55,7 @@ public class VirtualCameraSwitcher : MonoBehaviour
         if (vcams != null && force == false)
             return;
 
-        vcams = GameObject.FindObjectsOfType<CinemachineVirtualCamera>();
+        vcams = FindObjectsOfType<CinemachineVirtualCamera>();
 
         // The default vcam is the first vcam that is not controlled 
         // by a VirtualCameraSwitcher instance.
@@ -65,6 +65,7 @@ public class VirtualCameraSwitcher : MonoBehaviour
     }
 
     static int updatePriorityFrame = -1;
+    static int updatePriorityCount = 0;
     public static void UpdatePriority(bool force = false)
     {
         if (force == false && Time.frameCount % 10 != 0)
@@ -90,6 +91,10 @@ public class VirtualCameraSwitcher : MonoBehaviour
         var vcamPriority = new Dictionary<CinemachineVirtualCamera, int>();
         foreach (var instance in instances)
         {
+            // Ignore null vcam, important!
+            if (instance.vcam == null)
+                continue;
+
             instance.UpdateOverlap(follow.position);
 
             int priority = instance.Overlaps() ?
@@ -107,22 +112,26 @@ public class VirtualCameraSwitcher : MonoBehaviour
             }
         }
 
+        // NOTE: THIS IS AN HACK!
+        // Since Cinemachine do not always take vcam priority into consideration 
+        // (a bug), we have to update regulary the priority with a different number
+        // (to trigger Cinemachine brain inner update).
+        int forceCinemachineUpdateOffset = updatePriorityCount % 2;
+
         // Update each vcam with its previously computed priority.
         foreach (var entry in vcamPriority)
         {
             var vcam = entry.Key;
             int priority = entry.Value;
-            vcam.Priority = priority;
-
-#if UNITY_EDITOR
-            EditorUtility.SetDirty(vcam);
-#endif
+            vcam.Priority = priority + forceCinemachineUpdateOffset;
         }
 
         var newVcam = vcams.OrderBy(vcam => vcam.Priority).LastOrDefault();
         if (newVcam != currentVcam)
             Player.BroadcastAll("OnSwitchCamera", newVcam);
         currentVcam = newVcam;
+
+        updatePriorityCount++;
     }
 
     public CinemachineVirtualCamera vcam;
@@ -133,6 +142,14 @@ public class VirtualCameraSwitcher : MonoBehaviour
     public Bounds Bounds => new Bounds(transform.position, transform.localScale + safeMargin);
 
     OverlapObservable overlap = new OverlapObservable();
+
+    void UpdateName()
+    {
+        var str = vcam != null 
+            ? Regex.Split(vcam.name, @"\W").Last()
+            : "NO-CAM";
+        gameObject.name = $"SwitchTo [{str} : {onEnterPriority}]";
+    }
 
     void UpdateOverlap(Vector3 point)
     {
@@ -167,14 +184,16 @@ public class VirtualCameraSwitcher : MonoBehaviour
     {
 #if UNITY_EDITOR
         if (Application.isPlaying == false)
+        {
             UpdatePriority();
+            UpdateName();
+        }
 #endif
     }
 
     void OnValidate()
     {
-        var str = vcam != null ? vcam.name.Substring(vcam.name.Length - 5) : "...";
-        gameObject.name = $"SwitchTo ({str}:{onEnterPriority})";
+        UpdateName();
     }
 
     public Color gizmoColor = Color.yellow;
@@ -216,14 +235,7 @@ public class VirtualCameraSwitcher : MonoBehaviour
             Draw("gizmoColor");
             serializedObject.ApplyModifiedProperties();
 
-            if (GUILayout.Button("Reset Priority"))
-            {
-                FindVcams(true);
-                foreach (var vcam in vcams)
-                    vcam.Priority = vcam == defaultVcam ? 10 : 0;
-            }
-
-            if (GUILayout.Button("Update Priority"))
+            if (GUILayout.Button("Manual Update Priority"))
             {
                 UpdatePriority(true);
             }
