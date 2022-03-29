@@ -5,7 +5,129 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody), typeof(CubeMove), typeof(CubeGroundDetection))]
 public class jnc_CubeDash : MonoBehaviour
 {
+    public enum DashRequestStatus
+    {
+        NoControls,
+        AirDashNotAvailable,
+        NoDirection,
+        NoSpace,
+        TooSoon,
+        Ok,
+    }
+
+    public enum DashStatus
+    {
+        HitWall,
+        NoObstaclesBut,
+        NoObstacles,
+    }
+
+    public struct DashInfo
+    {
+        public Vector3 origin;
+        public Vector3 direction;
+        public Vector3 destination;
+        public DashStatus status;
+
+        public DashInfo(Vector3 origin, Vector3 destination, Vector3 direction, DashStatus status)
+        {
+            this.origin = origin;
+            this.destination = destination;
+            this.direction = direction;
+            this.status = status;
+        }
+    }
+
+    public static Vector3[] GetSpreadVectors(Vector3 v, float horizontalDispersionAngle = 14f, float verticalDispersionAngle = 14f)
+    {
+        var right = Vector3.Cross(Vector3.up, v);
+
+        return new Vector3[] {
+            // Horizontal
+            Quaternion.AngleAxis(+horizontalDispersionAngle * 0.15f, Vector3.up) * v,
+            Quaternion.AngleAxis(-horizontalDispersionAngle * 0.15f, Vector3.up) * v,
+            Quaternion.AngleAxis(-horizontalDispersionAngle * 0.50f, Vector3.up) * v,
+            Quaternion.AngleAxis(+horizontalDispersionAngle * 0.50f, Vector3.up) * v,
+            Quaternion.AngleAxis(-horizontalDispersionAngle * 1.00f, Vector3.up) * v,
+            Quaternion.AngleAxis(+horizontalDispersionAngle * 1.00f, Vector3.up) * v,
+
+            // Vertical
+            Quaternion.AngleAxis(+verticalDispersionAngle * 0.50f, right) * v,
+            Quaternion.AngleAxis(-verticalDispersionAngle * 0.50f, right) * v,
+            Quaternion.AngleAxis(+verticalDispersionAngle * 1.00f, right) * v,
+            Quaternion.AngleAxis(-verticalDispersionAngle * 1.00f, right) * v,
+        };
+    }
+
+    public static DashInfo DestinationCast(
+        Vector3 origin,
+        Vector3 direction,
+        float length,
+        float radius,
+        LayerMask mask
+    )
+    {
+        Vector3 destination = origin + direction * length;
+
+        Collider[] test;
+        float tolerance = 0.9f;
+
+        test = Physics.OverlapSphere(destination, radius * tolerance, mask);
+
+        if (test.Length == 0)
+            return Raycast(false, origin, destination, direction, length, radius, mask);
+
+        // Try with "spread" vectors.
+        foreach (var vector in GetSpreadVectors(direction))
+        {
+            destination = origin + vector * length;
+            test = Physics.OverlapSphere(destination, radius * tolerance, mask);
+
+            if (test.Length == 0)
+                return Raycast(false, origin, destination, vector, length, radius, mask);
+        }
+
+        return Raycast(true, origin, destination, direction, length, radius, mask);
+    }
+
+    public static DashInfo Raycast(
+        bool collides,
+        Vector3 origin,
+        Vector3 destination,
+        Vector3 direction,
+        float length,
+        float radius,
+        LayerMask mask
+    )
+    {
+        if (collides)
+        {
+            if (Physics.Raycast(origin, direction, out var hit, length + radius, mask))
+            {
+                // Destination correction: a little back from the hit point.
+                destination = hit.point - direction * radius;
+                return new DashInfo(origin, destination, direction, DashStatus.HitWall);
+            }
+            else
+            {
+                // Rare edge case: the overlap collider is not cast by the ray 
+                // (may occurs during jumps)
+                return new DashInfo(origin, destination, direction, DashStatus.NoObstaclesBut);
+            }
+        }
+        else
+        {
+            // No walls at all. Go straight.
+            return new DashInfo(origin, destination, direction, DashStatus.NoObstacles);
+        }
+    }
+
+
+
+    // Instance.
+
     public float minVelocityToDash = 0.1f;
+    public float minDistanceToDash = 0.75f;
     public float cooldownDuration = 0.3f;
     public float dashLength = 3.6f;
     public float colliderRadius = 0.5f;
@@ -24,49 +146,14 @@ public class jnc_CubeDash : MonoBehaviour
     public DashRequestStatus RequestStatus { get; private set; }
     public DashStatus Status { get; private set; }
     Rigidbody body;
-    Vector3 direction;
+    DashInfo info;
+
     float dashTime = -1;
     int airDashCount = 0;
 
-    public enum DashRequestStatus
-    {
-        NoControls,
-        AirDashNotAvailable,
-        NoDirection,
-        TooSoon,
-        Ok,
-    }
-
-    public enum DashStatus
-    {
-        HitWall,
-        NoObstaclesBut,
-        NoObstacles,
-    }
-
-    (DashRequestStatus status, Vector3 direction) CanDash()
-    {
-        var move = GetComponent<CubeMove>();
-
-        if (move.ControlsCoeff < 0.5f)
-            return (DashRequestStatus.NoControls, Vector3.zero);
-
-        if (GetComponent<CubeGroundDetection>().onGround == false && airDashCount == airDashMax)
-            return (DashRequestStatus.AirDashNotAvailable, Vector3.zero);
-
-        if (Time.time - dashTime < cooldownDuration)
-            return (DashRequestStatus.TooSoon, Vector3.zero);
-
-        var direction = move.InputVector3;
-        if (direction.magnitude < minVelocityToDash)
-            return (DashRequestStatus.NoDirection, Vector3.zero);
-
-        return (DashRequestStatus.Ok, direction.normalized);
-    }
-
     void DashKillEnemy()
     {
-        var hits = Physics.SphereCastAll(body.position, dashKillRadius, direction, dashLength, dashKillMask);
+        var hits = Physics.SphereCastAll(info.origin, dashKillRadius, info.direction, dashLength, dashKillMask);
         foreach (var hit in hits)
         {
             var go = hit.collider.attachedRigidbody.gameObject;
@@ -76,75 +163,34 @@ public class jnc_CubeDash : MonoBehaviour
         BroadcastMessage("InvicibleUntil", 0.2f, SendMessageOptions.DontRequireReceiver);
     }
 
-    (Vector3 vR, Vector3 vL, Vector3 vT, Vector3 vB) GetSpreadVectors(Vector3 v, float dispersionAngle = 12f)
+    (DashRequestStatus status, DashInfo info) CanDash()
     {
-        var right = Vector3.Cross(Vector3.up, v);
-        var vR = Quaternion.AngleAxis(+dispersionAngle, Vector3.up) * v;
-        var vL = Quaternion.AngleAxis(-dispersionAngle, Vector3.up) * v;
-        var vT = Quaternion.AngleAxis(+dispersionAngle, right) * v;
-        var vB = Quaternion.AngleAxis(-dispersionAngle, right) * v;
-        return (vR, vL, vT, vB);
-    }
+        var move = GetComponent<CubeMove>();
 
-    Vector3[] GetSpreadVectorsArray(Vector3 v)
-    {
-        var (vR, vL, vT, vB) = GetSpreadVectors(v);
-        return new Vector3[] { vR, vL, vT, vB };
-    }
+        if (move.ControlsCoeff < 0.5f)
+            return (DashRequestStatus.NoControls, default);
 
-    (Vector3 destination, Vector3 direction, bool collides) DestinationCast()
-    {
-        var position = body.position;
-        Vector3 destination = position + direction * dashLength;
+        if (GetComponent<CubeGroundDetection>().onGround == false && airDashCount == airDashMax)
+            return (DashRequestStatus.AirDashNotAvailable, default);
 
-        Collider[] test; 
-        float tolerance = 0.9f;
+        if (Time.time - dashTime < cooldownDuration)
+            return (DashRequestStatus.TooSoon, default);
 
-        test = Physics.OverlapSphere(destination, colliderRadius * tolerance, dashObstacleMask);
+        var direction = move.InputVector3;
+        if (direction.magnitude < minVelocityToDash)
+            return (DashRequestStatus.NoDirection, default);
 
-        if (test.Length == 0)
-            return (destination, direction, false);
+        var info = DestinationCast(body.position, direction, dashLength, colliderRadius, dashObstacleMask);
 
-        // Try with "spread" vectors.
-        foreach(var vector in GetSpreadVectorsArray(direction))
-        {
-            destination = position + vector * dashLength;
-            test = Physics.OverlapSphere(destination, colliderRadius * tolerance, dashObstacleMask);
+        if ((info.destination - info.origin).sqrMagnitude < minDistanceToDash * minDistanceToDash)
+            return (DashRequestStatus.NoSpace, default);
 
-            if (test.Length == 0)
-                return (destination, vector, false);
-        }
-
-        return (destination, direction, true);
+        return (DashRequestStatus.Ok, info);
     }
 
     void Dash()
     {
         dashTime = Time.time;
-
-        var (destination, newDirection, collides) = DestinationCast();
-        direction = newDirection;
-
-        if (collides)
-        {
-            if (Physics.Raycast(body.position, direction, out var hit, dashLength + colliderRadius, dashObstacleMask))
-            {
-                // Normal case: a little back from the hit point.
-                destination = hit.point - direction * colliderRadius;
-                Status = DashStatus.HitWall;
-            }
-            else
-            {
-                // Rare edge case: the overlap collider is not cast by the ray 
-                // (may occurs during jumps)
-                Status = DashStatus.NoObstaclesBut;
-            }
-        }
-        else
-        {
-            // No walls at all. Go straight.
-            Status = DashStatus.NoObstacles;
-        }
 
         if (GetComponent<CubeGroundDetection>().onGround)
             airDashCount = 0;
@@ -154,7 +200,7 @@ public class jnc_CubeDash : MonoBehaviour
         if (dashKill)
             DashKillEnemy();
 
-        body.position = destination;
+        body.position = info.destination;
     }
 
     void OnGroundEnter()
@@ -171,21 +217,20 @@ public class jnc_CubeDash : MonoBehaviour
     {
         if (Input.GetButtonDown("Dash") || triggerDash)
         {
-            var result = CanDash();
-            RequestStatus = result.status;
-            direction = result.direction;
+            (RequestStatus, info) = CanDash();
+
+            Debug.Log(RequestStatus);
 
             if (RequestStatus == DashRequestStatus.Ok)
                 Dash();
         }
     }
 
-    void OnDrawGizmosSelected()
+    void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
-        var d = GetComponent<CubeMove>().Direction;
-        Gizmos.DrawSphere(transform.position + d * dashLength, 0.25f);
-        foreach(var vector in GetSpreadVectorsArray(d))
-            Gizmos.DrawSphere(transform.position + vector * dashLength, 0.25f);
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(info.origin, info.destination);
+        Gizmos.DrawSphere(info.origin, 0.1f);
+        Gizmos.DrawSphere(info.destination, 0.2f);
     }
 }
