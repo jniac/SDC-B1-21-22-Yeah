@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2711836097645248526}
   - component: {fileID: 2711836097645248527}
   - component: {fileID: 2711836097645248512}
-  - component: {fileID: 2711836097645248513}
+  - component: {fileID: 385811043785063487}
   - component: {fileID: 7665247250632234597}
   m_Layer: 0
   m_Name: KillZone
@@ -97,7 +97,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2711836097645248513
+--- !u!114 &385811043785063487
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -106,9 +106,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2711836097645248514}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 838b6155e16ee42269974142e0778fb8, type: 3}
+  m_Script: {fileID: 11500000, guid: 2eefd0aac21e34179b1994e4291c0e16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  destroyCondition: 0
+  autoDestroy: 0
 --- !u!114 &7665247250632234597
 MonoBehaviour:
   m_ObjectHideFlags: 0
