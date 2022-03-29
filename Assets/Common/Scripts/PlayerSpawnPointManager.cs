@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerSpawnPointManager : MonoBehaviour
 {
-    public static PlayerSpawnPointManager instance;
+    public static PlayerSpawnPointManager Instance { get; private set; }
 
     public GameObject playerPrefabToSpawn;
     public float respawnWaitTime = 1f;
@@ -18,7 +18,7 @@ public class PlayerSpawnPointManager : MonoBehaviour
 
     void OnEnable()
     {
-        PlayerSpawnPointManager.instance = this;
+        PlayerSpawnPointManager.Instance = this;
     }
 
     void OnApplicationQuit()
@@ -42,7 +42,7 @@ public class PlayerSpawnPointManager : MonoBehaviour
 
     public void Respawn()
     {
-        if (isQuitting == false)
+        if (isQuitting == false && this != null)
             StartCoroutine(ThenRespawnCoroutine());
     }
 

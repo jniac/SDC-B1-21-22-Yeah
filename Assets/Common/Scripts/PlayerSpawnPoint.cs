@@ -28,12 +28,12 @@ public class PlayerSpawnPoint : MonoBehaviour
     void Focus()
     {
         ReachedTime = Time.time;
-        PlayerSpawnPointManager.instance.Reach(this);
+        PlayerSpawnPointManager.Instance.Reach(this);
     }
 
     IEnumerator Start()
     {
-        PlayerSpawnPointManager.instance.Register(this);
+        PlayerSpawnPointManager.Instance.Register(this);
 
         if (hasFocus)
             Focus();
@@ -113,6 +113,7 @@ public class PlayerSpawnPoint : MonoBehaviour
                 {
                     player.transform.position = Target.transform.position;
                     EditorUtility.SetDirty(player);
+                    VirtualCameraSwitcher.UpdatePriority(force: true);
                 }
             }
 
@@ -125,6 +126,7 @@ public class PlayerSpawnPoint : MonoBehaviour
                         .OrderBy(spawnPoint => spawnPoint.hasFocus ? -1 : 1)
                         .First().transform.position;
                     EditorUtility.SetDirty(player);
+                    VirtualCameraSwitcher.UpdatePriority(force: true);
                 }
             }
         }

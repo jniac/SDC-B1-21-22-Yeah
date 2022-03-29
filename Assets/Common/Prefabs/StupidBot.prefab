@@ -19,9 +19,9 @@ GameObject:
   - component: {fileID: 5536785720612347325}
   - component: {fileID: 8540872046677315924}
   - component: {fileID: 2637687553603872317}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: StupidBot
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -218,7 +218,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onDestroyParticles:
-  - {fileID: 173352213401199758, guid: e72c815a5c7ba4b4da08b441686548c1, type: 3}
-  - {fileID: 173352213401199758, guid: dc85f5c36764e440b8c5c56801150ee6, type: 3}
-  - {fileID: 173352213401199758, guid: 6048c667b2806488592e51206ed659f0, type: 3}
+  - {fileID: 173352213401199758, guid: dbc2f799430354f30b44a92f50b95f5f, type: 3}
+  - {fileID: 173352213401199758, guid: 6e600060b027347b3bbc72f05805c773, type: 3}
+  - {fileID: 173352213401199758, guid: 45d2949da6a1c48dcb50209a5a6c1e2d, type: 3}
+  - {fileID: 173352213401199758, guid: bf39521b620a24a14a2982fd9dae57d5, type: 3}
+  - {fileID: 173352213401199758, guid: dec3f55c698bd4b3fb31459bea344d4b, type: 3}
+  - {fileID: 173352213401199758, guid: e1b4aca53f1cb434ea93e554b842429e, type: 3}
   particleCount: 30

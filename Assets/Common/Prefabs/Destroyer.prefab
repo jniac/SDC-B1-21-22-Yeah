@@ -4951,13 +4951,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49bf20ce5dbf04176a43aafffc8cb03f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode: 0
   groundMask:
     serializedVersion: 2
     m_Bits: 1
   snapY: 1
   yOver: 0
   snapScaleXZ: 1
-  yRangeWidth: 100
+  yRangeWidth: 8
+  xyzMode: 0
 --- !u!114 &7790682919962467147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4974,3 +4976,4 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   destroyCondition: 0
+  autoDestroy: 0
