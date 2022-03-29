@@ -7,13 +7,15 @@ using UnityEngine.Events;
 public class jnc_LevelManager : MonoBehaviour
 {
     public static jnc_LevelManager Instance { get; private set; }
-
+    
     public bool hasWon = false;
     public float winTime = -1;
     public UnityEvent Win = new UnityEvent();
 
     public jnc_Coin[] normals;
     public jnc_Coin[] purples;
+
+    float sessionTime = 0;
 
     void OnEnable()
     {
@@ -26,6 +28,8 @@ public class jnc_LevelManager : MonoBehaviour
 
     void SessionUpdate()
     {
+        sessionTime += Time.deltaTime;
+
         int normalFound = normals.Where(item => item == null).Count();
         int purpleFound = purples.Where(item => item == null).Count();
         int totalFound = normalFound + purpleFound;
@@ -51,6 +55,6 @@ public class jnc_LevelManager : MonoBehaviour
 
     public float GetSessionTime()
     {
-        return hasWon ? winTime : Time.time;
+        return sessionTime;
     }
 }
