@@ -242,14 +242,14 @@ MonoBehaviour:
   m_LookaheadTime: 0
   m_LookaheadSmoothing: 0
   m_LookaheadIgnoreY: 0
-  m_XDamping: 1
-  m_YDamping: 1
-  m_ZDamping: 1
+  m_XDamping: 2
+  m_YDamping: 2
+  m_ZDamping: 2
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5
   m_ScreenY: 0.5
   m_CameraDistance: 20
-  m_DeadZoneWidth: 0.5
+  m_DeadZoneWidth: 0.2
   m_DeadZoneHeight: 0.3
   m_DeadZoneDepth: 0
   m_UnlimitedSoftZone: 0
@@ -737,7 +737,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 11
+  m_Priority: 10
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 2038222901}
@@ -829,6 +829,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 800612893}
     m_Modifications:
+    - target: {fileID: 2711836097645248512, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
+      propertyPath: m_Size.x
+      value: 0.97695655
+      objectReference: {fileID: 0}
     - target: {fileID: 2711836097645248514, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
       propertyPath: m_Name
       value: KillZone (4)
@@ -934,6 +938,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 800612893}
     m_Modifications:
+    - target: {fileID: 2711836097645248512, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
+      propertyPath: m_Size.z
+      value: 0.735
+      objectReference: {fileID: 0}
     - target: {fileID: 2711836097645248514, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
       propertyPath: m_Name
       value: KillZone (13)
@@ -1247,6 +1255,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 800612893}
     m_Modifications:
+    - target: {fileID: 2711836097645248512, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
+      propertyPath: m_Size.z
+      value: 0.9116667
+      objectReference: {fileID: 0}
     - target: {fileID: 2711836097645248514, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
       propertyPath: m_Name
       value: KillZone (17)
@@ -1871,7 +1883,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 617785469}
   m_LocalRotation: {x: 0.44029176, y: 0.06649443, z: -0.03271931, w: 0.89479107}
-  m_LocalPosition: {x: -4.2799406, y: 15.836918, z: -17.01001}
+  m_LocalPosition: {x: -4.279941, y: 15.836918, z: -17.01001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1993852090}
@@ -1894,7 +1906,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 11
+  m_Priority: 10
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 2038222901}
@@ -2074,14 +2086,14 @@ MonoBehaviour:
   m_LookaheadTime: 0
   m_LookaheadSmoothing: 0
   m_LookaheadIgnoreY: 0
-  m_XDamping: 1
-  m_YDamping: 1
-  m_ZDamping: 1
+  m_XDamping: 2
+  m_YDamping: 2
+  m_ZDamping: 2
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5
   m_ScreenY: 0.5
   m_CameraDistance: 16.25915
-  m_DeadZoneWidth: 0.5
+  m_DeadZoneWidth: 0.2
   m_DeadZoneHeight: 0.3
   m_DeadZoneDepth: 0
   m_UnlimitedSoftZone: 0
@@ -2423,6 +2435,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 800612893}
     m_Modifications:
+    - target: {fileID: 2711836097645248512, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
+      propertyPath: m_Size.x
+      value: 0.894
+      objectReference: {fileID: 0}
     - target: {fileID: 2711836097645248514, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
       propertyPath: m_Name
       value: KillZone (19)
@@ -2484,6 +2500,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 800612893}
     m_Modifications:
+    - target: {fileID: 2711836097645248512, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
+      propertyPath: m_Size.y
+      value: 1.1253551
+      objectReference: {fileID: 0}
+    - target: {fileID: 2711836097645248512, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
+      propertyPath: m_Size.z
+      value: 0.93308765
+      objectReference: {fileID: 0}
     - target: {fileID: 2711836097645248514, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
       propertyPath: m_Name
       value: KillZone (20)
@@ -2614,6 +2638,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 800612893}
     m_Modifications:
+    - target: {fileID: 2711836097645248512, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
+      propertyPath: m_Size.z
+      value: 0.98172414
+      objectReference: {fileID: 0}
     - target: {fileID: 2711836097645248514, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
       propertyPath: m_Name
       value: KillZone (3)
@@ -2749,6 +2777,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 800612893}
     m_Modifications:
+    - target: {fileID: 2711836097645248512, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
+      propertyPath: m_Size.x
+      value: 0.7307595
+      objectReference: {fileID: 0}
+    - target: {fileID: 2711836097645248512, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
+      propertyPath: m_Size.z
+      value: 0.90994054
+      objectReference: {fileID: 0}
     - target: {fileID: 2711836097645248514, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
       propertyPath: m_Name
       value: KillZone (2)
@@ -2818,6 +2854,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 800612893}
     m_Modifications:
+    - target: {fileID: 2711836097645248512, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
+      propertyPath: m_Size.z
+      value: 0.9411111
+      objectReference: {fileID: 0}
     - target: {fileID: 2711836097645248514, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
       propertyPath: m_Name
       value: KillZone (10)
@@ -3809,7 +3849,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.7050675, y: 0, z: 0, w: 0.70914024}
-  m_LocalPosition: {x: 0.5, y: 20.99967, z: -0.6151921}
+  m_LocalPosition: {x: 0.49999964, y: 20.99967, z: -0.6151921}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 985637861}
@@ -3917,6 +3957,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 800612893}
     m_Modifications:
+    - target: {fileID: 2711836097645248512, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
+      propertyPath: m_Size.x
+      value: 0.93375003
+      objectReference: {fileID: 0}
     - target: {fileID: 2711836097645248514, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
       propertyPath: m_Name
       value: KillZone (7)
@@ -4087,14 +4131,14 @@ MonoBehaviour:
   m_LookaheadTime: 0
   m_LookaheadSmoothing: 0
   m_LookaheadIgnoreY: 0
-  m_XDamping: 1
-  m_YDamping: 1
-  m_ZDamping: 1
+  m_XDamping: 2
+  m_YDamping: 2
+  m_ZDamping: 2
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5
   m_ScreenY: 0.5
   m_CameraDistance: 23.31563
-  m_DeadZoneWidth: 0.5
+  m_DeadZoneWidth: 0.2
   m_DeadZoneHeight: 0.3
   m_DeadZoneDepth: 0
   m_UnlimitedSoftZone: 0
@@ -4819,6 +4863,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 800612893}
     m_Modifications:
+    - target: {fileID: 2711836097645248512, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
+      propertyPath: m_Size.x
+      value: 0.93375003
+      objectReference: {fileID: 0}
+    - target: {fileID: 2711836097645248512, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
+      propertyPath: m_Size.z
+      value: 0.735
+      objectReference: {fileID: 0}
     - target: {fileID: 2711836097645248514, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
       propertyPath: m_Name
       value: KillZone (1)
@@ -4889,6 +4941,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 800612893}
     m_Modifications:
+    - target: {fileID: 2711836097645248512, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
+      propertyPath: m_Size.x
+      value: 0.928477
+      objectReference: {fileID: 0}
     - target: {fileID: 2711836097645248514, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
       propertyPath: m_Name
       value: KillZone (14)
@@ -4954,6 +5010,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 800612893}
     m_Modifications:
+    - target: {fileID: 2711836097645248512, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
+      propertyPath: m_Size.x
+      value: 0.9406021
+      objectReference: {fileID: 0}
     - target: {fileID: 2711836097645248514, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
       propertyPath: m_Name
       value: KillZone (6)
@@ -5019,6 +5079,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 800612893}
     m_Modifications:
+    - target: {fileID: 2711836097645248512, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
+      propertyPath: m_Size.x
+      value: 0.93375003
+      objectReference: {fileID: 0}
     - target: {fileID: 2711836097645248514, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
       propertyPath: m_Name
       value: KillZone (9)
@@ -5237,7 +5301,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1299010718}
   m_LocalRotation: {x: 0.34681672, y: -0.024551049, z: 0.009081707, w: 0.9375676}
-  m_LocalPosition: {x: 3.8093383, y: 13.597065, z: -19.279995}
+  m_LocalPosition: {x: 3.809338, y: 13.597065, z: -19.279995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1020863004}
@@ -5260,7 +5324,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 21
+  m_Priority: 20
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 2038222901}
@@ -5626,6 +5690,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 800612893}
     m_Modifications:
+    - target: {fileID: 2711836097645248512, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
+      propertyPath: m_Size.x
+      value: 0.947
+      objectReference: {fileID: 0}
     - target: {fileID: 2711836097645248514, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
       propertyPath: m_Name
       value: KillZone (15)
@@ -5888,6 +5956,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 800612893}
     m_Modifications:
+    - target: {fileID: 2711836097645248512, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
+      propertyPath: m_Size.x
+      value: 0.8233333
+      objectReference: {fileID: 0}
+    - target: {fileID: 2711836097645248512, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
+      propertyPath: m_Size.z
+      value: 0.9810714
+      objectReference: {fileID: 0}
     - target: {fileID: 2711836097645248514, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
       propertyPath: m_Name
       value: KillZone (5)
@@ -6187,14 +6263,14 @@ MonoBehaviour:
   m_LookaheadTime: 0
   m_LookaheadSmoothing: 0
   m_LookaheadIgnoreY: 0
-  m_XDamping: 1
-  m_YDamping: 1
-  m_ZDamping: 1
+  m_XDamping: 2
+  m_YDamping: 2
+  m_ZDamping: 2
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5
   m_ScreenY: 0.5
   m_CameraDistance: 16.758497
-  m_DeadZoneWidth: 0.5
+  m_DeadZoneWidth: 0.2
   m_DeadZoneHeight: 0.3
   m_DeadZoneDepth: 0
   m_UnlimitedSoftZone: 0
@@ -6496,7 +6572,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1619008541}
   m_LocalRotation: {x: 0.7050675, y: 0, z: 0, w: 0.70914024}
-  m_LocalPosition: {x: 0.5, y: 20.99967, z: -0.6151921}
+  m_LocalPosition: {x: 0.49999964, y: 20.99967, z: -0.6151921}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 58014261}
@@ -6519,7 +6595,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 31
+  m_Priority: 30
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 2038222901}
@@ -6563,7 +6639,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1649915026}
   m_LocalRotation: {x: 0.23935707, y: -0.109869234, z: 0.027271297, w: 0.96430975}
-  m_LocalPosition: {x: 1.3034621, y: 9.463947, z: -14.470003}
+  m_LocalPosition: {x: 1.3034619, y: 9.463947, z: -14.470003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 642007340}
@@ -6586,7 +6662,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 11
+  m_Priority: 10
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 2038222901}
@@ -7134,6 +7210,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 800612893}
     m_Modifications:
+    - target: {fileID: 2711836097645248512, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
+      propertyPath: m_Size.x
+      value: 0.947
+      objectReference: {fileID: 0}
+    - target: {fileID: 2711836097645248512, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
+      propertyPath: m_Size.z
+      value: 0.9558333
+      objectReference: {fileID: 0}
     - target: {fileID: 2711836097645248514, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
       propertyPath: m_Name
       value: KillZone
@@ -7506,14 +7590,14 @@ MonoBehaviour:
   m_LookaheadTime: 0
   m_LookaheadSmoothing: 0
   m_LookaheadIgnoreY: 0
-  m_XDamping: 1
-  m_YDamping: 1
-  m_ZDamping: 1
+  m_XDamping: 2
+  m_YDamping: 2
+  m_ZDamping: 2
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5
   m_ScreenY: 0.5
   m_CameraDistance: 22.819292
-  m_DeadZoneWidth: 0.5
+  m_DeadZoneWidth: 0.2
   m_DeadZoneHeight: 0.3
   m_DeadZoneDepth: 0
   m_UnlimitedSoftZone: 0
@@ -8200,6 +8284,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 800612893}
     m_Modifications:
+    - target: {fileID: 2711836097645248512, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
+      propertyPath: m_Size.y
+      value: 1.0220869
+      objectReference: {fileID: 0}
+    - target: {fileID: 2711836097645248512, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
+      propertyPath: m_Size.z
+      value: 0.894
+      objectReference: {fileID: 0}
     - target: {fileID: 2711836097645248514, guid: 9c1bcb3417ac2b34a85c78e1ba55dda6, type: 3}
       propertyPath: m_Name
       value: KillZone (12)
