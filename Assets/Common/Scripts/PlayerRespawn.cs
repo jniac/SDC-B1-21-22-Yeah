@@ -13,7 +13,7 @@ public class PlayerRespawn : MonoBehaviour
     void OnDestroy()
     {
         if (Application.isPlaying)
-            PlayerSpawnPointManager.instance.Respawn();
+            PlayerSpawnPointManager.Instance.Respawn();
     }
 
 #if UNITY_EDITOR

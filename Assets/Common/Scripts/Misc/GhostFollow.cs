@@ -83,7 +83,7 @@ public class GhostFollow : MonoBehaviour
         {
             base.OnInspectorGUI();
 
-            if (GUILayout.Button("Follow Parent")) 
+            if (GUILayout.Button("Follow Parent"))
             {
                 Target.target = Target.transform.parent;
                 EditorUtility.SetDirty(target);

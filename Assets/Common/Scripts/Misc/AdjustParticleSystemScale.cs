@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteAlways]
+[ExecuteInEditMode]
 public class AdjustParticleSystemScale : MonoBehaviour
 {
     #if UNITY_EDITOR

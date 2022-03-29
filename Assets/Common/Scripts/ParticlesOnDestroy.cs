@@ -6,8 +6,10 @@ public class ParticlesOnDestroy : MonoBehaviour
 {
     public GameObject[] onDestroyParticles;
 
+    public int particleCount = 30;
+
     void OnDestroy()
     {
-        Boom.FromPoint(transform.position, 20, onDestroyParticles);
+        Boom.FromPoint(transform.position, onDestroyParticles, particleCount);
     }
 }
