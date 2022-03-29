@@ -99,7 +99,7 @@ public class VirtualCameraSwitcher : MonoBehaviour
 
             int priority = instance.Overlaps() ?
                 instance.onEnterPriority :
-                defaultVcam ? defaultVcam.Priority - 1 : 10;
+                defaultVcam ? defaultVcam.Priority - 2 : 10;
 
             if (vcamPriority.ContainsKey(instance.vcam))
             {
