@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2635557785245513885}
   - component: {fileID: 2635557785245513872}
   - component: {fileID: 2635557785245513873}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: jnc_SphereBat
   m_TagString: Untagged
   m_Icon: {fileID: 0}

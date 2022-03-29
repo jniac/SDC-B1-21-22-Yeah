@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 1476645558218388742}
   - component: {fileID: 3328091779350002159}
   - component: {fileID: 8949346053908926086}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: StupidBot (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,3 +221,4 @@ MonoBehaviour:
   - {fileID: 173352213401199758, guid: e72c815a5c7ba4b4da08b441686548c1, type: 3}
   - {fileID: 173352213401199758, guid: dc85f5c36764e440b8c5c56801150ee6, type: 3}
   - {fileID: 173352213401199758, guid: 6048c667b2806488592e51206ed659f0, type: 3}
+  particleCount: 30
