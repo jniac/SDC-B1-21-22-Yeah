@@ -17,8 +17,8 @@ public class unj_CubeDash : MonoBehaviour
 
     public GameObject[] onDestroyParticles;
 
-    DashRequestStatus requestStatus;
-    DashStatus status;
+    public DashRequestStatus RequestStatus { get; private set; }
+    public DashStatus Status { get; private set; }
     Vector3 direction;
     float dashTime = -1;
     int airDashCount = 0;
@@ -75,19 +75,19 @@ public class unj_CubeDash : MonoBehaviour
             {
                 // Normal case: a little back from the hit point.
                 destination = hit.point - direction * colliderRadius;
-                status = DashStatus.HitWall;
+                Status = DashStatus.HitWall;
             }
             else
             {
                 // Rare edge case: the overlap collider is not cast by the ray 
                 // (may occurs during jumps)
-                status = DashStatus.NoObstaclesBut;
+                Status = DashStatus.NoObstaclesBut;
             }
         }
         else
         {
             // No walls at all. Go straight.
-            status = DashStatus.NoObstacles;
+            Status = DashStatus.NoObstacles;
         }
 
         if (GetComponent<CubeGroundDetection>().onGround)
@@ -108,10 +108,10 @@ public class unj_CubeDash : MonoBehaviour
         if (Input.GetButtonDown("Dash") || triggerDash)
         {
             var result = CanDash();
-            requestStatus = result.status;
+            RequestStatus = result.status;
             direction = result.direction;
 
-            if (requestStatus == DashRequestStatus.Ok)
+            if (RequestStatus == DashRequestStatus.Ok)
                 Dash();
         }
     }
