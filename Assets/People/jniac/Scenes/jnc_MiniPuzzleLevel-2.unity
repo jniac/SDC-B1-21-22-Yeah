@@ -2615,7 +2615,7 @@ GameObject:
   - component: {fileID: 178155599}
   - component: {fileID: 178155598}
   m_Layer: 0
-  m_Name: SwitchTo (vcam2:20)
+  m_Name: 'SwitchTo [vcam2 : 20]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3522,7 +3522,7 @@ GameObject:
   - component: {fileID: 242945981}
   - component: {fileID: 242945980}
   m_Layer: 0
-  m_Name: SwitchTo (vcam5:26)
+  m_Name: 'SwitchTo [vcam5 : 26]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3962,7 +3962,7 @@ GameObject:
   - component: {fileID: 250944417}
   - component: {fileID: 250944416}
   m_Layer: 0
-  m_Name: SwitchTo (vcam5:26)
+  m_Name: 'SwitchTo [vcam5 : 26]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4890,7 +4890,7 @@ GameObject:
   - component: {fileID: 321069617}
   - component: {fileID: 321069616}
   m_Layer: 0
-  m_Name: SwitchTo (vcam4:16)
+  m_Name: 'SwitchTo [vcam4 : 16]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5129,7 +5129,7 @@ GameObject:
   - component: {fileID: 332048559}
   - component: {fileID: 332048558}
   m_Layer: 0
-  m_Name: SwitchTo (vcam3:26)
+  m_Name: 'SwitchTo [vcam3 : 26]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9817,7 +9817,7 @@ GameObject:
   - component: {fileID: 639130893}
   - component: {fileID: 639130892}
   m_Layer: 0
-  m_Name: SwitchTo (vcam2:20)
+  m_Name: 'SwitchTo [vcam2 : 20]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14749,7 +14749,7 @@ GameObject:
   - component: {fileID: 902488267}
   - component: {fileID: 902488266}
   m_Layer: 0
-  m_Name: SwitchTo (vcam3:16)
+  m_Name: 'SwitchTo [vcam3 : 16]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20387,7 +20387,7 @@ GameObject:
   - component: {fileID: 1182880002}
   - component: {fileID: 1182880001}
   m_Layer: 0
-  m_Name: SwitchTo (vcam3:26)
+  m_Name: 'SwitchTo [vcam3 : 26]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22155,7 +22155,7 @@ GameObject:
   - component: {fileID: 1273463729}
   - component: {fileID: 1273463728}
   m_Layer: 0
-  m_Name: SwitchTo (vcam3:26)
+  m_Name: 'SwitchTo [vcam3 : 26]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22975,7 +22975,7 @@ GameObject:
   - component: {fileID: 1314661925}
   - component: {fileID: 1314661924}
   m_Layer: 0
-  m_Name: SwitchTo (vcam6:30)
+  m_Name: 'SwitchTo [vcam6 : 30]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27065,7 +27065,7 @@ GameObject:
   - component: {fileID: 1547981437}
   - component: {fileID: 1547981436}
   m_Layer: 0
-  m_Name: SwitchTo (vcam2:20)
+  m_Name: 'SwitchTo [vcam2 : 20]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29560,7 +29560,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 11
+  m_Priority: 20
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 181564203}
@@ -32441,7 +32441,7 @@ GameObject:
   - component: {fileID: 1880424022}
   - component: {fileID: 1880424021}
   m_Layer: 0
-  m_Name: SwitchTo (vcam2:20)
+  m_Name: 'SwitchTo [vcam2 : 20]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33330,7 +33330,7 @@ GameObject:
   - component: {fileID: 1942622791}
   - component: {fileID: 1942622790}
   m_Layer: 0
-  m_Name: SwitchTo (vcam5:26)
+  m_Name: 'SwitchTo [vcam5 : 26]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
