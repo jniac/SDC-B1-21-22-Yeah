@@ -20,8 +20,8 @@ public static class Boom
 
     public static void FromPoint(
         Vector3 point,
-        int particleCount,
         IList<GameObject> sources,
+        int particleCount,
         float lifeDuration = 1.5f,
         float velocity = 10f
     )

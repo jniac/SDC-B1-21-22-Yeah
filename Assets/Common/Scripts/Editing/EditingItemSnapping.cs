@@ -8,16 +8,36 @@ using UnityEditor;
 [ExecuteAlways]
 public class EditingItemSnapping : MonoBehaviour
 {
+    public enum SnapMode
+    {
+        Ground,
+        XYZ,
+    }
+
+    public SnapMode mode = SnapMode.Ground;
+
+    // GROUND MODE
     public LayerMask groundMask = 1;
-    public bool snapY = false;
+    public bool snapY = true;
     public float yOver = 0f;
     public bool snapScaleXZ = true;
+    public float yRangeWidth = 8f;
+
+    // XYZ Mode
+    public EditingBlockSnapping.SnapXYZMode xyzMode = EditingBlockSnapping.SnapXYZMode.Unit;
+
+    IEnumerable<RaycastHit> GetHits()
+    {
+        // Return hits 
+        return Physics.RaycastAll(transform.position + Vector3.up * (yRangeWidth + yOver), Vector3.down, yRangeWidth * 2f, groundMask);
+    }
 
     float GetY(float defaultY)
     {
-        var hits = Physics.RaycastAll(transform.position + Vector3.up * 10f, Vector3.down, 100f, groundMask);
+        var hits = GetHits();
 
-        float y = float.NegativeInfinity;
+        float d = float.PositiveInfinity;
+        float y = defaultY;
         foreach (var hit in hits)
         {
             // Ignore prefabs.
@@ -38,14 +58,13 @@ public class EditingItemSnapping : MonoBehaviour
             if (hit.collider.gameObject == gameObject)
                 continue;
 
-            float currentY = hit.point.y + yOver;
-            if (currentY > y)
-                y = currentY;
+            float currentD = Mathf.Abs(hit.point.y - transform.position.y);
+            if (currentD < d)
+            {
+                d = currentD;
+                y = hit.point.y + yOver;
+            }
         }
-
-        // Ignore invalid y value.
-        if (y == float.NegativeInfinity)
-            return defaultY;
 
         return y;
     }
@@ -58,7 +77,7 @@ public class EditingItemSnapping : MonoBehaviour
         transform.localScale = new Vector3(x, y, z);
     }
 
-    void Snap()
+    void SnapGround()
     {
         if (snapScaleXZ)
             SnapScaleXZ();
@@ -69,7 +88,7 @@ public class EditingItemSnapping : MonoBehaviour
         position.z = Mathf.Round(position.z);
         position += transform.localScale / 2f;
 
-        if (snapY) 
+        if (snapY)
             position.y = GetY(position.y);
 
         if (transform.position != position)
@@ -79,10 +98,56 @@ public class EditingItemSnapping : MonoBehaviour
         }
     }
 
+    void SnapXYZ()
+    {
+        EditingBlockSnapping.ApplySnapXYZ(transform, xyzMode);
+    }
+
     void Update()
     {
         if (Application.isPlaying == false)
-            Snap();
+        {
+            switch (mode)
+            {
+                case SnapMode.Ground:
+                    SnapGround();
+                    break;
+
+                case SnapMode.XYZ:
+                    SnapXYZ();
+                    break;
+            }
+        }
+    }
+
+    [CustomEditor(typeof(EditingItemSnapping))]
+    class MyEditor : Editor
+    {
+        EditingItemSnapping Target => target as EditingItemSnapping;
+        
+        public override void OnInspectorGUI()
+        {
+            System.Action<string> Draw = prop => EditorGUILayout.PropertyField(serializedObject.FindProperty(prop));
+
+            Draw("mode");
+
+            switch(Target.mode)
+            {
+                default:
+                case SnapMode.Ground:
+                    Draw("snapY");
+                    Draw("yOver");
+                    Draw("snapScaleXZ");
+                    Draw("yRangeWidth");
+                    break;
+
+                case SnapMode.XYZ:
+                    Draw("xyzMode");
+                    break;
+            }
+
+            serializedObject.ApplyModifiedProperties();
+        }
     }
 }
 #endif

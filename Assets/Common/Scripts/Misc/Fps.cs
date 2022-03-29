@@ -22,7 +22,7 @@ public class Fps : MonoBehaviour
             {
                 yield return new WaitForSeconds(0.1f);
                 count = (1 / Time.deltaTime);
-                label = $"{Mathf.Round(count)} fps";
+                label = $"{Mathf.Round(count)} fps {Screen.width}x{Screen.height}";
             }
             else
             {

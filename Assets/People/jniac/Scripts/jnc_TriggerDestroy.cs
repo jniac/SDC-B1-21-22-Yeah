@@ -6,6 +6,10 @@ public class jnc_TriggerDestroy : MonoBehaviour
 {
     void OnTriggerEnter(Collider other) 
     {
+        // Si invicible, alors invicible (return).
+        if (other.attachedRigidbody?.gameObject.tag == "Player" && PlayModeManager.Test(PlayMode.NeverDie))
+            return;
+
         Destroy(other.attachedRigidbody.gameObject);
     }
 }
