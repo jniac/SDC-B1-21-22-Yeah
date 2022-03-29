@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 3673933889562829979}
   - component: {fileID: 8423101111319043450}
   m_Layer: 0
-  m_Name: jnc_Coin
+  m_Name: unj_Coin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
