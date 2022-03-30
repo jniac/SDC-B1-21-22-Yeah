@@ -10,10 +10,53 @@ namespace SuperCubebe
         VOID = 0,
         PLAIN = 1,
     }
-    
+
     public struct Voxel
     {
         public VoxelType type;
+    }
+
+    public struct VoxelView
+    {
+        public Voxel voxel;
+        public Vector3Int position;
+
+        public Vector3 Center => (Vector3)position + Vector3.one / 2f;
+    }
+
+    public struct FaceView
+    {
+        public Voxel voxelPlain, voxelVoid;
+        public Vector3Int positionPlain, positionVoid;
+        public Vector3 Center => ((Vector3)positionVoid + (Vector3)positionPlain) / 2f + Vector3.one / 2f;
+        public Vector3 Normal => positionVoid - positionPlain;
+        public Vector3 Size {
+            get {
+                var n = Normal;
+                return new Vector3(
+                    1f - Mathf.Abs(n.x), 
+                    1f - Mathf.Abs(n.y), 
+                    1f - Mathf.Abs(n.z));
+            }
+        }
+
+        public void Set(bool voxel1IsPlain, Voxel voxel1, Vector3Int position1, Voxel voxel2, Vector3Int position2)
+        {
+            if (voxel1IsPlain)
+            {
+                voxelPlain = voxel1;
+                positionPlain = position1;
+                voxelVoid = voxel2;
+                positionVoid = position2;
+            }
+            else
+            {
+                voxelPlain = voxel2;
+                positionPlain = position2;
+                voxelVoid = voxel1;
+                positionVoid = position1;
+            }
+        }
     }
 
     public class VoxelWorld
@@ -45,12 +88,61 @@ namespace SuperCubebe
             }
         }
 
-        public IEnumerable<(Voxel voxel, Vector3Int position)> AllVoxels()
+        public IEnumerable<VoxelView> AllVoxels()
         {
+            VoxelView voxel = default;
+
             foreach (var p in bounds.allPositionsWithin)
             {
-                var voxel = voxels[p.x - x, p.y - y, p.z - z];
-                yield return (voxel, p);
+                voxel.position = p;
+                voxel.voxel = voxels[p.x - x, p.y - y, p.z - z];
+                yield return voxel;
+            }
+        }
+
+        public IEnumerable<FaceView> AllFaces()
+        {
+            var smallerBounds = bounds;
+            smallerBounds.xMax += -1;
+            smallerBounds.yMax += -1;
+            smallerBounds.zMax += -1;
+
+            if (smallerBounds.x == -1 && smallerBounds.y == -1 && smallerBounds.z == -1)
+               yield break;
+
+            FaceView face = default;
+            Vector3Int coord = default;
+
+            foreach (var p in smallerBounds.allPositionsWithin)
+            {
+                coord.x = p.x - x;
+                coord.y = p.y - y;
+                coord.z = p.z - z;
+
+                var voxel = voxels[coord.x, coord.y, coord.z];
+                var voxelR = voxels[coord.x + 1, coord.y, coord.z];
+                var voxelU = voxels[coord.x, coord.y + 1, coord.z];
+                var voxelF = voxels[coord.x, coord.y, coord.z + 1];
+
+                bool plain = voxel.type == VoxelType.PLAIN;
+
+                if (voxel.type != voxelR.type)
+                {
+                    face.Set(plain, voxel, p, voxelR, p + Vector3Int.right);
+                    yield return face;
+                }
+
+                if (voxel.type != voxelU.type)
+                {
+                    face.Set(plain, voxel, p, voxelU, p + Vector3Int.up);
+                    yield return face;
+                }
+
+                if (voxel.type != voxelF.type)
+                {
+                    face.Set(plain, voxel, p, voxelF, p + Vector3Int.forward);
+                    yield return face;
+                }
             }
         }
     }
@@ -97,7 +189,7 @@ namespace SuperCubebe
             if (iter.MoveNext())
             {
                 // First time, set "total".
-                total = iter.Current; 
+                total = iter.Current;
             }
 
             while (iter.MoveNext())
@@ -123,7 +215,7 @@ namespace SuperCubebe
             int xMax = Mathf.Min(A.xMax, B.xMax);
             int yMax = Mathf.Min(A.yMax, B.yMax);
             int zMax = Mathf.Min(A.zMax, B.zMax);
-            
+
             bool intersects = (xMin <= xMax
                 && yMin <= yMax
                 && zMin <= zMax);
