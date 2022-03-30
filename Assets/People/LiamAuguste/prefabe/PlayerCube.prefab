@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7243114861249226715}
   - component: {fileID: 7243114861249226712}
+  - component: {fileID: -5236203443313748818}
   - component: {fileID: 7243114861249226713}
   - component: {fileID: 7243114861249226709}
   - component: {fileID: 7243114861249226714}
@@ -54,6 +55,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-5236203443313748818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7243114861249226718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2eb790acdd7e437a955cd72a8fe0052, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  invicible: 0
+  invicibleUntil: -1
 --- !u!114 &7243114861249226713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,8 +83,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  groundIdleDrag: 0.15
+  airControl: 0.2
   rubber: {fileID: 0}
   ice: {fileID: 0}
+  overrideInputX: 0
+  overrideInputY: 0
   debug: 0
 --- !u!114 &7243114861249226709
 MonoBehaviour:
@@ -82,11 +102,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7efe406eed9a4ff48bdda93cf838d7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  corner: 0.35
+  groundDistanceMax: 0.4
+  detectionDistanceMax: 1
   groundMask:
     serializedVersion: 2
     m_Bits: 1
-  maxGroundDistance: 0.5
-  maxCloseGroundDistance: 1
 --- !u!114 &7243114861249226714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,6 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86fd4cc860acd4b7aa34cc455925ebdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundDistanceThreshold: 0.75
   velocityThreshold: 1
   transitionDuration: 0.5
   debug: 0
@@ -114,7 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0133055807cc234c8b32fd8fc2bbc48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpVelocity: 10
+  jumpVelocity: 15
 --- !u!114 &3163374259828177720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,7 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758aa297365754027b07f5a771e85148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waitTime: 1
+  prefabToRespawn: {fileID: 0}
 --- !u!114 &-4659528348079313342
 MonoBehaviour:
   m_ObjectHideFlags: 0
