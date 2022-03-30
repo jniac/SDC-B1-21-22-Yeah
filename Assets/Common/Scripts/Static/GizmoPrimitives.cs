@@ -23,6 +23,14 @@ public static class GizmoPrimitives
             return Vector3.left;
     }
 
+    public static void WithAlpha(float alpha, System.Action callback)
+    {
+        var color = Gizmos.color;
+        Gizmos.color = new Color(color.r, color.g, color.b, alpha);
+        callback();
+        Gizmos.color = color;
+    }
+
     public static IEnumerable<Vector3> Arc(
         float radius = 1f,
         int subdivisions = 24,
@@ -110,5 +118,35 @@ public static class GizmoPrimitives
         var v = Quaternion.Euler(0f, 90f, 0f) * dn;
         Gizmos.DrawLine(destination, destination + (-dn + v) * endSize);
         Gizmos.DrawLine(destination, destination + (-dn - v) * endSize);
+    }
+
+    public static void DrawGrid(
+        Vector3 center,
+        Vector2 size,
+        Orientation orientation = Orientation.XY,
+        float spacing = 1f
+    )
+    {
+        float x2 = size.x / 2f;
+        int countX = Mathf.FloorToInt(size.x / spacing);
+        float minY = center.y - size.y / 2f;
+        float maxY = center.y + size.y / 2f;
+        for (int i = 0; i < countX; i++)
+        {
+            float x = (i - (countX - 1) / 2f)  * spacing;
+            Gizmos.DrawLine(
+                new Vector3(center.x + x, minY, center.z), 
+                new Vector3(center.x + x, maxY, center.z));
+        }
+        int countY = Mathf.FloorToInt(size.y / spacing);
+        float minX = center.x - size.x / 2f;
+        float maxX = center.x + size.x / 2f;
+        for (int i = 0; i < countY; i++)
+        {
+            float y = (i - (countY - 1) / 2f)  * spacing;
+            Gizmos.DrawLine(
+                new Vector3(minX, center.y + y, center.z), 
+                new Vector3(maxX, center.y + y, center.z));
+        }
     }
 }
