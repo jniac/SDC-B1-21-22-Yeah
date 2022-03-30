@@ -230,12 +230,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49bf20ce5dbf04176a43aafffc8cb03f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode: 0
   groundMask:
     serializedVersion: 2
     m_Bits: 1
-  snapY: 0
-  yOver: 1
-  snapScaleXZ: 1
+  snapY: 1
+  yOver: 0.5
+  snapScaleXZ: 0
+  yRangeWidth: 8
+  xyzMode: 0
 --- !u!114 &2969682485146091208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,8 +290,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundDistanceThreshold: 0.75
-  velocityThreshold: 1
-  transitionDuration: 0.5
+  velocityThreshold: 4
+  transitionDuration: 0.2
   debug: 0
 --- !u!114 &2969682485146091215
 MonoBehaviour:
