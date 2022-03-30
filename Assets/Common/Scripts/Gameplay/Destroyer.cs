@@ -40,7 +40,7 @@ public class Destroyer : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerStay(Collider other)
     {
         if (destroyCondition == DestroyCondition.Trigger || destroyCondition == DestroyCondition.Both)
         {
@@ -56,7 +56,7 @@ public class Destroyer : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter(Collision other)
+    void OnCollisionStay(Collision other)
     {
         if (destroyCondition == DestroyCondition.Collision || destroyCondition == DestroyCondition.Both)
         {

@@ -11,7 +11,7 @@ public class Fps : MonoBehaviour
     {
         
         guiStyle = new GUIStyle {
-            fontSize = 30,
+            fontSize = 20,
             alignment = TextAnchor.MiddleRight,
         };
 

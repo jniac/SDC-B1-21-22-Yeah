@@ -189,6 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
+  healthMax: 100
   invicible: 0
   invicibleUntil: -1
 --- !u!114 &7634794281553622052
@@ -242,9 +243,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4074637580a3d418ba1020f45152b355, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputMode: 1
   speed: 5
+  airTimeTolerance: 0.3
+  airDistanceTolerance: 0.85
   groundIdleDrag: 0.02
   airControl: 0.2
+  destroyUnderThreshold: -100
   rubber: {fileID: 13400000, guid: db3ec1b7fb0b849fb9fb5fd27cadd794, type: 2}
   ice: {fileID: 13400000, guid: d29162e4c4694423cac8ac4f41bf5fb9, type: 2}
   overrideInputX: 0
@@ -281,6 +286,8 @@ MonoBehaviour:
   jumpHeight: 2
   airTimeTolerance: 0.3
   airDistanceTolerance: 0.65
+  airJumpMax: 0
+  extraJumpCount: 0
 --- !u!114 &7634794281553622050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -336,6 +343,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minVelocityToDash: 0.1
+  minDistanceToDash: 0.75
   cooldownDuration: 0.3
   dashLength: 3.6
   colliderRadius: 0.5

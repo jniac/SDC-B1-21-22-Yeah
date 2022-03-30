@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class jnc_TriggerDestroy : MonoBehaviour
 {
-    void OnTriggerEnter(Collider other) 
+    void OnTriggerStay(Collider other) 
     {
         // Si invicible, alors invicible (return).
         if (other.attachedRigidbody?.gameObject.tag == "Player" && PlayModeManager.Test(PlayMode.NeverDie))

@@ -6,18 +6,35 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody), typeof(CubeGroundDetection))]
 public class CubeMove : MonoBehaviour
 {
+    public enum InputMode
+    {
+        CameraY,
+        CameraYQuarter,
+        World,
+    }
+
+    public InputMode inputMode = InputMode.CameraYQuarter;
+
     public float speed = 5f;
+
+    [Tooltip("Combien de temps (en secondes) après avoir quitté le sol peut-on encore se déplacer comme si on était au sol ?")]
+    public float airTimeTolerance = 0.3f;
+    [Tooltip("À quelle distance après avoir quitté le sol peut-on encore se déplacer comme si on était au sol ?")]
+    public float airDistanceTolerance = 0.85f;
 
     [Range(0, 1), Tooltip("Command le ralentissement du cube lorsque le joueur ne demande pas de mouvement.\n"
         + "\n0.15 signifie : Au bout d'une seconde, il ne reste plus que 15% de la vitesse initiale.")]
     public float groundIdleDrag = 0.15f;
     Vector3 groundIdleScale3;
-    
+
     [Range(0, 1), Tooltip("Commande la quantité de \"contrôle\" dans les airs.\n"
         + "\n0 : Aucun contrôle, le joueur ne peut rien faire dans les airs."
         + "\n1 : Contrôle total, le joueur se déplace dans les airs avec la même efficacité qu'au sol.")]
     public float airControl = 0.2f;
-    
+
+    [Tooltip("Seuil au delà duquel le GameObject est détruit.")]
+    public float destroyUnderThreshold = -100f;
+
     public PhysicMaterial rubber, ice;
 
     [Range(-1, 1)]
@@ -39,7 +56,8 @@ public class CubeMove : MonoBehaviour
     public Vector3 Direction { get; private set; } = new Vector3();
     public Vector3 DirectionRight { get; private set; } = new Vector3();
 
-    float noControlsUntil = 0f;
+    public float NoControlsUntil { get; private set; } = 0f;
+    public float ControlsCoeff { get; private set; } = 1f;
 
     void Start()
     {
@@ -48,9 +66,16 @@ public class CubeMove : MonoBehaviour
         colliders = GetComponentsInChildren<Collider>()
             .Where(c => c.isTrigger == false)
             .ToArray();
-        
+
         float scale = Mathf.Pow(groundIdleDrag, Time.fixedDeltaTime);
         groundIdleScale3 = new Vector3(scale, 1f, scale);
+    }
+
+    public bool GetOnGround()
+    {
+        return
+            groundDetection.airDelta.magnitude < airDistanceTolerance
+            && groundDetection.airTime < airTimeTolerance;
     }
 
     void ComputeInput()
@@ -58,26 +83,54 @@ public class CubeMove : MonoBehaviour
         float x = overrideInputX != 0 ? overrideInputX : Input.GetAxis("Horizontal");
         float y = overrideInputY != 0 ? overrideInputY : Input.GetAxis("Vertical");
 
-        // Use rotation Y (only) from main camera to transform the inputs.
-        float ry = Camera.main.transform.rotation.eulerAngles.y;
-        Vector3 v = Quaternion.Euler(0f, ry, 0f) * new Vector3(x, 0f, y);
+        switch (inputMode)
+        {
+            // Use rotation Y (only) from main camera to transform the inputs.
+            case InputMode.CameraY:
+            {
+                float ry = Camera.main.transform.rotation.eulerAngles.y;
+                Vector3 v = Quaternion.Euler(0f, ry, 0f) * new Vector3(x, 0f, y);
+                x = v.x;
+                y = v.z;
+                break;
+            }
 
-        input.x = v.x;
-        input.y = v.z;
+            // Same as above, but clamped to X/Z axis.
+            case InputMode.CameraYQuarter:
+            {
+                float ry = Camera.main.transform.rotation.eulerAngles.y;
+                ry = Mathf.Round(ry / 90f) * 90f;
+                Vector3 v = Quaternion.Euler(0f, ry, 0f) * new Vector3(x, 0f, y);
+                x = v.x;
+                y = v.z;
+                break;
+            }
+        }
+
+        input.x = x;
+        input.y = y;
     }
 
     void Move()
     {
+        if (body.position.y < destroyUnderThreshold)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         ComputeInput();
 
-        // `controlInfluence`: 0: player is waiting. 1: player is playing.
+        ControlsCoeff = Mathf.Lerp(0f, 1f, (Time.time - NoControlsUntil) / 0.3f);
         float inputInfluence = Mathf.Clamp01(Mathf.Abs(input.x) + Mathf.Abs(input.y))
-            * Mathf.Lerp(0f, 1f, (Time.time - noControlsUntil) / 0.3f);
+            * ControlsCoeff;
 
         // inputVelocity = body.velocity;
 
+        bool onGround = GetOnGround();
+
         // Angular velocity on ground only!
-        if (groundDetection.onGround)
+        if (onGround)
         {
             Vector3 angularVelocity = body.angularVelocity;
             angularVelocity.z = -90 * inputVelocity.x;
@@ -94,11 +147,11 @@ public class CubeMove : MonoBehaviour
         // too fast when the player released any movement inputs. It allows to move
         // from on cell to its neighbors without going any further.
         // Occurs only on ground.
-        Vector3 lowVelocity = groundDetection.onGround
+        Vector3 lowVelocity = onGround
             ? Vector3.Scale(body.velocity, groundIdleScale3)
             : body.velocity;
 
-        float control = (groundDetection.onGround
+        float control = (onGround
             ? inputInfluence
             : inputInfluence * airControl);
 
@@ -107,7 +160,7 @@ public class CubeMove : MonoBehaviour
         // Gravity hack:
         // On ground use current "y" velocity
         // Otherwise use an "independant" velocity (which is not affected by walls)
-        yVelocity = groundDetection.onGround
+        yVelocity = onGround
             ? body.velocity.y
             : yVelocity + Physics.gravity.y * Time.fixedDeltaTime;
 
@@ -116,7 +169,7 @@ public class CubeMove : MonoBehaviour
 
         // "Ascending" is key key concept here: when ascending -> no rubber.
         bool ascending = yVelocity > 0.5f;
-        PhysicMaterial physicMaterial = (groundDetection.onGround && ascending == false) ? rubber : ice;
+        PhysicMaterial physicMaterial = (onGround && ascending == false) ? rubber : ice;
         foreach (var collider in colliders)
             collider.material = physicMaterial;
     }
@@ -134,7 +187,7 @@ public class CubeMove : MonoBehaviour
 
     public void RemoveControls(float duration)
     {
-        noControlsUntil = Mathf.Max(noControlsUntil, Time.time + duration);
+        NoControlsUntil = Mathf.Max(NoControlsUntil, Time.time + duration);
     }
 
     void OnSwitchCamera()
@@ -165,7 +218,7 @@ public class CubeMove : MonoBehaviour
             style.fontSize = 32;
             style.normal.textColor = new Color(0.6f, 1.0f, 0.8f);
             Rigidbody body = GetComponent<Rigidbody>();
-            GUI.Label(new Rect(10, 10, 150, 100), $"ground: {groundDetection.onGround} inputHV: ({input.x:F2}, {input.y:F2}) {body.velocity.magnitude:F2}", style);
+            GUI.Label(new Rect(10, 10, 150, 100), $"ground: {GetOnGround()} inputHV: ({input.x:F2}, {input.y:F2}) {body.velocity.magnitude:F2}", style);
         }
     }
 

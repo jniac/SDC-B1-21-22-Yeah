@@ -17,7 +17,7 @@ public class jnc_Attractor : MonoBehaviour
         {
             other.attachedRigidbody.position = transform.TransformPoint(anchor);
             other.attachedRigidbody.velocity *= 0.25f;
-            other.attachedRigidbody.gameObject.BroadcastMessage("RemoveControls", 0.6f);
+            other.attachedRigidbody.gameObject.BroadcastMessage("RemoveControls", 0.25f);
         }
     }
 }

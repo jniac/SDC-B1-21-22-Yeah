@@ -16,9 +16,16 @@ public class jnc_Coin : MonoBehaviour
 
     public int particleCount = 10;
 
-    void OnTriggerEnter(Collider other)
+    void Collect()
     {
         Destroy(gameObject);
         Boom.FromPoint(transform.position, particles, particleCount);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        // The player only has the ability to collect coins.
+        if (other.attachedRigidbody.gameObject.tag == "Player")
+            Collect();
     }
 }

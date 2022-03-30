@@ -28,12 +28,12 @@ public class PlayerSpawnPoint : MonoBehaviour
     void Focus()
     {
         ReachedTime = Time.time;
-        PlayerSpawnPointManager.instance.Reach(this);
+        PlayerSpawnPointManager.Instance.Reach(this);
     }
 
     IEnumerator Start()
     {
-        PlayerSpawnPointManager.instance.Register(this);
+        PlayerSpawnPointManager.Instance.Register(this);
 
         if (hasFocus)
             Focus();
