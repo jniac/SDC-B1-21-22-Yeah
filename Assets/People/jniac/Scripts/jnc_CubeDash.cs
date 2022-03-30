@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody), typeof(CubeMove), typeof(CubeGroundDetection))]
@@ -13,6 +14,7 @@ public class jnc_CubeDash : MonoBehaviour
         NoSpace,
         TooSoon,
         Ok,
+        OkViaAxisCorrection,
     }
 
     public enum DashStatus
@@ -28,6 +30,8 @@ public class jnc_CubeDash : MonoBehaviour
         public Vector3 direction;
         public Vector3 destination;
         public DashStatus status;
+
+        public Vector3 Delta => destination - origin;
 
         public DashInfo(Vector3 origin, Vector3 destination, Vector3 direction, DashStatus status)
         {
@@ -145,9 +149,11 @@ public class jnc_CubeDash : MonoBehaviour
 
     public DashRequestStatus RequestStatus { get; private set; }
     public DashStatus Status { get; private set; }
-    Rigidbody body;
-    DashInfo info;
 
+    Rigidbody body;
+    CubeMove move;
+
+    DashInfo info;
     float dashTime = -1;
     int airDashCount = 0;
 
@@ -165,8 +171,6 @@ public class jnc_CubeDash : MonoBehaviour
 
     (DashRequestStatus status, DashInfo info) CanDash()
     {
-        var move = GetComponent<CubeMove>();
-
         if (move.ControlsCoeff < 0.5f)
             return (DashRequestStatus.NoControls, default);
 
@@ -182,8 +186,20 @@ public class jnc_CubeDash : MonoBehaviour
 
         var info = DestinationCast(body.position, direction, dashLength, colliderRadius, dashObstacleMask);
 
-        if ((info.destination - info.origin).sqrMagnitude < minDistanceToDash * minDistanceToDash)
-            return (DashRequestStatus.NoSpace, default);
+        if (info.Delta.sqrMagnitude < minDistanceToDash * minDistanceToDash)
+        {
+            var axisDirection = new Vector3[] { Vector3.left, Vector3.right, Vector3.forward, Vector3.back }
+                .OrderBy(v => Vector3.Dot(v, direction))
+                .Last();
+
+            // Second chance with axis direction.
+            info = DestinationCast(body.position, axisDirection, dashLength, colliderRadius, dashObstacleMask);
+
+            if (info.Delta.sqrMagnitude < minDistanceToDash * minDistanceToDash)
+                return (DashRequestStatus.NoSpace, default);
+            else
+                return (DashRequestStatus.OkViaAxisCorrection, info);
+        }
 
         return (DashRequestStatus.Ok, info);
     }
@@ -211,6 +227,7 @@ public class jnc_CubeDash : MonoBehaviour
     void Start()
     {
         body = GetComponent<Rigidbody>();
+        move = GetComponent<CubeMove>();
     }
 
     void Update()
@@ -221,7 +238,7 @@ public class jnc_CubeDash : MonoBehaviour
 
             Debug.Log(RequestStatus);
 
-            if (RequestStatus == DashRequestStatus.Ok)
+            if (RequestStatus == DashRequestStatus.Ok || RequestStatus == DashRequestStatus.OkViaAxisCorrection)
                 Dash();
         }
     }
@@ -232,5 +249,13 @@ public class jnc_CubeDash : MonoBehaviour
         Gizmos.DrawLine(info.origin, info.destination);
         Gizmos.DrawSphere(info.origin, 0.1f);
         Gizmos.DrawSphere(info.destination, 0.2f);
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        if (move != null)
+            foreach (var v in GetSpreadVectors(move.InputVector3))
+                Gizmos.DrawRay(transform.position, v * dashLength);
     }
 }
