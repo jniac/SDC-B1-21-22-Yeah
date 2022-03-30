@@ -243,6 +243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4074637580a3d418ba1020f45152b355, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputMode: 1
   speed: 5
   airTimeTolerance: 0.3
   airDistanceTolerance: 0.85

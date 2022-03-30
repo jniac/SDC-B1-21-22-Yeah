@@ -6,6 +6,15 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody), typeof(CubeGroundDetection))]
 public class CubeMove : MonoBehaviour
 {
+    public enum InputMode
+    {
+        CameraY,
+        CameraYQuarter,
+        World,
+    }
+
+    public InputMode inputMode = InputMode.CameraYQuarter;
+
     public float speed = 5f;
 
     [Tooltip("Combien de temps (en secondes) après avoir quitté le sol peut-on encore se déplacer comme si on était au sol ?")]
@@ -74,12 +83,32 @@ public class CubeMove : MonoBehaviour
         float x = overrideInputX != 0 ? overrideInputX : Input.GetAxis("Horizontal");
         float y = overrideInputY != 0 ? overrideInputY : Input.GetAxis("Vertical");
 
-        // Use rotation Y (only) from main camera to transform the inputs.
-        float ry = Camera.main.transform.rotation.eulerAngles.y;
-        Vector3 v = Quaternion.Euler(0f, ry, 0f) * new Vector3(x, 0f, y);
+        switch (inputMode)
+        {
+            // Use rotation Y (only) from main camera to transform the inputs.
+            case InputMode.CameraY:
+            {
+                float ry = Camera.main.transform.rotation.eulerAngles.y;
+                Vector3 v = Quaternion.Euler(0f, ry, 0f) * new Vector3(x, 0f, y);
+                x = v.x;
+                y = v.z;
+                break;
+            }
 
-        input.x = v.x;
-        input.y = v.z;
+            // Same as above, but clamped to X/Z axis.
+            case InputMode.CameraYQuarter:
+            {
+                float ry = Camera.main.transform.rotation.eulerAngles.y;
+                ry = Mathf.Round(ry / 90f) * 90f;
+                Vector3 v = Quaternion.Euler(0f, ry, 0f) * new Vector3(x, 0f, y);
+                x = v.x;
+                y = v.z;
+                break;
+            }
+        }
+
+        input.x = x;
+        input.y = y;
     }
 
     void Move()
