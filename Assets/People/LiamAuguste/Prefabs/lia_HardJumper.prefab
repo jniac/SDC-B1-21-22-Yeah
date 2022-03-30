@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2463042127792517541}
   - component: {fileID: 2463042127792517540}
   m_Layer: 0
-  m_Name: HardJumper
+  m_Name: lia_HardJumper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

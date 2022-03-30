@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class lma_Jump : MonoBehaviour
+public class lia_Jump : MonoBehaviour
 {
     public float jumpVelocity = 10f;
     // Update is called once per frame
