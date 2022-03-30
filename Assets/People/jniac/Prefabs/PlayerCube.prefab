@@ -177,6 +177,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 1
+  snapY: 1
   yOver: 1
   snapScaleXZ: 1
 --- !u!114 &7634794281553622055
@@ -245,7 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f268afceccf4a4facae988f44a597313, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpSpeed: 9
+  jumpHeight: 2
   airTimeTolerance: 0.3
   airDistanceTolerance: 0.65
 --- !u!114 &7634794281553622050
@@ -305,6 +306,7 @@ MonoBehaviour:
   cooldownDuration: 0.3
   dashLength: 3
   colliderRadius: 0.5
+  airDashMax: 1
   triggerDash: 0
   dashObstacleMask:
     serializedVersion: 2
