@@ -23,6 +23,9 @@ public class CubeMove : MonoBehaviour
         + "\n1 : Contrôle total, le joueur se déplace dans les airs avec la même efficacité qu'au sol.")]
     public float airControl = 0.2f;
 
+    [Tooltip("Seuil au delà duquel le GameObject est détruit.")]
+    public float destroyUnderThreshold = -100f;
+
     public PhysicMaterial rubber, ice;
 
     [Range(-1, 1)]
@@ -81,6 +84,12 @@ public class CubeMove : MonoBehaviour
 
     void Move()
     {
+        if (body.position.y < destroyUnderThreshold)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         ComputeInput();
 
         ControlsCoeff = Mathf.Lerp(0f, 1f, (Time.time - NoControlsUntil) / 0.3f);
