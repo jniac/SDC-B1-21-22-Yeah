@@ -688,7 +688,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1112795090512361979, guid: 4a0e39d99801a49f6a62e55dd75deab5, type: 3}
       propertyPath: velocity
-      value: 7
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5536785720612347325, guid: 4a0e39d99801a49f6a62e55dd75deab5, type: 3}
       propertyPath: distance
@@ -4241,7 +4241,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1112795090512361979, guid: 4a0e39d99801a49f6a62e55dd75deab5, type: 3}
       propertyPath: velocity
-      value: 8
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5536785720612347325, guid: 4a0e39d99801a49f6a62e55dd75deab5, type: 3}
       propertyPath: heightMax
@@ -5013,7 +5013,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1744692805307148557, guid: 474a3f4c4a1994eb3970e4e00c71ff2d, type: 3}
       propertyPath: jump.y
-      value: 15
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1744692805307148558, guid: 474a3f4c4a1994eb3970e4e00c71ff2d, type: 3}
       propertyPath: m_Name
