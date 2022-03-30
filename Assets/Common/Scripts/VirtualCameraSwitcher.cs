@@ -211,7 +211,7 @@ public class VirtualCameraSwitcher : MonoBehaviour
     {
         Gizmos.color = gizmoColor;
         var bounds = Bounds;
-        GizmoPrimitives.WithAlpha(0.2f, () => Gizmos.DrawCube(bounds.center, bounds.size));
+        GizmosUtils.WithAlpha(0.2f, () => Gizmos.DrawCube(bounds.center, bounds.size));
     }
 
 #if UNITY_EDITOR

@@ -205,7 +205,7 @@ public class CubeMove : MonoBehaviour
     void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        GizmoPrimitives.DrawArrow(transform.position, inputVelocity);
+        GizmosUtils.DrawArrow(transform.position, inputVelocity);
     }
 
     [Tooltip("Show debug info on screen.")]

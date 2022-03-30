@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class GizmoPrimitives
+public static class GizmosUtils
 {
     public enum Orientation
     {
