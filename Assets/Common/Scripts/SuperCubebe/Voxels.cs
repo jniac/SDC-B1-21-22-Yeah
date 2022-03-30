@@ -72,24 +72,37 @@ namespace SuperCubebe
             return new BoundsInt(px, py, pz, sx, sy, sz);
         }
 
+        public static BoundsInt BoundsUnion(BoundsInt A, BoundsInt B)
+        {
+            return new BoundsInt(
+                Mathf.Min(A.xMin, B.xMin),
+                Mathf.Min(A.yMin, B.yMin),
+                Mathf.Min(A.zMin, B.zMin),
+                Mathf.Max(A.xMax, B.xMax),
+                Mathf.Max(A.yMax, B.yMax),
+                Mathf.Max(A.zMax, B.zMax));
+        }
+
         public static BoundsInt BoundsUnion(IEnumerable<GameObject> gameObjects) => BoundsUnion(gameObjects.Select(gameObject => ToBounds(gameObject)));
         public static BoundsInt BoundsUnion(IEnumerable<Component> components) => BoundsUnion(components.Select(component => ToBounds(component)));
         public static BoundsInt BoundsUnion(IEnumerable<Transform> transforms) => BoundsUnion(transforms.Select(transform => ToBounds(transform)));
-        public static BoundsInt BoundsUnion(IEnumerable<BoundsInt> boundss)
+        public static BoundsInt BoundsUnion(IEnumerable<BoundsInt> allBounds)
         {
             var total = new BoundsInt(0, 0, 0, -1, -1, -1);
 
             BoundsInt bounds;
 
-            var iter = boundss.GetEnumerator();
+            var iter = allBounds.GetEnumerator();
 
             if (iter.MoveNext())
             {
-                total = iter.Current; // First time, set "Total".
+                // First time, set "total".
+                total = iter.Current; 
             }
 
             while (iter.MoveNext())
             {
+                // Next times, compute.
                 bounds = iter.Current;
                 total.xMin = Mathf.Min(total.xMin, bounds.xMin);
                 total.yMin = Mathf.Min(total.yMin, bounds.yMin);
@@ -100,6 +113,26 @@ namespace SuperCubebe
             }
 
             return total;
+        }
+
+        public static bool BoundsIntersection(BoundsInt A, BoundsInt B, out BoundsInt intersection)
+        {
+            int xMin = Mathf.Max(A.xMin, B.xMin);
+            int yMin = Mathf.Max(A.yMin, B.yMin);
+            int zMin = Mathf.Max(A.zMin, B.zMin);
+            int xMax = Mathf.Min(A.xMax, B.xMax);
+            int yMax = Mathf.Min(A.yMax, B.yMax);
+            int zMax = Mathf.Min(A.zMax, B.zMax);
+            
+            bool intersects = (xMin <= xMax
+                && yMin <= yMax
+                && zMin <= zMax);
+
+            intersection = intersects
+                ? new BoundsInt(xMin, yMin, zMin, xMax - xMin, yMax - yMin, zMax - zMin)
+                : new BoundsInt(0, 0, 0, -1, -1, -1);
+
+            return intersects;
         }
 
         public static IEnumerable<Vector3Int> PositionsInBounds(BoundsInt bounds)
