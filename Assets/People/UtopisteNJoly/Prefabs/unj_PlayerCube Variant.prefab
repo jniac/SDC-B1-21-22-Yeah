@@ -17,15 +17,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7634794281553622053, guid: 4886f5aed73fa4fb1aa1a096dc07328d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.5
+      value: -5.5
       objectReference: {fileID: 0}
     - target: {fileID: 7634794281553622053, guid: 4886f5aed73fa4fb1aa1a096dc07328d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7634794281553622053, guid: 4886f5aed73fa4fb1aa1a096dc07328d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.5
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: 7634794281553622053, guid: 4886f5aed73fa4fb1aa1a096dc07328d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -57,8 +57,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7634794281553622079, guid: 4886f5aed73fa4fb1aa1a096dc07328d, type: 3}
       propertyPath: m_Name
-      value: PlayerCube
+      value: unj_PlayerCube Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 7634794282608215205, guid: 4886f5aed73fa4fb1aa1a096dc07328d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: da740893da3a3164b82e660c4e596f80, type: 2}
     - target: {fileID: 7634794282608215207, guid: 4886f5aed73fa4fb1aa1a096dc07328d, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.01999998
