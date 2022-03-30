@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: 3328091779350002159}
   - component: {fileID: 8949346053908926086}
   m_Layer: 10
-  m_Name: StupidBot (1)
+  m_Name: unj-StupidBot (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
