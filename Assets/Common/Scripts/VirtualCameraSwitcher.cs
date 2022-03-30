@@ -49,6 +49,7 @@ public class VirtualCameraSwitcher : MonoBehaviour
     static CinemachineVirtualCamera[] vcams;
     static CinemachineVirtualCamera currentVcam;
     static CinemachineVirtualCamera defaultVcam;
+    static int defaultVcamPriority = 10;
     static Transform follow;
     static void FindVcams(bool force = false)
     {
@@ -99,7 +100,7 @@ public class VirtualCameraSwitcher : MonoBehaviour
 
             int priority = instance.Overlaps() ?
                 instance.onEnterPriority :
-                defaultVcam ? defaultVcam.Priority - 2 : 10;
+                defaultVcamPriority - 2;
 
             if (vcamPriority.ContainsKey(instance.vcam))
             {
@@ -125,6 +126,9 @@ public class VirtualCameraSwitcher : MonoBehaviour
             int priority = entry.Value;
             vcam.Priority = priority + forceCinemachineUpdateOffset;
         }
+
+        if (defaultVcam != null)
+            defaultVcam.Priority = defaultVcamPriority + forceCinemachineUpdateOffset;
 
         var newVcam = vcams.OrderBy(vcam => vcam.Priority).LastOrDefault();
         if (newVcam != currentVcam)

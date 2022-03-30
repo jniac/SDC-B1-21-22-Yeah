@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -8976820876227890241}
   m_Layer: 0
   m_Name: jnc_Coin
-  m_TagString: Untagged
+  m_TagString: Collectable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -80,10 +80,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 932f156313fbb41ef943d046d645178a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 0
   particles:
   - {fileID: 173352213401199758, guid: e72c815a5c7ba4b4da08b441686548c1, type: 3}
   - {fileID: 173352213401199758, guid: dc85f5c36764e440b8c5c56801150ee6, type: 3}
   - {fileID: 173352213401199758, guid: 6048c667b2806488592e51206ed659f0, type: 3}
+  particleCount: 10
 --- !u!1 &9176911018483885701
 GameObject:
   m_ObjectHideFlags: 0

@@ -56,7 +56,7 @@ public class Destroyer : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter(Collision other)
+    void OnCollisionStay(Collision other)
     {
         if (destroyCondition == DestroyCondition.Collision || destroyCondition == DestroyCondition.Both)
         {

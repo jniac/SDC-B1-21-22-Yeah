@@ -85,7 +85,7 @@ MeshCollider:
   m_GameObject: {fileID: 7634794281249932403}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: 30
@@ -99,7 +99,7 @@ BoxCollider:
   m_GameObject: {fileID: 7634794281249932403}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -189,6 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
+  healthMax: 100
   invicible: 0
   invicibleUntil: -1
 --- !u!114 &7634794281553622052
@@ -243,6 +244,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  airTimeTolerance: 0.3
+  airDistanceTolerance: 0.85
   groundIdleDrag: 0.02
   airControl: 0.2
   rubber: {fileID: 13400000, guid: db3ec1b7fb0b849fb9fb5fd27cadd794, type: 2}
