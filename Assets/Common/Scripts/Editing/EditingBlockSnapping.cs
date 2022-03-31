@@ -57,4 +57,10 @@ public class EditingBlockSnapping : MonoBehaviour
             ApplySnapXYZ(transform, snapStep);
 #endif
     }
+
+    void OnEnable()
+    {
+        // Hm...
+        gameObject.tag = "Block";
+    }
 }

@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Destroyer
   - Collectable
+  - Block
   layers:
   - Default
   - TransparentFX

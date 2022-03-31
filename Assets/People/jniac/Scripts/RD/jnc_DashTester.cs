@@ -16,7 +16,7 @@ public class jnc_DashTester : MonoBehaviour
 
     void OnEnable()
     {
-        world = new SuperCubebe.VoxelWorld(FindObjectsOfType<EditingBlockSnapping>());        
+        world = SuperCubebe.VoxelWorld.New(FindObjectsOfType<EditingBlockSnapping>());        
     }
 
     void Update()
@@ -44,7 +44,5 @@ public class jnc_DashTester : MonoBehaviour
         Gizmos.DrawRay(transform.position, info.direction * dashLength);
         Gizmos.DrawSphere(info.destination, 0.1f);
         Gizmos.DrawWireSphere(info.destination, radius);
-
-        Gizmos.DrawWireCube(world.bounds.center, world.bounds.size);
     }
 }

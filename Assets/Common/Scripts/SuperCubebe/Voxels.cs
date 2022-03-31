@@ -11,6 +11,16 @@ namespace SuperCubebe
         PLAIN = 1,
     }
 
+    public enum Axis
+    {
+        X_POSITIVE = 0,
+        X_NEGATIVE = 1,
+        Y_POSITIVE = 2,
+        Y_NEGATIVE = 3,
+        Z_POSITIVE = 4,
+        Z_NEGATIVE = 5,
+    }
+
     public struct Voxel
     {
         public VoxelType type;
@@ -26,50 +36,97 @@ namespace SuperCubebe
 
     public struct FaceView
     {
-        public Voxel voxelPlain, voxelVoid;
-        public Vector3Int positionPlain, positionVoid;
-        public Vector3 Center => ((Vector3)positionVoid + (Vector3)positionPlain) / 2f + Vector3.one / 2f;
-        public Vector3 Normal => positionVoid - positionPlain;
-        public Vector3 Size {
-            get {
-                var n = Normal;
-                return new Vector3(
-                    1f - Mathf.Abs(n.x), 
-                    1f - Mathf.Abs(n.y), 
-                    1f - Mathf.Abs(n.z));
+        public Axis axis;
+        public bool voxel1IsPlain;
+        public Voxel voxel1, voxel2;
+        public Vector3Int position1, position2;
+        public Vector3 Center => (Vector3)(position2 + position1) / 2f + Vector3.one / 2f;
+        public Vector3 Normal => voxel1IsPlain ? (Vector3)(position2 - position1) : (Vector3)(position1 - position2);
+        public Vector3 Size => Vector3.one - (position2 - position1);
+
+        public (Vector3Int, Vector3Int, Vector3Int, Vector3Int) Vertices
+        {
+            get 
+            {
+                // Elegant, but unsorted, so not useful.
+                // var p = position2;
+                // var d = position2 - position1;
+                // var s = Vector3Int.one - d;
+                // return (
+                //     p,
+                //     p + new Vector3Int(s.x, s.y, 0),
+                //     p + new Vector3Int(s.x, 0, s.z),
+                //     p + new Vector3Int(0, s.y, s.z)
+                // );
+
+                var p = position2;
+                switch (axis)
+                {
+                    default:
+                    case Axis.X_POSITIVE: return (
+                        p, 
+                        p + new Vector3Int(0, 1, 0),
+                        p + new Vector3Int(0, 1, 1),
+                        p + new Vector3Int(0, 0, 1)
+                    );
+                    case Axis.X_NEGATIVE: return (
+                        p, 
+                        p + new Vector3Int(0, 0, 1),
+                        p + new Vector3Int(0, 1, 1),
+                        p + new Vector3Int(0, 1, 0)
+                    );
+                    case Axis.Y_POSITIVE: return (
+                        p, 
+                        p + new Vector3Int(0, 0, 1),
+                        p + new Vector3Int(1, 0, 1),
+                        p + new Vector3Int(1, 0, 0)
+                    );
+                    case Axis.Y_NEGATIVE: return (
+                        p, 
+                        p + new Vector3Int(1, 0, 0),
+                        p + new Vector3Int(1, 0, 1),
+                        p + new Vector3Int(0, 0, 1)
+                    );
+                    case Axis.Z_POSITIVE: return (
+                        p, 
+                        p + new Vector3Int(1, 0, 0),
+                        p + new Vector3Int(1, 1, 0),
+                        p + new Vector3Int(0, 1, 0)
+                    );
+                    case Axis.Z_NEGATIVE: return (
+                        p, 
+                        p + new Vector3Int(0, 1, 0),
+                        p + new Vector3Int(1, 1, 0),
+                        p + new Vector3Int(1, 0, 0)
+                    );
+                }
             }
         }
 
-        public void Set(bool voxel1IsPlain, Voxel voxel1, Vector3Int position1, Voxel voxel2, Vector3Int position2)
+        public void Set(Axis axis, bool voxel1IsPlain, Voxel voxel1, Vector3Int position1, Voxel voxel2, Vector3Int position2)
         {
-            if (voxel1IsPlain)
-            {
-                voxelPlain = voxel1;
-                positionPlain = position1;
-                voxelVoid = voxel2;
-                positionVoid = position2;
-            }
-            else
-            {
-                voxelPlain = voxel2;
-                positionPlain = position2;
-                voxelVoid = voxel1;
-                positionVoid = position1;
-            }
+            this.axis = axis;
+            this.voxel1IsPlain = voxel1IsPlain;
+            this.voxel1 = voxel1;
+            this.position1 = position1;
+            this.voxel2 = voxel2;
+            this.position2 = position2;
         }
     }
 
     public class VoxelWorld
     {
+        public static VoxelWorld New(IEnumerable<GameObject> items) => new VoxelWorld(items.Select(item => Utils.ToBounds(item)).ToArray());
+        public static VoxelWorld New(IEnumerable<Component> items) => new VoxelWorld(items.Select(item => Utils.ToBounds(item)).ToArray());
+        public static VoxelWorld New(IEnumerable<Transform> items) => new VoxelWorld(items.Select(item => Utils.ToBounds(item)).ToArray());
+
         public BoundsInt bounds;
         public Voxel[,,] voxels;
         public readonly int x, y, z;
         public readonly int sizeX, sizeY, sizeZ;
 
-        public VoxelWorld(IEnumerable<Component> components)
+        public VoxelWorld(BoundsInt[] allBounds)
         {
-            var allBounds = components.Select(component => Utils.ToBounds(component)).ToArray();
-
             bounds = Utils.BoundsUnion(allBounds);
             x = bounds.xMin;
             y = bounds.yMin;
@@ -77,6 +134,14 @@ namespace SuperCubebe
             sizeX = bounds.size.x;
             sizeY = bounds.size.y;
             sizeZ = bounds.size.z;
+
+            if (sizeX == -1 || sizeY == -1 || sizeZ == -1)
+            {
+                voxels = new Voxel[0, 0, 0];
+                Debug.Log("Null world (no Voxel)!");
+                return;
+            }
+
             voxels = new Voxel[sizeX, sizeY, sizeZ];
 
             foreach (var currentBounds in allBounds)
@@ -88,7 +153,7 @@ namespace SuperCubebe
             }
         }
 
-        public IEnumerable<VoxelView> AllVoxels()
+        public IEnumerable<VoxelView> VoxelViews()
         {
             VoxelView voxel = default;
 
@@ -100,48 +165,61 @@ namespace SuperCubebe
             }
         }
 
-        public IEnumerable<FaceView> AllFaces()
+        public IEnumerable<FaceView> FaceViews()
         {
-            var smallerBounds = bounds;
-            smallerBounds.xMax += -1;
-            smallerBounds.yMax += -1;
-            smallerBounds.zMax += -1;
-
-            if (smallerBounds.x == -1 && smallerBounds.y == -1 && smallerBounds.z == -1)
-               yield break;
+            // OPTIM: There is a lot of branches here. 
+            // Some of them are almost always true: 
+            // `coord.x + 1 < sizeX` is false for only one cube's slice. 
+            // An optimization may consist here to perform 4 loops:
+            // - One for bounds - 1
+            // - One for x == sizeX - 1
+            // - One for y == sizeY - 1
+            // - One for z == sizeZ - 1
+            // But it's for another time!
 
             FaceView face = default;
             Vector3Int coord = default;
 
-            foreach (var p in smallerBounds.allPositionsWithin)
+            foreach (var p in bounds.allPositionsWithin)
             {
                 coord.x = p.x - x;
                 coord.y = p.y - y;
                 coord.z = p.z - z;
 
                 var voxel = voxels[coord.x, coord.y, coord.z];
-                var voxelR = voxels[coord.x + 1, coord.y, coord.z];
-                var voxelU = voxels[coord.x, coord.y + 1, coord.z];
-                var voxelF = voxels[coord.x, coord.y, coord.z + 1];
-
                 bool plain = voxel.type == VoxelType.PLAIN;
 
-                if (voxel.type != voxelR.type)
+                if (coord.x + 1 < sizeX)
                 {
-                    face.Set(plain, voxel, p, voxelR, p + Vector3Int.right);
-                    yield return face;
+                    var voxelX = voxels[coord.x + 1, coord.y, coord.z];
+                    if (voxel.type != voxelX.type)
+                    {
+                        var axis = plain ? Axis.X_POSITIVE : Axis.X_NEGATIVE;
+                        face.Set(axis, plain, voxel, p, voxelX, p + Vector3Int.right);
+                        yield return face;
+                    }
                 }
 
-                if (voxel.type != voxelU.type)
+                if (coord.y + 1 < sizeY)
                 {
-                    face.Set(plain, voxel, p, voxelU, p + Vector3Int.up);
-                    yield return face;
+                    var voxelY = voxels[coord.x, coord.y + 1, coord.z];
+                    if (voxel.type != voxelY.type)
+                    {
+                        var axis = plain ? Axis.Y_POSITIVE : Axis.Y_NEGATIVE;
+                        face.Set(axis, plain, voxel, p, voxelY, p + Vector3Int.up);
+                        yield return face;
+                    }
                 }
 
-                if (voxel.type != voxelF.type)
+                if (coord.z + 1 < sizeZ)
                 {
-                    face.Set(plain, voxel, p, voxelF, p + Vector3Int.forward);
-                    yield return face;
+                    var voxelZ = voxels[coord.x, coord.y, coord.z + 1];
+                    if (voxel.type != voxelZ.type)
+                    {
+                        var axis = plain ? Axis.Z_POSITIVE : Axis.Z_NEGATIVE;
+                        face.Set(axis, plain, voxel, p, voxelZ, p + Vector3Int.forward);
+                        yield return face;
+                    }
                 }
             }
         }
@@ -149,6 +227,41 @@ namespace SuperCubebe
 
     public class Utils
     {
+        public static Vector3 ToVector(Axis axis)
+        {
+            switch (axis)
+            {
+                default:
+                case Axis.X_POSITIVE: return Vector3.right;
+                case Axis.X_NEGATIVE: return Vector3.left;
+                case Axis.Y_POSITIVE: return Vector3.up;
+                case Axis.Y_NEGATIVE: return Vector3.down;
+                case Axis.Z_POSITIVE: return Vector3.forward;
+                case Axis.Z_NEGATIVE: return Vector3.back;
+            }
+        }
+
+        public static Axis ToAxis(Vector3 v)
+        {
+            float ax = Mathf.Abs(v.x);
+            float ay = Mathf.Abs(v.y);
+            float az = Mathf.Abs(v.z);
+            if (ax > ay)
+            {
+                if (ax > az)
+                    return v.x > 0f ? Axis.X_POSITIVE : Axis.X_NEGATIVE;
+                else
+                    return v.z > 0f ? Axis.Z_POSITIVE : Axis.Z_NEGATIVE;
+            }
+            else
+            {
+                if (ay > az)
+                    return v.y > 0f ? Axis.Y_POSITIVE : Axis.Y_NEGATIVE;
+                else
+                    return v.z > 0f ? Axis.Z_POSITIVE : Axis.Z_NEGATIVE;
+            }
+        }
+
         public static BoundsInt ToBounds(GameObject gameObject) => ToBounds(gameObject.transform);
         public static BoundsInt ToBounds(Component component) => ToBounds(component.transform);
         public static BoundsInt ToBounds(Transform transform)
