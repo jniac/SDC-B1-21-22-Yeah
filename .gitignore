@@ -84,3 +84,6 @@ tmp
 tmp.meta
 
 Recordings
+
+# Remove from now, since everyone wants to build his own scene
+EditorBuildSettings.asset
