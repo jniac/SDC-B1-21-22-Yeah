@@ -21,9 +21,7 @@ public class jnc_LevelManager : MonoBehaviour
     {
         Instance = this;
 
-        var all = FindObjectsOfType<jnc_Coin>();
-        normals = all.Where(item => item.type == jnc_Coin.CoinType.Normal).ToArray();
-        purples = all.Where(item => item.type == jnc_Coin.CoinType.Purple).ToArray();
+        (_, normals, purples) = jnc_Coin.GetAllCoins();
     }
 
     void SessionUpdate()

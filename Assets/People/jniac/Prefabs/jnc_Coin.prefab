@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4259724009167608977}
   - component: {fileID: 5004447257573444190}
   - component: {fileID: -8976820876227890241}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: jnc_Coin
   m_TagString: Collectable
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 8054511723087981856}
   - component: {fileID: 7308680394864134590}
   - component: {fileID: 5607720038649946845}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}

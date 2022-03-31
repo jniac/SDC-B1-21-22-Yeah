@@ -162,7 +162,7 @@ public class jnc_CubeDash : MonoBehaviour
         var hits = Physics.SphereCastAll(info.origin, dashKillRadius, info.direction, dashLength, dashKillMask);
         foreach (var hit in hits)
         {
-            var go = hit.collider.attachedRigidbody.gameObject;
+            var go = hit.collider.attachedRigidbody?.gameObject ?? hit.collider.gameObject;
             Destroy(go);
         }
 

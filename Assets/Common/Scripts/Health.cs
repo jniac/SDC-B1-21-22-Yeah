@@ -28,4 +28,9 @@ public class Health : MonoBehaviour
     {
         invicibleUntil = Mathf.Max(invicibleUntil, Time.time + duration);
     }
+
+    void Start()
+    {
+        InvicibleUntil(0.5f);
+    }
 }

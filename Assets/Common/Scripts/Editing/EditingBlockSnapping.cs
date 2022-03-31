@@ -49,6 +49,8 @@ public class EditingBlockSnapping : MonoBehaviour
     }
 
     public SnapStep snapStep = SnapStep.Unit;
+    public bool drawGizmos = false;
+    public Color gizmosColor = Color.yellow;
 
     void Update()
     {
@@ -62,5 +64,15 @@ public class EditingBlockSnapping : MonoBehaviour
     {
         // Hm...
         gameObject.tag = "Block";
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        if (drawGizmos)
+        {
+            Gizmos.color = gizmosColor;
+            GizmosUtils.WithAlpha(0.25f, () => 
+                Gizmos.DrawCube(transform.position, transform.localScale));
+        }
     }
 }

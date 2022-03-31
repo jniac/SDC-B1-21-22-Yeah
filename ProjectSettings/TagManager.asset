@@ -18,10 +18,10 @@ TagManager:
   - UI
   - Player
   - FX
-  - Triggers
+  - Trigger
   - PlayerBlock
   - Enemy
-  - 
+  - Collectable
   - 
   - 
   - 
