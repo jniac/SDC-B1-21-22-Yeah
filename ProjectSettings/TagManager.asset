@@ -10,6 +10,7 @@ TagManager:
   - Collectable
   - Block
   - Screen
+  - InvisibleBlock
   layers:
   - Default
   - TransparentFX

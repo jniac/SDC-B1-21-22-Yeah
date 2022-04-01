@@ -26,7 +26,7 @@ public class VirtualCameraSwitcher : MonoBehaviour
         public bool GetOverlap() => overlap;
 
         public bool GetOverlapWithDelay(float delay) => overlap || (Time.time - exitTime < delay);
-  
+
         public bool SetOverlap(bool value)
         {
             if (value != overlap)
@@ -150,7 +150,7 @@ public class VirtualCameraSwitcher : MonoBehaviour
 
     void UpdateName()
     {
-        var str = vcam != null 
+        var str = vcam != null
             ? Regex.Split(vcam.name, @"\W").Last()
             : "NO-CAM";
         gameObject.name = $"SwitchTo [{str} : {onEnterPriority}]";
@@ -202,11 +202,17 @@ public class VirtualCameraSwitcher : MonoBehaviour
     }
 
     public Color gizmoColor = Color.yellow;
-    void OnDrawGizmos()
+    static bool drawGizmos = false;
+    void DrawGizmos()
     {
         Gizmos.color = gizmoColor;
         var bounds = Bounds;
         Gizmos.DrawWireCube(bounds.center, bounds.size);
+    }
+    void OnDrawGizmos()
+    {
+        if (drawGizmos)
+            DrawGizmos();
     }
     void OnDrawGizmosSelected()
     {
@@ -237,6 +243,8 @@ public class VirtualCameraSwitcher : MonoBehaviour
             Draw("onEnterPriority");
             Draw("exitDelay");
             Draw("safeMargin");
+
+            drawGizmos = EditorGUILayout.Toggle("Draw Gizmos", drawGizmos);
             Draw("gizmoColor");
             serializedObject.ApplyModifiedProperties();
 
