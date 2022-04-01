@@ -81,7 +81,8 @@ public class VirtualCameraSwitcher : MonoBehaviour
         FindVcams(force);
 
         follow = instances
-            .Select(item => item.vcam?.Follow)
+            .Where(item => item.vcam != null)
+            .Select(item => item.vcam.Follow)
             .Where(item => item != null)
             .FirstOrDefault();
 
