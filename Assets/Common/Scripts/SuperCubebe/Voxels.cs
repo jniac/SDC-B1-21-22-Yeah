@@ -120,6 +120,14 @@ namespace SuperCubebe
         public static VoxelWorld New(IEnumerable<Component> items) => new VoxelWorld(items.Select(item => Utils.ToBounds(item)).ToArray());
         public static VoxelWorld New(IEnumerable<Transform> items) => new VoxelWorld(items.Select(item => Utils.ToBounds(item)).ToArray());
 
+        public static VoxelWorld FromChildren(GameObject go)
+        {
+            var children = new List<GameObject>();
+            foreach (Transform child in go.transform)
+                children.Add(child.gameObject);
+            return New(children);
+        }
+
         public BoundsInt bounds;
         public Voxel[,,] voxels;
         public readonly int x, y, z;
@@ -128,6 +136,7 @@ namespace SuperCubebe
         public VoxelWorld(BoundsInt[] allBounds)
         {
             bounds = Utils.BoundsUnion(allBounds);
+            
             x = bounds.xMin;
             y = bounds.yMin;
             z = bounds.zMin;
@@ -165,11 +174,11 @@ namespace SuperCubebe
             }
         }
 
-        public IEnumerable<FaceView> FaceViews()
+        public IEnumerable<FaceView> FaceViews(bool includeOutsideFace = true)
         {
             // OPTIM: There is a lot of branches here. 
             // Some of them are almost always true: 
-            // `coord.x + 1 < sizeX` is false for only one cube's slice. 
+            // `cx + 1 < sizeX` is false for only one cube's slice. 
             // An optimization may consist here to perform 4 loops:
             // - One for bounds - 1
             // - One for x == sizeX - 1
@@ -177,47 +186,101 @@ namespace SuperCubebe
             // - One for z == sizeZ - 1
             // But it's for another time!
 
+            var dX = new Vector3Int(1, 0, 0);
+            var dY = new Vector3Int(0, 1, 0);
+            var dZ = new Vector3Int(0, 0, 1);
+
             FaceView face = default;
-            Vector3Int coord = default;
+            int cX, cY, cZ;
+
+            var voidVoxel = new Voxel { type = VoxelType.VOID };
 
             foreach (var p in bounds.allPositionsWithin)
             {
-                coord.x = p.x - x;
-                coord.y = p.y - y;
-                coord.z = p.z - z;
+                cX = p.x - x;
+                cY = p.y - y;
+                cZ = p.z - z;
 
-                var voxel = voxels[coord.x, coord.y, coord.z];
+                var voxel = voxels[cX, cY, cZ];
                 bool plain = voxel.type == VoxelType.PLAIN;
 
-                if (coord.x + 1 < sizeX)
+                if (includeOutsideFace && voxel.type == VoxelType.PLAIN)
                 {
-                    var voxelX = voxels[coord.x + 1, coord.y, coord.z];
+                    // X:
+                    if (cX == 0)
+                    {
+                        var axis = Axis.X_NEGATIVE;
+                        face.Set(axis, false, voidVoxel, p - dX, voxel, p);
+                        yield return face;
+                    }
+
+                    if (cX == sizeX - 1)
+                    {
+                        var axis = Axis.X_POSITIVE;
+                        face.Set(axis, true, voxel, p, voidVoxel, p + dX);
+                        yield return face;
+                    }
+
+                    // Y:
+                    if (cY == 0)
+                    {
+                        var axis = Axis.Y_NEGATIVE;
+                        face.Set(axis, false, voidVoxel, p - dY, voxel, p);
+                        yield return face;
+                    }
+
+                    if (cY == sizeY - 1)
+                    {
+                        var axis = Axis.Y_POSITIVE;
+                        face.Set(axis, true, voxel, p, voidVoxel, p + dY);
+                        yield return face;
+                    }
+
+                    // Z:
+                    if (cZ == 0)
+                    {
+                        var axis = Axis.Z_NEGATIVE;
+                        face.Set(axis, false, voidVoxel, p - dZ, voxel, p);
+                        yield return face;
+                    }
+
+                    if (cZ == sizeZ - 1)
+                    {
+                        var axis = Axis.Z_POSITIVE;
+                        face.Set(axis, true, voxel, p, voidVoxel, p + dZ);
+                        yield return face;
+                    }
+                }
+                
+                if (cX < sizeX - 1)
+                {
+                    var voxelX = voxels[cX + 1, cY, cZ];
                     if (voxel.type != voxelX.type)
                     {
                         var axis = plain ? Axis.X_POSITIVE : Axis.X_NEGATIVE;
-                        face.Set(axis, plain, voxel, p, voxelX, p + Vector3Int.right);
+                        face.Set(axis, plain, voxel, p, voxelX, p + dX);
                         yield return face;
                     }
                 }
 
-                if (coord.y + 1 < sizeY)
+                if (cY < sizeY - 1)
                 {
-                    var voxelY = voxels[coord.x, coord.y + 1, coord.z];
+                    var voxelY = voxels[cX, cY + 1, cZ];
                     if (voxel.type != voxelY.type)
                     {
                         var axis = plain ? Axis.Y_POSITIVE : Axis.Y_NEGATIVE;
-                        face.Set(axis, plain, voxel, p, voxelY, p + Vector3Int.up);
+                        face.Set(axis, plain, voxel, p, voxelY, p + dY);
                         yield return face;
                     }
                 }
 
-                if (coord.z + 1 < sizeZ)
+                if (cZ < sizeZ - 1)
                 {
-                    var voxelZ = voxels[coord.x, coord.y, coord.z + 1];
+                    var voxelZ = voxels[cX, cY, cZ + 1];
                     if (voxel.type != voxelZ.type)
                     {
                         var axis = plain ? Axis.Z_POSITIVE : Axis.Z_NEGATIVE;
-                        face.Set(axis, plain, voxel, p, voxelZ, p + Vector3Int.forward);
+                        face.Set(axis, plain, voxel, p, voxelZ, p + dZ);
                         yield return face;
                     }
                 }
@@ -288,6 +351,22 @@ namespace SuperCubebe
                 Mathf.Max(A.zMax, B.zMax));
         }
 
+        public static void Inflate(ref BoundsInt bounds, int offset)
+        {
+            bounds.x += -offset;
+            bounds.y += -offset;
+            bounds.z += -offset;
+            bounds.xMax += offset * 2;
+            bounds.yMax += offset * 2;
+            bounds.zMax += offset * 2;
+        }
+        public static BoundsInt Inflate(BoundsInt bounds, int offset)
+        {
+            var copy = bounds;
+            Inflate(ref copy, offset);
+            return copy;
+        }
+
         public static BoundsInt BoundsUnion(IEnumerable<GameObject> gameObjects) => BoundsUnion(gameObjects.Select(gameObject => ToBounds(gameObject)));
         public static BoundsInt BoundsUnion(IEnumerable<Component> components) => BoundsUnion(components.Select(component => ToBounds(component)));
         public static BoundsInt BoundsUnion(IEnumerable<Transform> transforms) => BoundsUnion(transforms.Select(transform => ToBounds(transform)));
@@ -340,15 +419,8 @@ namespace SuperCubebe
             return intersects;
         }
 
-        public static IEnumerable<Vector3Int> PositionsInBounds(BoundsInt bounds)
+        public static IEnumerable<Vector3Int> PositionsInBounds(int x, int y, int z, int xMax, int yMax, int zMax)
         {
-            int x = bounds.xMin;
-            int y = bounds.yMin;
-            int z = bounds.zMin;
-            int xMax = bounds.xMax;
-            int yMax = bounds.yMax;
-            int zMax = bounds.zMax;
-
             while (z < zMax)
             {
                 while (y < yMax)

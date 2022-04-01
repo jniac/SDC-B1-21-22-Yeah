@@ -36,7 +36,9 @@ namespace SuperCubebe
             foreach (var face in world.FaceViews())
             {
                 // D --- C
+                // |   / |
                 // |  /  |
+                // | /   |
                 // A --- B                
                 
                 var (A, B, C, D) = face.Vertices;
