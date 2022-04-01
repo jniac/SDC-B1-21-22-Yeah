@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class TransformExtension
+public static class TransformExtensions
 {
-    public static Transform FindDeepChild(this Transform parent, string name)
+    public static Transform DeepFind(this Transform parent, string name)
     {
         if (parent == null)
             throw new System.Exception("\"parent\" is null! Can't perform FindDeepChild.");

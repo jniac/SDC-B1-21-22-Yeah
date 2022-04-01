@@ -2,14 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// NOTE:
+// Update est overkill ici, mais de meilleures solutions impliquent trop de 
+// complexités (SendMessage, Events) pour des débutants. 
+// Donc pour l'instant osef. 
+
 public class jnc_UIStartScreen : MonoBehaviour
 {
+    TMPro.TextMeshProUGUI normalText, purpleText;
+
     void Start()
     {
-        var normal = transform.FindDeepChild("Normal").GetComponent<TMPro.TextMeshProUGUI>();
-        normal.text = normal.text.Replace("$n", jnc_LevelManager.Instance.normals.Length.ToString());
+        normalText = transform
+            .DeepFind("Normal")
+            .GetComponent<TMPro.TextMeshProUGUI>();
 
-        var purple = transform.FindDeepChild("Purple").GetComponent<TMPro.TextMeshProUGUI>();
-        purple.text = purple.text.Replace("$n", jnc_LevelManager.Instance.purples.Length.ToString());
+        purpleText = transform
+            .DeepFind("Purple")
+            .GetComponent<TMPro.TextMeshProUGUI>();
+    }
+
+    void Update()
+    {
+        var (normalTotal, purpleTotal) = jnc_LevelManager.Instance.GetCoinTotal();
+
+        normalText.text = $"Normal ({normalTotal})";
+        purpleText.text = $"Purple ({purpleTotal})";
     }
 }

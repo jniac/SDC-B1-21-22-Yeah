@@ -9,6 +9,7 @@ TagManager:
   - Destroyer
   - Collectable
   - Block
+  - Screen
   layers:
   - Default
   - TransparentFX
