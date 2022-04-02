@@ -244,7 +244,10 @@ public class VirtualCameraSwitcher : MonoBehaviour
             Draw("exitDelay");
             Draw("safeMargin");
 
-            drawGizmos = EditorGUILayout.Toggle("Draw Gizmos", drawGizmos);
+            EditorUtils.ChangeCheck(
+                () => drawGizmos = EditorGUILayout.Toggle("Draw Gizmos", drawGizmos),
+                () => EditorUtils.SetDirty(FindObjectsOfType<VirtualCameraSwitcher>()));
+
             Draw("gizmoColor");
             serializedObject.ApplyModifiedProperties();
 
