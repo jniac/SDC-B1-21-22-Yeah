@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using Cinemachine;
 using System.Text.RegularExpressions;
@@ -222,12 +224,28 @@ public class VirtualCameraSwitcher : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(VirtualCameraSwitcher))]
+    [CanEditMultipleObjects, CustomEditor(typeof(VirtualCameraSwitcher))]
     class MyEditor : Editor
     {
         VirtualCameraSwitcher Target => target as VirtualCameraSwitcher;
+        IEnumerable<VirtualCameraSwitcher> Targets => targets.Cast<VirtualCameraSwitcher>();
 
-        void Draw(string prop) => EditorGUILayout.PropertyField(serializedObject.FindProperty(prop));
+        void Draw(string propName)
+        {   
+            EditorUtils.ChangeCheck(
+                () => EditorGUILayout.PropertyField(serializedObject.FindProperty(propName)),
+                () => {
+                    Type type = typeof(VirtualCameraSwitcher);
+                    var prop  = type.GetProperty(propName);
+                    var field = type.GetField(propName);
+                    foreach (var item in Targets)
+                    {
+                        field?.SetValue(item, field.GetValue(Target));
+                        prop?.SetValue(item, prop.GetValue(Target));
+                    }
+                }
+            );
+        }
 
         public override void OnInspectorGUI()
         {
