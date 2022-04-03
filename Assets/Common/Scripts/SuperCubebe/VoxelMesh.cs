@@ -52,7 +52,7 @@ namespace SuperCubebe
             {
                 if (child.TryGetComponent<MeshRenderer>(out var mr))
                     mr.enabled = false;
-                
+
                 Vector3 size = child.localScale;
                 size.x = Mathf.Abs(Mathf.Round(size.x));
                 size.y = Mathf.Abs(Mathf.Round(size.y));
@@ -97,6 +97,20 @@ namespace SuperCubebe
 #endif
         }
 
+        void OnGUI()
+        {
+            // Debug.Log(Event.current);
+        }
+
+        Ray ray;
+        RaycastHit hit;
+        void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(ray.origin, ray.direction * 300f);
+            Gizmos.DrawSphere(hit.point, 0.25f);
+        }
+
 #if UNITY_EDITOR
         [CustomEditor(typeof(VoxelMesh))]
         class MyEditor : Editor
@@ -108,6 +122,44 @@ namespace SuperCubebe
                 base.OnInspectorGUI();
 
                 EditorGUILayout.HelpBox($"Mesh: {(float)Target.nano / 1e6:F3}ms", MessageType.None);
+            }
+
+            bool MouseRaycast(out Collider collider)
+            {
+                collider = null;
+                float distance = float.PositiveInfinity;
+
+                Ray ray = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
+                foreach (var current in Target.GetComponentsInChildren<Collider>())
+                {
+                    if (current.Raycast(ray, out var hit, float.PositiveInfinity))
+                    {
+                        if (hit.distance < distance)
+                        {
+                            collider = hit.collider;
+                            distance = hit.distance;
+                        }
+                    }
+                }
+
+                return collider != null;
+            }
+
+            void OnSceneGUI()
+            {
+                // ControlID ?
+                // Looks like there are some new things to learn...
+                // https://docs.unity3d.com/ScriptReference/GUIUtility.GetControlID.html
+                HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Passive));
+
+                if (Event.current.type == EventType.MouseUp)
+                {
+                    if (MouseRaycast(out var collider))
+                    {
+                        Selection.activeObject = collider.gameObject;
+                        Event.current.Use();
+                    }
+                }
             }
         }
 #endif

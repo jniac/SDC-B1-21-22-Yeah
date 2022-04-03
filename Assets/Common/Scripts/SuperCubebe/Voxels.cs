@@ -325,11 +325,11 @@ namespace SuperCubebe
             }
         }
 
-        public static BoundsInt ToBounds(GameObject gameObject) => ToBounds(gameObject.transform);
-        public static BoundsInt ToBounds(Component component) => ToBounds(component.transform);
-        public static BoundsInt ToBounds(Transform transform)
+        public static BoundsInt ToBounds(GameObject gameObject, bool useLocalPosition = true) => ToBounds(gameObject.transform, useLocalPosition);
+        public static BoundsInt ToBounds(Component component, bool useLocalPosition = true) => ToBounds(component.transform, useLocalPosition);
+        public static BoundsInt ToBounds(Transform transform, bool useLocalPosition = true)
         {
-            var p = transform.position;
+            var p = useLocalPosition ? transform.localPosition : transform.position;
             var s = transform.localScale;
             int sx = Mathf.RoundToInt(s.x);
             int sy = Mathf.RoundToInt(s.y);
