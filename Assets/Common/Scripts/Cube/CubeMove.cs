@@ -192,7 +192,8 @@ public class CubeMove : MonoBehaviour
 
     void OnSwitchCamera()
     {
-        RemoveControls(.25f);
+        // Not necessary any longer?
+        // RemoveControls(.25f);
     }
 
     void FixedUpdate()
