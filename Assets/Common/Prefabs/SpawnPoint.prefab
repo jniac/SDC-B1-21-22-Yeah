@@ -4840,6 +4840,7 @@ GameObject:
   - component: {fileID: 313158576182966825}
   - component: {fileID: 313158576182966824}
   - component: {fileID: 313158576182966829}
+  - component: {fileID: -5720760604230531646}
   m_Layer: 8
   m_Name: SpawnPoint
   m_TagString: Untagged
@@ -4959,3 +4960,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   hasFocus: 0
+--- !u!114 &-5720760604230531646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 313158576182966828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4118a273ee3a472894d775cc024bbe5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPrefabToSpawn: {fileID: 0}
+  respawnWaitTime: 1
+  spawnPoints: []
+  reachedSpawnPoints: []
+  focusedPoint: {fileID: 0}
