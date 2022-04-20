@@ -24,7 +24,7 @@ public class EditingItemSnapping : MonoBehaviour
     public float yRangeWidth = 8f;
 
     // XYZ Mode
-    public EditingBlockSnapping.SnapStep xyzMode = EditingBlockSnapping.SnapStep.Unit;
+    public Snapping.SnapStep xyzMode = Snapping.SnapStep.Unit;
 
     IEnumerable<RaycastHit> GetHits()
     {
@@ -100,12 +100,12 @@ public class EditingItemSnapping : MonoBehaviour
 
     void SnapXYZ()
     {
-        EditingBlockSnapping.ApplySnapXYZ(transform, xyzMode);
+        Snapping.ApplySnapXYZ(transform, xyzMode);
     }
 
     void Update()
     {
-        if (Application.isPlaying == false)
+        if (Application.isPlaying == false && Snapping.enabled)
         {
             switch (mode)
             {
@@ -145,6 +145,8 @@ public class EditingItemSnapping : MonoBehaviour
                     Draw("xyzMode");
                     break;
             }
+
+            Snapping.enabled = EditorGUILayout.Toggle("Snapping Enabled", Snapping.enabled);
 
             serializedObject.ApplyModifiedProperties();
         }

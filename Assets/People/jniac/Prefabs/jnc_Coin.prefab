@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 4259724009167608977}
   - component: {fileID: 5004447257573444190}
   - component: {fileID: -8976820876227890241}
-  m_Layer: 0
+  - component: {fileID: 219017506271102488}
+  m_Layer: 11
   m_Name: jnc_Coin
   m_TagString: Collectable
   m_Icon: {fileID: 0}
@@ -81,11 +82,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  particles:
+--- !u!114 &219017506271102488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2245136272449853765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dba5366c46f544d8490e7c529f1d8813, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onDestroyParticles:
   - {fileID: 173352213401199758, guid: e72c815a5c7ba4b4da08b441686548c1, type: 3}
   - {fileID: 173352213401199758, guid: dc85f5c36764e440b8c5c56801150ee6, type: 3}
   - {fileID: 173352213401199758, guid: 6048c667b2806488592e51206ed659f0, type: 3}
-  particleCount: 10
+  particleCount: 12
 --- !u!1 &9176911018483885701
 GameObject:
   m_ObjectHideFlags: 0
@@ -97,7 +110,7 @@ GameObject:
   - component: {fileID: 8054511723087981856}
   - component: {fileID: 7308680394864134590}
   - component: {fileID: 5607720038649946845}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -29,4 +29,10 @@ public class Register<K, V>
 
         return false;
     }
+
+    public IEnumerable<(K key, List<V> values)> Entries()
+    {
+        foreach (var entry in dictionary) 
+            yield return (entry.Key, entry.Value);
+    }
 }

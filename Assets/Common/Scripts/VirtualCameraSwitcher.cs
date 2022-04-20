@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using Cinemachine;
 using System.Text.RegularExpressions;
@@ -26,7 +28,7 @@ public class VirtualCameraSwitcher : MonoBehaviour
         public bool GetOverlap() => overlap;
 
         public bool GetOverlapWithDelay(float delay) => overlap || (Time.time - exitTime < delay);
-  
+
         public bool SetOverlap(bool value)
         {
             if (value != overlap)
@@ -81,7 +83,8 @@ public class VirtualCameraSwitcher : MonoBehaviour
         FindVcams(force);
 
         follow = instances
-            .Select(item => item.vcam?.Follow)
+            .Where(item => item.vcam != null)
+            .Select(item => item.vcam.Follow)
             .Where(item => item != null)
             .FirstOrDefault();
 
@@ -149,7 +152,7 @@ public class VirtualCameraSwitcher : MonoBehaviour
 
     void UpdateName()
     {
-        var str = vcam != null 
+        var str = vcam != null
             ? Regex.Split(vcam.name, @"\W").Last()
             : "NO-CAM";
         gameObject.name = $"SwitchTo [{str} : {onEnterPriority}]";
@@ -201,26 +204,48 @@ public class VirtualCameraSwitcher : MonoBehaviour
     }
 
     public Color gizmoColor = Color.yellow;
-    void OnDrawGizmos()
+    static bool drawGizmos = false;
+    void DrawGizmos()
     {
         Gizmos.color = gizmoColor;
         var bounds = Bounds;
         Gizmos.DrawWireCube(bounds.center, bounds.size);
     }
+    void OnDrawGizmos()
+    {
+        if (drawGizmos)
+            DrawGizmos();
+    }
     void OnDrawGizmosSelected()
     {
         Gizmos.color = gizmoColor;
         var bounds = Bounds;
-        GizmoPrimitives.WithAlpha(0.2f, () => Gizmos.DrawCube(bounds.center, bounds.size));
+        GizmosUtils.WithAlpha(0.2f, () => Gizmos.DrawCube(bounds.center, bounds.size));
     }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(VirtualCameraSwitcher))]
+    [CanEditMultipleObjects, CustomEditor(typeof(VirtualCameraSwitcher))]
     class MyEditor : Editor
     {
         VirtualCameraSwitcher Target => target as VirtualCameraSwitcher;
+        IEnumerable<VirtualCameraSwitcher> Targets => targets.Cast<VirtualCameraSwitcher>();
 
-        void Draw(string prop) => EditorGUILayout.PropertyField(serializedObject.FindProperty(prop));
+        void Draw(string propName)
+        {   
+            EditorUtils.ChangeCheck(
+                () => EditorGUILayout.PropertyField(serializedObject.FindProperty(propName)),
+                () => {
+                    Type type = typeof(VirtualCameraSwitcher);
+                    var prop  = type.GetProperty(propName);
+                    var field = type.GetField(propName);
+                    foreach (var item in Targets)
+                    {
+                        field?.SetValue(item, field.GetValue(Target));
+                        prop?.SetValue(item, prop.GetValue(Target));
+                    }
+                }
+            );
+        }
 
         public override void OnInspectorGUI()
         {
@@ -236,6 +261,11 @@ public class VirtualCameraSwitcher : MonoBehaviour
             Draw("onEnterPriority");
             Draw("exitDelay");
             Draw("safeMargin");
+
+            EditorUtils.ChangeCheck(
+                () => drawGizmos = EditorGUILayout.Toggle("Draw Gizmos", drawGizmos),
+                () => EditorUtils.SetDirty(FindObjectsOfType<VirtualCameraSwitcher>()));
+
             Draw("gizmoColor");
             serializedObject.ApplyModifiedProperties();
 
