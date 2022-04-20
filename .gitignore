@@ -84,3 +84,6 @@ tmp
 tmp.meta
 
 Recordings
+
+# ignore build settings
+EditorBuildSettings.asset
