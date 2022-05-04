@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5695161905194912504}
   - component: {fileID: 3897356112197781442}
   m_Layer: 0
-  m_Name: Spawn point
+  m_Name: qng_Spawn point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
