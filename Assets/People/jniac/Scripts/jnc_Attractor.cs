@@ -9,15 +9,16 @@ public class jnc_Attractor : MonoBehaviour
     public Vector3 anchor = new Vector3(0f, 0.5f, 0f);
 
     bool Match(int layer) => (mask & (1 << layer)) != 0;
-    bool Match(GameObject go) => go != null && Match(go.layer);
 
     void OnTriggerEnter(Collider other)
     {
-        if (Match(other.attachedRigidbody?.gameObject))
+        var body = other.attachedRigidbody;
+        if (body != null && Match(body.gameObject.layer))
         {
-            other.attachedRigidbody.position = transform.TransformPoint(anchor);
-            other.attachedRigidbody.velocity *= 0.25f;
-            other.attachedRigidbody.gameObject.BroadcastMessage("RemoveControls", 0.25f);
+            body.position = transform.TransformPoint(anchor);
+            body.rotation = Quaternion.identity;
+            body.velocity = Vector3.zero;
+            body.gameObject.BroadcastMessage("RemoveControls", 0.25f);
         }
     }
 }

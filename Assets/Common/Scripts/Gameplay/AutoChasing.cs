@@ -40,11 +40,11 @@ public class AutoChasing : MonoBehaviour
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
-        GizmoPrimitives.DrawCylinder(
+        GizmosUtils.DrawCylinder(
             distanceMax,
             heightMax * 2,
             ringSubdivisions: 4,
             center: transform.position,
-            orientation: GizmoPrimitives.Orientation.XZ);
+            orientation: GizmosUtils.Orientation.XZ);
     }
 }

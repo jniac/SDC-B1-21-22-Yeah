@@ -39,6 +39,10 @@ public class jnc_SphereBat : MonoBehaviour
         {
             body.velocity = (target.position - transform.position).normalized * velocity;
         }
+        else
+        {
+            body.velocity *= 0.95f;
+        }
     }
 
     void OnDrawGizmosSelected()

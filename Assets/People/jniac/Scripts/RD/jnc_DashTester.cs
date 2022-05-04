@@ -8,14 +8,22 @@ public class jnc_DashTester : MonoBehaviour
     [Range(1, 5)]
     public float dashLength = 3.6f;
     public float radius = 0.5f;
-    
+
     Vector3[] spreadVectors = new Vector3[0];
     jnc_CubeDash.DashInfo info;
+
+    SuperCubebe.VoxelWorld world;
+
+    void OnEnable()
+    {
+        world = SuperCubebe.VoxelWorld.New(FindObjectsOfType<EditingBlockSnapping>());        
+    }
 
     void Update()
     {
         spreadVectors = jnc_CubeDash.GetSpreadVectors(transform.right);
         info = jnc_CubeDash.DestinationCast(transform.position, transform.right, dashLength, radius, 1);
+
     }
 
     void OnDrawGizmos()
@@ -29,9 +37,8 @@ public class jnc_DashTester : MonoBehaviour
             Gizmos.DrawRay(transform.position, v * dashLength);
 
         Gizmos.DrawWireCube(transform.position, Vector3.one);
-        GizmoPrimitives.WithAlpha(0.1f, () => {
-            Gizmos.DrawCube(transform.position, Vector3.one);
-        });
+        GizmosUtils.WithAlpha(0.1f, () =>
+            Gizmos.DrawCube(transform.position, Vector3.one));
 
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position, info.direction * dashLength);
