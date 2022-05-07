@@ -5,20 +5,20 @@ using UnityEngine;
 public class lxx_TimeAttackLevelManager : MonoBehaviour
 {
     public GameObject gameoverScreen;
-    public float eLapsedTime=0f;
-    public float remainingTime=3f;
+    public float eLapsedTime = 0f;
+    public float remainingTime = 3f;
     // Start is called before the first frame update
     void Start()
     {
         gameoverScreen.SetActive(false);
-        eLapsedTime=0f;
+        eLapsedTime = 0f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        eLapsedTime = eLapsedTime + Time.deltaTime;
-        remainingTime = remainingTime + Time.deltaTime;
+        eLapsedTime += Time.deltaTime;
+        remainingTime -= Time.deltaTime;
 
         if (remainingTime < 0f)
         {
@@ -26,7 +26,7 @@ public class lxx_TimeAttackLevelManager : MonoBehaviour
         }
     }
 
-    void GameOver ()
+    void GameOver()
     {
         gameoverScreen.SetActive(true);
         Time.timeScale = 0f;
