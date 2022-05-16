@@ -9,8 +9,6 @@ public class lxx_TimeAttackLevelManager : MonoBehaviour
     public float remainingTime = 3f;
     public bool timePaused = false;
 
-    public TMPro.TextMeshProUGUI remainingText;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -26,7 +24,6 @@ public class lxx_TimeAttackLevelManager : MonoBehaviour
             elapsedTime = elapsedTime + Time.deltaTime;
             remainingTime = Mathf.Clamp(remainingTime - Time.deltaTime, 0f, float.PositiveInfinity);
         }
-        remainingText.text = $"time: {remainingTime:F1}s";
 
         if (remainingTime <= 0f)
         {
